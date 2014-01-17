@@ -1,0 +1,15 @@
+Standard leave-one-out method for critiquing (in the "incremental critiquing" paper:
+In each iteration, Choose the critique that is compatible with the target product
+Repeat the experiment by selecting each product as the query for 10 times...
+
+
+Modified version of the leave-one-out method used in "MAUT Based Critiquing":
+1. Don't "leave" any case
+2. Give random preferences from the user's side and one product that is compatible with the initial user
+preferences as the target product. 
+3. At each iteration, choose the critique that is compatible with the target product.
+
+========================================================================================================
+IMPROVEMENTS TO MAUT CRITIQUING:
+1. Some critique strings are repeating... there can be just one product corresponding to one critique string
+2. 

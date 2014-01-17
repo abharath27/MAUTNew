@@ -1,0 +1,128 @@
+-------------------------------------------
+New Iteration:
+
+
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.481751040511
+Preferences =  {'Format': 'Compact', 'Weight': 300.0, 'Manufacturer': 'Canon'}
+First Product Selected =  5
+product List Size =  208
+Reference Product's utility = 0.319819104888
+Reference Product ID =  5
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 0
+target ID = 9
+topK product IDs =  [190, 76, 1, 174, 192]
+[(190, 0.88), (76, 0.88), (1, 0.88), (192, 0.88), (174, 0.77)]
+maxCompatible Product ID = 190
+attr: Price
+Previous value of attr = 238.0
+New value of attr = 321.0
+Decreasing weight of the attribute Price
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 5.1
+Increasing weight of the attribute Resolution
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 8.0
+Increasing weight of the attribute DigitalZoom
+attr: Weight
+Previous value of attr = 315.0
+New value of attr = 205.0
+Increasing weight of the attribute Weight
+===================
+Weights:
+Weight : 0.222 Format : 0.222 StorageType : 0.222 Price : 0.055 OpticalZoom : 0.111 StorageIncluded : 0.111 DigitalZoom : 0.222 Model : 0.111 Resolution : 0.222 Manufacturer : 0.111 ===================
+product List Size =  203
+Reference Product's utility = 0.637732699337
+Reference Product ID =  190
+===============
+[194, 45, 24, 4, 30]
+[0.5419325503674307, 0.5205099500383225, 0.5100791145177405, 0.5097246673717725, 0.5087113959871206]
+===============
+topK product IDs =  [194, 45, 24, 4, 30]
+[(24, 0.88), (45, 0.77), (30, 0.77), (194, 0.66), (4, 0.44)]
+maxCompatible Product ID = 24
+attr: Price
+Previous value of attr = 321.0
+New value of attr = 550.0
+Decreasing weight of the attribute Price
+attr: DigitalZoom
+Previous value of attr = 8.0
+New value of attr = 4.0
+Decreasing weight of the attribute DigitalZoom
+===================
+Weights:
+Weight : 0.222 Format : 0.111 StorageType : 0.111 Price : 0.027 OpticalZoom : 0.111 StorageIncluded : 0.111 DigitalZoom : 0.111 Model : 0.111 Resolution : 0.222 Manufacturer : 0.111 ===================
+product List Size =  198
+Reference Product's utility = 0.431073178461
+Reference Product ID =  24
+===============
+[23, 36, 27, 28, 148]
+[0.4290690342061768, 0.42878486406049776, 0.4281408290724774, 0.4251214208338926, 0.42503654641173616]
+===============
+topK product IDs =  [23, 36, 27, 28, 148]
+[(148, 0.66), (23, 0.55), (36, 0.44), (27, 0.44), (28, 0.44)]
+maxCompatible Product ID = 148
+attr: Price
+Previous value of attr = 550.0
+New value of attr = 425.0
+Increasing weight of the attribute Price
+attr: Weight
+Previous value of attr = 186.0
+New value of attr = 220.0
+Decreasing weight of the attribute Weight
+===================
+Weights:
+Weight : 0.111 Format : 0.111 StorageType : 0.111 Price : 0.055 OpticalZoom : 0.111 StorageIncluded : 0.111 DigitalZoom : 0.111 Model : 0.111 Resolution : 0.222 Manufacturer : 0.111 ===================
+product List Size =  193
+Reference Product's utility = 0.349473500464
+Reference Product ID =  148
+===============
+[29, 61, 175, 53, 40]
+[0.3503728390062011, 0.34863436426989924, 0.3474889186321039, 0.3454917614712515, 0.3448474526619897]
+===============
+topK product IDs =  [29, 61, 175, 53, 40]
+[(175, 0.77), (29, 0.66), (53, 0.55), (40, 0.55), (61, 0.44)]
+maxCompatible Product ID = 175
+attr: Price
+Previous value of attr = 425.0
+New value of attr = 900.0
+Decreasing weight of the attribute Price
+attr: Resolution
+Previous value of attr = 4.92
+New value of attr = 3.14
+Decreasing weight of the attribute Resolution
+attr: DigitalZoom
+Previous value of attr = 4.0
+New value of attr = 3.2
+Decreasing weight of the attribute DigitalZoom
+attr: Weight
+Previous value of attr = 220.0
+New value of attr = 320.0
+Decreasing weight of the attribute Weight
+attr: StorageIncluded
+Previous value of attr = 32.0
+New value of attr = 64.0
+Increasing weight of the attribute StorageIncluded
+===================
+Weights:
+Weight : 0.055 Format : 0.111 StorageType : 0.222 Price : 0.027 OpticalZoom : 0.111 StorageIncluded : 0.222 DigitalZoom : 0.055 Model : 0.111 Resolution : 0.111 Manufacturer : 0.111 ===================
+product List Size =  188
+Reference Product's utility = 0.339630787482
+Reference Product ID =  175
+===============
+[176, 9, 50, 198, 88]
+[0.33363092288298585, 0.2549522161730747, 0.2549128186573525, 0.2542818667862109, 0.2454868618709278]
+===============
+topK product IDs =  [176, 9, 50, 198, 88]
+Number of interaction cycles = 5
+Average number of interaction cycles =  5.0
+Iterations List(Unsorted): [5]
+Iterations List: [5]

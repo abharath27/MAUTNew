@@ -1,0 +1,2687 @@
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.481751040511
+Preferences =  {'Format': 'Compact', 'OpticalZoom': 3.6, 'Manufacturer': 'Canon'}
+First Product Selected =  7
+product List Size =  208
+Reference Product's utility = 0.324359343851
+Reference Product ID =  7
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 0
+target ID = 9
+topK product IDs =  [190, 76, 1, 174, 192]
+[(192, 1.0), (190, 0.9), (76, 0.9), (1, 0.9), (174, 0.7)]
+maxCompatible Product ID = 192
+attr: Price
+Previous value of attr = 533.0
+New value of attr = 432.0
+Previous value fn value of attr = 0.941770080458
+New value fn value of attr = 0.955543433792
+attr: OpticalZoom
+Previous value of attr = 4.0
+New value of attr = 8.1
+Previous value fn value of attr = -0.0139097231692
+New value fn value of attr = -0.0133506068458
+attr: DigitalZoom
+Previous value of attr = 3.6
+New value of attr = 7.0
+Previous value fn value of attr = 0.45
+New value fn value of attr = 0.875
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  203
+Reference Product's utility = 0.603002820504
+Reference Product ID =  192
+===============
+[194, 203, 45, 113, 4]
+[0.5959492289543413, 0.5453667262106736, 0.5354081746234722, 0.533254628034421, 0.5308868932437882]
+===============
+topK product IDs =  [194, 203, 45, 113, 4]
+[(194, 0.9), (45, 0.9), (113, 0.8), (203, 0.7), (4, 0.4)]
+maxCompatible Product ID = 194
+attr: Price
+Previous value of attr = 432.0
+New value of attr = 337.0
+Previous value fn value of attr = 0.955543433792
+New value fn value of attr = 0.968498568117
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  198
+Reference Product's utility = 0.882004248449
+Reference Product ID =  194
+===============
+[191, 8, 36, 29, 27]
+[0.7984195937713043, 0.7981580209364684, 0.7756023470976896, 0.7750547250218163, 0.7745757521228848]
+===============
+topK product IDs =  [191, 8, 36, 29, 27]
+[(191, 0.9), (29, 0.9), (36, 0.8), (27, 0.8), (8, 0.6)]
+maxCompatible Product ID = 191
+attr: Price
+Previous value of attr = 337.0
+New value of attr = 130.0
+Previous value fn value of attr = 0.968498568117
+New value fn value of attr = 0.99672712396
+attr: Weight
+Previous value of attr = 489.0
+New value of attr = 190.0
+Previous value fn value of attr = 0.738047138047
+New value fn value of attr = 0.939393939394
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.11 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  193
+Reference Product's utility = 1.22026020276
+Reference Product ID =  191
+===============
+[3, 160, 181, 79, 146]
+[1.2031536357866282, 1.1968664143676166, 1.1944517176073468, 1.1936261385240408, 1.1905440059977639]
+===============
+topK product IDs =  [3, 160, 181, 79, 146]
+[(181, 0.7), (79, 0.7), (146, 0.7), (160, 0.6), (3, 0.3)]
+maxCompatible Product ID = 181
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0144552025092
+New value fn value of attr = -0.0140460930042
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.22 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  188
+Reference Product's utility = 0.721229822741
+Reference Product ID =  181
+===============
+[182, 180, 163, 136, 23]
+[0.7221939014878619, 0.7221073027903864, 0.7217936962397034, 0.7198354664999334, 0.7194398304887434]
+===============
+topK product IDs =  [182, 180, 163, 136, 23]
+[(23, 0.7), (163, 0.6), (182, 0.5), (180, 0.5), (136, 0.5)]
+maxCompatible Product ID = 23
+attr: Resolution
+Previous value of attr = 3.2
+New value of attr = 5.0
+Previous value fn value of attr = 0.16
+New value fn value of attr = 0.304
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.25
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  183
+Reference Product's utility = 0.439947199012
+Reference Product ID =  23
+===============
+[175, 30, 28, 148, 24]
+[0.45374895957217276, 0.43988623973709395, 0.43977027899305265, 0.43889779620961555, 0.4380352176487883]
+===============
+topK product IDs =  [175, 30, 28, 148, 24]
+[(24, 0.8), (175, 0.7), (30, 0.7), (28, 0.7), (148, 0.5)]
+maxCompatible Product ID = 24
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  178
+Reference Product's utility = 0.333651685064
+Reference Product ID =  24
+===============
+[176, 61, 53, 40, 9]
+[0.3402968844984655, 0.3316825537934224, 0.32910028840700356, 0.32665584037550677, 0.3260606003633024]
+===============
+topK product IDs =  [176, 61, 53, 40, 9]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.305041652131
+Preferences =  {'Price': 879.0, 'Resolution': 8.0, 'Manufacturer': 'Canon'}
+First Product Selected =  2
+product List Size =  208
+Reference Product's utility = 0.21364246723
+Reference Product ID =  2
+===============
+[190, 76, 174, 192, 175]
+[0.41088081352947936, 0.4055362604228159, 0.378814895932674, 0.37331472862071224, 0.3649697899848422]
+===============
+source ID = 1
+target ID = 76
+topK product IDs =  [190, 76, 174, 192, 175]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.323707714193
+Preferences =  {'Price': 871.0, 'Resolution': 6.29, 'Manufacturer': 'Canon'}
+First Product Selected =  1
+product List Size =  208
+Reference Product's utility = 0.384606975248
+Reference Product ID =  1
+===============
+[190, 76, 174, 192, 175]
+[0.41088081352947936, 0.4055362604228159, 0.378814895932674, 0.37331472862071224, 0.3649697899848422]
+===============
+source ID = 2
+target ID = 185
+topK product IDs =  [190, 76, 174, 192, 175]
+[(174, 0.9), (175, 0.9), (190, 0.7), (76, 0.7), (192, 0.6)]
+maxCompatible Product ID = 174
+attr: Price
+Previous value of attr = 879.0
+New value of attr = 700.0
+Previous value fn value of attr = 0.894586117551
+New value fn value of attr = 0.918996318014
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 3.6
+Previous value fn value of attr = 0.4
+New value fn value of attr = 0.45
+attr: Weight
+Previous value of attr = 640.0
+New value of attr = 340.0
+Previous value fn value of attr = 0.636363636364
+New value fn value of attr = 0.838383838384
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.05 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  203
+Reference Product's utility = 0.627145410541
+Reference Product ID =  174
+===============
+[194, 203, 191, 8, 113]
+[0.6682240121005398, 0.6282579589465357, 0.6245762171138961, 0.6215132140387712, 0.6197871886155596]
+===============
+topK product IDs =  [194, 203, 191, 8, 113]
+[(191, 0.8), (8, 0.8), (194, 0.6), (203, 0.6), (113, 0.5)]
+maxCompatible Product ID = 191
+attr: Price
+Previous value of attr = 700.0
+New value of attr = 130.0
+Previous value fn value of attr = 0.918996318014
+New value fn value of attr = 0.99672712396
+attr: DigitalZoom
+Previous value of attr = 3.6
+New value of attr = 5.0
+Previous value fn value of attr = 0.514285714286
+New value fn value of attr = 0.714285714286
+attr: Weight
+Previous value of attr = 340.0
+New value of attr = 190.0
+Previous value fn value of attr = 0.838383838384
+New value fn value of attr = 0.939393939394
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.44 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  198
+Reference Product's utility = 1.31402656447
+Reference Product ID =  191
+===============
+[3, 160, 163, 182, 180]
+[1.3027871055051017, 1.244923411610807, 1.2382170963916017, 1.2377946022970074, 1.2369648533271915]
+===============
+topK product IDs =  [3, 160, 163, 182, 180]
+[(160, 0.6), (163, 0.5), (182, 0.5), (180, 0.5), (3, 0.3)]
+maxCompatible Product ID = 160
+attr: Weight
+Previous value of attr = 190.0
+New value of attr = 100.0
+Previous value fn value of attr = 0.939393939394
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.88 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  193
+Reference Product's utility = 1.34745257402
+Reference Product ID =  160
+===============
+[156, 155, 146, 136, 80]
+[1.3165547824623076, 1.3157526823668488, 1.3153496153340143, 1.314713601575813, 1.309510677489076]
+===============
+topK product IDs =  [156, 155, 146, 136, 80]
+[(156, 0.5), (155, 0.5), (146, 0.4), (80, 0.4), (136, 0.3)]
+maxCompatible Product ID = 156
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 3.14
+Previous value fn value of attr = 0.0576
+New value fn value of attr = 0.1552
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0144552025092
+New value fn value of attr = -0.0140460930042
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  188
+Reference Product's utility = 0.776270999145
+Reference Product ID =  156
+===============
+[24, 4, 30, 36, 23]
+[0.7796056644494193, 0.7778790528408888, 0.7768274717898684, 0.7763771111828773, 0.7763288508981127]
+===============
+topK product IDs =  [24, 4, 30, 36, 23]
+[(24, 0.5), (4, 0.5), (30, 0.5), (36, 0.5), (23, 0.5)]
+maxCompatible Product ID = 24
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 5.0
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.304
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.25
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.05 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  183
+Reference Product's utility = 0.552147080319
+Reference Product ID =  24
+===============
+[45, 27, 148, 28, 29]
+[0.550510728470573, 0.5498372041431943, 0.5475987037949512, 0.546760739834726, 0.5462097871476371]
+===============
+topK product IDs =  [45, 27, 148, 28, 29]
+[(27, 0.7), (148, 0.7), (45, 0.6), (28, 0.6), (29, 0.6)]
+maxCompatible Product ID = 27
+attr: Price
+Previous value of attr = 550.0
+New value of attr = 376.0
+Previous value fn value of attr = 0.939451793263
+New value fn value of attr = 0.963180144552
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.05 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  178
+Reference Product's utility = 0.499416751101
+Reference Product ID =  27
+===============
+[0, 61, 9, 53, 40]
+[0.49678099695110856, 0.49662519531038707, 0.4950682825306737, 0.49404292992396825, 0.4915757535866394]
+===============
+topK product IDs =  [0, 61, 9, 53, 40]
+[(53, 0.7), (61, 0.6), (0, 0.5), (9, 0.5), (40, 0.5)]
+maxCompatible Product ID = 53
+attr: Price
+Previous value of attr = 376.0
+New value of attr = 358.0
+Previous value fn value of attr = 0.963180144552
+New value fn value of attr = 0.965634801582
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.05 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  173
+Reference Product's utility = 0.557436011965
+Reference Product ID =  53
+===============
+[198, 88, 207, 159, 149]
+[0.5440700158397223, 0.5390388347687212, 0.5343331728436636, 0.5333946955123398, 0.5325932978400688]
+===============
+topK product IDs =  [198, 88, 207, 159, 149]
+[(207, 0.6), (149, 0.6), (198, 0.5), (88, 0.5), (159, 0.5)]
+maxCompatible Product ID = 207
+attr: Price
+Previous value of attr = 358.0
+New value of attr = 309.0
+Previous value fn value of attr = 0.965634801582
+New value fn value of attr = 0.972316923497
+attr: Weight
+Previous value of attr = 280.0
+New value of attr = 205.0
+Previous value fn value of attr = 0.887755102041
+New value fn value of attr = 0.938775510204
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  168
+Reference Product's utility = 0.78866890641
+Reference Product ID =  207
+===============
+[181, 47, 78, 158, 79]
+[0.7905589148094652, 0.7872810527668801, 0.7868696023597856, 0.7866082043721013, 0.7858718236728756]
+===============
+topK product IDs =  [181, 47, 78, 158, 79]
+[(181, 0.9), (158, 0.9), (78, 0.7), (79, 0.7), (47, 0.6)]
+maxCompatible Product ID = 181
+attr: Price
+Previous value of attr = 309.0
+New value of attr = 177.0
+Previous value fn value of attr = 0.972316923497
+New value fn value of attr = 0.990317741716
+attr: Weight
+Previous value of attr = 205.0
+New value of attr = 180.0
+Previous value fn value of attr = 0.938775510204
+New value fn value of attr = 0.955782312925
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  163
+Reference Product's utility = 1.33245372367
+Reference Product ID =  181
+===============
+[197, 193, 202, 84, 85]
+[1.327967091783908, 1.3266564261475913, 1.3266422883064464, 1.321574591650682, 1.3212527936901686]
+===============
+topK product IDs =  [197, 193, 202, 84, 85]
+[(197, 0.8), (202, 0.8), (193, 0.7), (84, 0.4), (85, 0.4)]
+maxCompatible Product ID = 197
+attr: Price
+Previous value of attr = 177.0
+New value of attr = 117.0
+Previous value fn value of attr = 0.990317741716
+New value fn value of attr = 0.998499931815
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  158
+Reference Product's utility = 2.11337234387
+Reference Product ID =  197
+===============
+[83, 70, 59, 206, 26]
+[2.0838781085081273, 2.0822517288200793, 2.08173628325097, 2.0783280040867655, 2.077189382861043]
+===============
+topK product IDs =  [83, 70, 59, 206, 26]
+[(59, 0.5), (206, 0.5), (70, 0.4), (26, 0.4), (83, 0.3)]
+maxCompatible Product ID = 59
+attr: Resolution
+Previous value of attr = 2.0
+New value of attr = 3.14
+Previous value fn value of attr = 0.064
+New value fn value of attr = 0.1552
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0144552025092
+New value fn value of attr = -0.0140460930042
+attr: Weight
+Previous value of attr = 240.0
+New value of attr = 220.0
+Previous value fn value of attr = 0.914965986395
+New value fn value of attr = 0.928571428571
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  153
+Reference Product's utility = 1.3163336814
+Reference Product ID =  59
+===============
+[92, 161, 183, 178, 90]
+[1.3180510857894077, 1.314893784699964, 1.3139036080489743, 1.3136502111670918, 1.3131628771210893]
+===============
+topK product IDs =  [92, 161, 183, 178, 90]
+[(92, 0.6), (90, 0.6), (161, 0.5), (183, 0.5), (178, 0.5)]
+maxCompatible Product ID = 92
+attr: Weight
+Previous value of attr = 220.0
+New value of attr = 170.0
+Previous value fn value of attr = 0.928571428571
+New value fn value of attr = 0.962585034014
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  148
+Reference Product's utility = 1.10009833201
+Reference Product ID =  92
+===============
+[91, 75, 74, 142, 51]
+[1.0956451020913236, 1.0941022168086592, 1.093279843064398, 1.0918446387740361, 1.0905463729076943]
+===============
+topK product IDs =  [91, 75, 74, 142, 51]
+[(91, 0.5), (142, 0.4), (51, 0.4), (75, 0.2), (74, 0.2)]
+maxCompatible Product ID = 91
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 5.0
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.304
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.4
+Previous value fn value of attr = -0.0144552025092
+New value fn value of attr = -0.0139915450702
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  143
+Reference Product's utility = 0.890357861762
+Reference Product ID =  91
+===============
+[205, 139, 144, 60, 208]
+[0.8811901187221558, 0.8790682376512888, 0.8753298868563288, 0.87322069401423, 0.8716513092689535]
+===============
+topK product IDs =  [205, 139, 144, 60, 208]
+[(60, 0.7), (139, 0.6), (144, 0.6), (208, 0.6), (205, 0.5)]
+maxCompatible Product ID = 60
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.22 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  138
+Reference Product's utility = 0.661261656915
+Reference Product ID =  60
+===============
+[93, 43, 188, 186, 184]
+[0.6612136099775303, 0.6608408505272193, 0.6580974051696227, 0.6578750617297693, 0.6571477559431427]
+===============
+topK product IDs =  [93, 43, 188, 186, 184]
+[(93, 0.6), (43, 0.4), (188, 0.4), (186, 0.3), (184, 0.3)]
+maxCompatible Product ID = 93
+attr: Price
+Previous value of attr = 404.0
+New value of attr = 325.0
+Previous value fn value of attr = 0.959361789172
+New value fn value of attr = 0.970135006137
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 3.7
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0139506341197
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  133
+Reference Product's utility = 0.874256093727
+Reference Product ID =  93
+===============
+[112, 86, 14, 132, 157]
+[0.8684718098400472, 0.8680829613776506, 0.8674432825384043, 0.8582698309622194, 0.85528094731991]
+===============
+topK product IDs =  [112, 86, 14, 132, 157]
+[(14, 0.6), (86, 0.4), (112, 0.3), (157, 0.3), (132, 0.2)]
+maxCompatible Product ID = 14
+attr: Price
+Previous value of attr = 325.0
+New value of attr = 300.0
+Previous value fn value of attr = 0.970135006137
+New value fn value of attr = 0.973544252011
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.02 StorageIncluded : 0.02 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  128
+Reference Product's utility = 1.29665892795
+Reference Product ID =  14
+===============
+[125, 48, 120, 25, 124]
+[1.2826323729516047, 1.2806204613299779, 1.2791036421568944, 1.2783599033928463, 1.276697731983076]
+===============
+topK product IDs =  [125, 48, 120, 25, 124]
+[(48, 0.4), (25, 0.4), (125, 0.3), (120, 0.3), (124, 0.3)]
+maxCompatible Product ID = 48
+attr: Price
+Previous value of attr = 300.0
+New value of attr = 177.0
+Previous value fn value of attr = 0.973544252011
+New value fn value of attr = 0.990317741716
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 3.14
+Previous value fn value of attr = 0.0576
+New value fn value of attr = 0.1552
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0144552025092
+New value fn value of attr = -0.0140460930042
+attr: Weight
+Previous value of attr = 225.0
+New value of attr = 200.0
+Previous value fn value of attr = 0.925170068027
+New value fn value of attr = 0.942176870748
+attr: StorageIncluded
+Previous value of attr = 8.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.125
+New value fn value of attr = 0.25
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  123
+Reference Product's utility = 2.28624092266
+Reference Product ID =  48
+===============
+[105, 55, 6, 114, 102]
+[2.279541094828161, 2.2767999657993108, 2.2746793139123302, 2.2728194529353476, 2.2723174695118584]
+===============
+topK product IDs =  [105, 55, 6, 114, 102]
+[(6, 0.6), (102, 0.6), (105, 0.5), (55, 0.4), (114, 0.4)]
+maxCompatible Product ID = 6
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.25
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.02 StorageIncluded : 0.11 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  118
+Reference Product's utility = 1.39116332464
+Reference Product ID =  6
+===============
+[189, 109, 104, 116, 44]
+[1.3691445582100872, 1.3685396172727717, 1.3672746612182984, 1.3643552712704343, 1.3643440285936141]
+===============
+topK product IDs =  [189, 109, 104, 116, 44]
+[(109, 0.6), (189, 0.5), (104, 0.5), (44, 0.5), (116, 0.3)]
+maxCompatible Product ID = 109
+attr: Price
+Previous value of attr = 277.0
+New value of attr = 180.0
+Previous value fn value of attr = 0.977747440273
+New value fn value of attr = 0.990989761092
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.01 StorageIncluded : 0.05 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  113
+Reference Product's utility = 2.21885425521
+Reference Product ID =  109
+===============
+[123, 117, 108, 118, 58]
+[2.2230170576084296, 2.221248763402877, 2.2182152663488672, 2.218167038647489, 2.215598484662835]
+===============
+topK product IDs =  [123, 117, 108, 118, 58]
+[(108, 0.4), (58, 0.4), (117, 0.3), (123, 0.2), (118, 0.2)]
+maxCompatible Product ID = 108
+attr: Price
+Previous value of attr = 180.0
+New value of attr = 114.0
+Previous value fn value of attr = 0.990989761092
+New value fn value of attr = 1.0
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0155631399317
+New value fn value of attr = -0.0151535836177
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 3.55 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  108
+Reference Product's utility = 3.8106513797
+Reference Product ID =  108
+===============
+[131, 130, 96, 111, 167]
+[3.781351229593053, 3.7808843581908826, 3.7760419047614584, 3.7744562173220233, 3.7739473162777677]
+===============
+topK product IDs =  [131, 130, 96, 111, 167]
+[(111, 0.6), (167, 0.5), (96, 0.4), (131, 0.2), (130, 0.1)]
+maxCompatible Product ID = 111
+attr: Weight
+Previous value of attr = 235.0
+New value of attr = 200.0
+Previous value fn value of attr = 0.920245398773
+New value fn value of attr = 0.944103612815
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.01 StorageIncluded : 0.05 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  103
+Reference Product's utility = 2.22137043498
+Reference Product ID =  111
+===============
+[41, 95, 34, 31, 179]
+[2.2256202047990215, 2.2248207513798133, 2.222229203566652, 2.2197838421116622, 2.2149053530412464]
+===============
+topK product IDs =  [41, 95, 34, 31, 179]
+[(179, 0.6), (95, 0.5), (41, 0.4), (34, 0.4), (31, 0.4)]
+maxCompatible Product ID = 179
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 4.0
+Previous value fn value of attr = 0.0576
+New value fn value of attr = 0.224
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0232462173315
+New value fn value of attr = -0.022833562586
+attr: DigitalZoom
+Previous value of attr = 2.5
+New value of attr = 2.6
+Previous value fn value of attr = 0.625
+New value fn value of attr = 0.65
+attr: Weight
+Previous value of attr = 200.0
+New value of attr = 175.0
+Previous value fn value of attr = 0.944103612815
+New value fn value of attr = 0.961145194274
+===================
+Weights:
+Weight : 0.88 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  98
+Reference Product's utility = 1.79233342874
+Reference Product ID =  179
+===============
+[99, 153, 73, 164, 162]
+[1.790773476937311, 1.7871020300665437, 1.785177950535075, 1.7834134477839911, 1.7810891444064405]
+===============
+topK product IDs =  [99, 153, 73, 164, 162]
+[(162, 0.7), (99, 0.6), (153, 0.6), (73, 0.6), (164, 0.6)]
+maxCompatible Product ID = 162
+attr: Price
+Previous value of attr = 264.0
+New value of attr = 249.0
+Previous value fn value of attr = 0.986932599725
+New value fn value of attr = 0.988995873453
+attr: DigitalZoom
+Previous value of attr = 2.6
+New value of attr = 3.2
+Previous value fn value of attr = 0.65
+New value fn value of attr = 0.8
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.01 Manufacturer : 0.11 ===================
+product List Size =  93
+Reference Product's utility = 2.28405527066
+Reference Product ID =  162
+===============
+[16, 166, 126, 37, 122]
+[2.2813823152970043, 2.2800141131057505, 2.2754324946967905, 2.271046001721472, 2.2694711619747974]
+===============
+topK product IDs =  [16, 166, 126, 37, 122]
+[(37, 0.6), (16, 0.5), (166, 0.5), (126, 0.3), (122, 0.3)]
+maxCompatible Product ID = 37
+attr: Price
+Previous value of attr = 249.0
+New value of attr = 237.0
+Previous value fn value of attr = 0.988995873453
+New value fn value of attr = 0.990646492435
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 3.55 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  88
+Reference Product's utility = 3.82831873676
+Reference Product ID =  37
+===============
+[145, 5, 187, 67, 129]
+[3.8451861289585265, 3.833153897857563, 3.8227776942286296, 3.821201817012534, 3.8144870531427486]
+===============
+topK product IDs =  [145, 5, 187, 67, 129]
+[(67, 0.6), (187, 0.5), (129, 0.5), (145, 0.4), (5, 0.4)]
+maxCompatible Product ID = 67
+attr: Price
+Previous value of attr = 237.0
+New value of attr = 199.0
+Previous value fn value of attr = 0.990646492435
+New value fn value of attr = 0.995873452545
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 7.11 OpticalZoom : 0.01 StorageIncluded : 0.02 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  83
+Reference Product's utility = 7.35820359252
+Reference Product ID =  67
+===============
+[201, 110, 200, 32, 35]
+[7.3388285794802455, 7.334170797948719, 7.323732900936187, 7.312064251708515, 7.282006783897449]
+===============
+topK product IDs =  [201, 110, 200, 32, 35]
+[(110, 0.6), (201, 0.5), (32, 0.5), (35, 0.5), (200, 0.3)]
+maxCompatible Product ID = 110
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 3.14
+Previous value fn value of attr = 0.0576
+New value fn value of attr = 0.1552
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 6.0
+Previous value fn value of attr = -0.028196268141
+New value fn value of attr = -0.0273669661368
+attr: StorageIncluded
+Previous value of attr = 8.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.125
+New value fn value of attr = 0.25
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 7.11 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  78
+Reference Product's utility = 7.30636809254
+Reference Product ID =  110
+===============
+[147, 169, 66, 69, 204]
+[7.24356206472265, 7.237179487179486, 7.234219019528908, 7.224574193185336, 7.22280720240762]
+===============
+topK product IDs =  [147, 169, 66, 69, 204]
+[(169, 0.6), (66, 0.6), (69, 0.6), (204, 0.5), (147, 0.3)]
+maxCompatible Product ID = 169
+attr: Weight
+Previous value of attr = 400.0
+New value of attr = 320.0
+Previous value fn value of attr = 0.828671328671
+New value fn value of attr = 0.884615384615
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 3.55 OpticalZoom : 0.01 StorageIncluded : 0.02 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  73
+Reference Product's utility = 3.78087121212
+Reference Product ID =  169
+===============
+[107, 119, 56, 168, 68]
+[3.7693209401709398, 3.768792152292152, 3.765863286713287, 3.7636663947163953, 3.7636294094794094]
+===============
+topK product IDs =  [107, 119, 56, 168, 68]
+[(119, 0.5), (56, 0.5), (107, 0.4), (168, 0.4), (68, 0.3)]
+maxCompatible Product ID = 119
+attr: Resolution
+Previous value of attr = 1.2
+New value of attr = 5.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.304
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 2.8
+Previous value fn value of attr = -0.0404195804196
+New value fn value of attr = -0.040027972028
+attr: DigitalZoom
+Previous value of attr = 2.0
+New value of attr = 3.6
+Previous value fn value of attr = 0.5
+New value fn value of attr = 0.9
+attr: Weight
+Previous value of attr = 320.0
+New value of attr = 220.0
+Previous value fn value of attr = 0.884615384615
+New value fn value of attr = 0.954545454545
+attr: StorageIncluded
+Previous value of attr = 8.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.125
+New value fn value of attr = 0.25
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  68
+Reference Product's utility = 2.25391458499
+Reference Product ID =  119
+===============
+[103, 173, 172, 143, 98]
+[2.241219731389993, 2.239027501397763, 2.235972116447155, 2.2341963944290604, 2.232620884679436]
+===============
+topK product IDs =  [103, 173, 172, 143, 98]
+[(103, 0.6), (172, 0.5), (173, 0.4), (98, 0.4), (143, 0.3)]
+maxCompatible Product ID = 103
+attr: OpticalZoom
+Previous value of attr = 2.8
+New value of attr = 3.0
+Previous value fn value of attr = -0.0416304804594
+New value fn value of attr = -0.0416024653313
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  63
+Reference Product's utility = 1.34027308854
+Reference Product ID =  103
+===============
+[150, 71, 13, 137, 12]
+[1.3417826049400006, 1.3285262396394906, 1.325811617358844, 1.3238952721777448, 1.3216274062780224]
+===============
+topK product IDs =  [150, 71, 13, 137, 12]
+[(13, 0.6), (12, 0.5), (150, 0.3), (71, 0.3), (137, 0.2)]
+maxCompatible Product ID = 13
+attr: DigitalZoom
+Previous value of attr = 3.0
+New value of attr = 3.2
+Previous value fn value of attr = 0.75
+New value fn value of attr = 0.8
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.44 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  58
+Reference Product's utility = 0.715746909862
+Reference Product ID =  13
+===============
+[133, 57, 87, 115, 72]
+[0.7094851947829605, 0.7090481414902318, 0.7075290289616474, 0.706608724060787, 0.705627433900726]
+===============
+topK product IDs =  [133, 57, 87, 115, 72]
+[(87, 0.5), (133, 0.4), (57, 0.4), (115, 0.4), (72, 0.3)]
+maxCompatible Product ID = 87
+attr: Price
+Previous value of attr = 399.0
+New value of attr = 385.0
+Previous value fn value of attr = 0.986132511556
+New value fn value of attr = 0.988093570528
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 3.87
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.2136
+attr: OpticalZoom
+Previous value of attr = 2.0
+New value of attr = 4.1
+Previous value fn value of attr = -0.0417425409721
+New value fn value of attr = -0.0414483821263
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 4.0
+Previous value fn value of attr = 0.8
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  53
+Reference Product's utility = 1.10215682336
+Reference Product ID =  87
+===============
+[106, 135, 64, 140, 82]
+[1.0994071160154877, 1.0951730957638934, 1.0951009642737939, 1.084590915720003, 1.0834620714939152]
+===============
+topK product IDs =  [106, 135, 64, 140, 82]
+[(106, 0.9), (140, 0.8), (135, 0.7), (64, 0.5), (82, 0.5)]
+maxCompatible Product ID = 106
+attr: Price
+Previous value of attr = 385.0
+New value of attr = 367.0
+Previous value fn value of attr = 0.988093570528
+New value fn value of attr = 0.990614932063
+attr: OpticalZoom
+Previous value of attr = 4.1
+New value of attr = 10.0
+Previous value fn value of attr = -0.0414483821263
+New value fn value of attr = -0.0406219358454
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.11 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  48
+Reference Product's utility = 1.92963830611
+Reference Product ID =  106
+===============
+[100, 65, 49, 7, 170]
+[1.919717405608905, 1.90847971778217, 1.8933247372717068, 1.8890434640878913, 1.8874654098192445]
+===============
+topK product IDs =  [100, 65, 49, 7, 170]
+[(100, 0.6), (65, 0.6), (170, 0.6), (49, 0.5), (7, 0.5)]
+maxCompatible Product ID = 100
+attr: Price
+Previous value of attr = 367.0
+New value of attr = 300.0
+Previous value fn value of attr = 0.990614932063
+New value fn value of attr = 1.0
+attr: Weight
+Previous value of attr = 430.0
+New value of attr = 400.0
+Previous value fn value of attr = 0.855555555556
+New value fn value of attr = 0.877777777778
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 3.55 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  43
+Reference Product's utility = 3.74401780896
+Reference Product ID =  100
+===============
+[15, 17, 39, 121, 20]
+[3.7023978244760425, 3.6911093345264225, 3.6772757223783485, 3.6749751804780746, 3.6743572580382065]
+===============
+topK product IDs =  [15, 17, 39, 121, 20]
+[(15, 0.6), (17, 0.6), (39, 0.6), (20, 0.6), (121, 0.5)]
+maxCompatible Product ID = 15
+attr: Weight
+Previous value of attr = 400.0
+New value of attr = 274.0
+Previous value fn value of attr = 0.877777777778
+New value fn value of attr = 0.971111111111
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.02 StorageIncluded : 0.02 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  38
+Reference Product's utility = 2.03146174429
+Reference Product ID =  15
+===============
+[18, 62, 141, 165, 21]
+[2.0003719184680095, 1.9990245274249365, 1.9883095906135886, 1.9882278150447195, 1.9830447817870327]
+===============
+topK product IDs =  [18, 62, 141, 165, 21]
+[(141, 0.5), (165, 0.5), (18, 0.4), (62, 0.4), (21, 0.4)]
+maxCompatible Product ID = 141
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 5.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.261460101868
+attr: DigitalZoom
+Previous value of attr = 2.5
+New value of attr = 3.0
+Previous value fn value of attr = 0.625
+New value fn value of attr = 0.75
+attr: Weight
+Previous value of attr = 274.0
+New value of attr = 235.0
+Previous value fn value of attr = 0.971111111111
+New value fn value of attr = 1.0
+attr: StorageIncluded
+Previous value of attr = 8.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.125
+New value fn value of attr = 0.25
+===================
+Weights:
+Weight : 0.44 Format : 0.11 StorageType : 0.11 Price : 0.88 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  33
+Reference Product's utility = 1.38011899181
+Reference Product ID =  141
+===============
+[22, 46, 209, 19, 52]
+[1.374624705769323, 1.3584408055486663, 1.3436608175306302, 1.333083194844796, 1.3208011225551983]
+===============
+topK product IDs =  [22, 46, 209, 19, 52]
+[(46, 0.7), (22, 0.6), (209, 0.6), (19, 0.6), (52, 0.5)]
+maxCompatible Product ID = 46
+attr: Price
+Previous value of attr = 599.0
+New value of attr = 571.0
+Previous value fn value of attr = 0.985732814527
+New value fn value of attr = 0.989767978095
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.0716241533362
+New value fn value of attr = -0.0706153624442
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  28
+Reference Product's utility = 2.04093150773
+Reference Product ID =  46
+===============
+[154, 63, 196, 38, 101]
+[2.0248475375185198, 2.014306529561961, 2.00487158126303, 1.9966859561385744, 1.9892894047739749]
+===============
+topK product IDs =  [154, 63, 196, 38, 101]
+[(38, 0.7), (101, 0.7), (154, 0.6), (196, 0.5), (63, 0.3)]
+maxCompatible Product ID = 38
+attr: Price
+Previous value of attr = 571.0
+New value of attr = 543.0
+Previous value fn value of attr = 0.989767978095
+New value fn value of attr = 0.993803141663
+attr: Resolution
+Previous value of attr = 3.9
+New value of attr = 5.0
+Previous value fn value of attr = 0.168081494058
+New value fn value of attr = 0.261460101868
+attr: DigitalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.75
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 3.55 OpticalZoom : 0.02 StorageIncluded : 0.02 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  23
+Reference Product's utility = 3.73654306337
+Reference Product ID =  38
+===============
+[151, 42, 11, 97, 171]
+[3.701052893985883, 3.651262951669705, 3.616729668578292, 3.610977558325414, 3.581064904107009]
+===============
+topK product IDs =  [151, 42, 11, 97, 171]
+[(171, 0.8), (151, 0.7), (11, 0.7), (42, 0.6), (97, 0.6)]
+maxCompatible Product ID = 171
+attr: Weight
+Previous value of attr = 606.0
+New value of attr = 360.0
+Previous value fn value of attr = 0.792712550607
+New value fn value of attr = 0.991902834008
+attr: StorageIncluded
+Previous value of attr = 2.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.03125
+New value fn value of attr = 0.25
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.02 StorageIncluded : 0.05 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  18
+Reference Product's utility = 2.11100147499
+Reference Product ID =  171
+===============
+[199, 50, 152, 176, 138]
+[2.0631197797078302, 2.03444692067758, 2.034215796268324, 2.028831801082798, 2.0275728921742444]
+===============
+topK product IDs =  [199, 50, 152, 176, 138]
+[(199, 0.6), (50, 0.6), (152, 0.4), (176, 0.4), (138, 0.4)]
+maxCompatible Product ID = 199
+attr: Price
+Previous value of attr = 900.0
+New value of attr = 799.0
+Previous value fn value of attr = 0.979185384846
+New value fn value of attr = 0.994309673555
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 3.55 OpticalZoom : 0.02 StorageIncluded : 0.02 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  13
+Reference Product's utility = 3.9043102254
+Reference Product ID =  199
+===============
+[195, 134, 177, 33, 77]
+[3.8061431022383725, 3.796639190148876, 3.78973145400328, 3.7358433177383312, 3.548439512329308]
+===============
+topK product IDs =  [195, 134, 177, 33, 77]
+[(134, 0.5), (195, 0.4), (177, 0.4), (33, 0.4), (77, 0.3)]
+maxCompatible Product ID = 134
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 8.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.516129032258
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 7.1
+Previous value fn value of attr = -0.132845825716
+New value fn value of attr = -0.132221206581
+attr: StorageIncluded
+Previous value of attr = 8.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 1.77 OpticalZoom : 0.05 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.0 Manufacturer : 0.11 ===================
+product List Size =  8
+Reference Product's utility = 2.01750612359
+Reference Product ID =  134
+===============
+[185, 89, 54, 94, 81]
+[1.8766017544233335, 1.8361582095278823, 1.7766660394952334, 1.3699394090444106, 1.365752174147896]
+===============
+topK product IDs =  [185, 89, 54, 94, 81]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.44161368067
+Preferences =  {'StorageIncluded': 0.0, 'Weight': 205.0, 'Manufacturer': 'Canon'}
+First Product Selected =  14
+product List Size =  208
+Reference Product's utility = 0.28416821837
+Reference Product ID =  14
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 3
+target ID = 8
+topK product IDs =  [190, 76, 1, 174, 192]
+[(190, 1.0), (1, 1.0), (174, 1.0), (192, 1.0), (76, 0.9)]
+maxCompatible Product ID = 190
+attr: Resolution
+Previous value of attr = 1.92
+New value of attr = 5.1
+Previous value fn value of attr = 0.0576
+New value fn value of attr = 0.312
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = -0.0144552025092
+New value fn value of attr = -0.0140460930042
+attr: DigitalZoom
+Previous value of attr = 4.0
+New value of attr = 8.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+attr: Weight
+Previous value of attr = 225.0
+New value of attr = 205.0
+Previous value fn value of attr = 0.915824915825
+New value fn value of attr = 0.929292929293
+attr: StorageIncluded
+Previous value of attr = 8.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.125
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.22 StorageIncluded : 0.22 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  203
+Reference Product's utility = 0.691727577892
+Reference Product ID =  190
+===============
+[194, 175, 45, 176, 24]
+[0.5960047051623456, 0.5940176008321045, 0.5745048285934082, 0.5722909730173211, 0.5640739930728262]
+===============
+topK product IDs =  [194, 175, 45, 176, 24]
+[(45, 1.0), (175, 0.9), (176, 0.9), (24, 0.9), (194, 0.8)]
+maxCompatible Product ID = 45
+attr: Resolution
+Previous value of attr = 5.1
+New value of attr = 5.9
+Previous value fn value of attr = 0.312
+New value fn value of attr = 0.376
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.22 StorageIncluded : 0.22 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.44 Manufacturer : 0.11 ===================
+product List Size =  198
+Reference Product's utility = 0.588273747878
+Reference Product ID =  45
+===============
+[50, 4, 30, 36, 23]
+[0.6058156671645466, 0.5591456568095203, 0.5583744708526441, 0.5582664616578582, 0.5582513426153591]
+===============
+topK product IDs =  [50, 4, 30, 36, 23]
+[(50, 0.9), (4, 0.6), (30, 0.6), (23, 0.6), (36, 0.5)]
+maxCompatible Product ID = 50
+attr: Resolution
+Previous value of attr = 5.9
+New value of attr = 8.0
+Previous value fn value of attr = 0.376
+New value fn value of attr = 0.544
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 5.0
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0137733533342
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.88 Manufacturer : 0.11 ===================
+product List Size =  193
+Reference Product's utility = 0.772094493582
+Reference Product ID =  50
+===============
+[127, 128, 10, 134, 27]
+[0.9105243994102578, 0.8954820641525947, 0.6910704425958756, 0.6549385420998373, 0.5880566047053766]
+===============
+topK product IDs =  [127, 128, 10, 134, 27]
+[(127, 0.6), (128, 0.6), (10, 0.6), (134, 0.5), (27, 0.4)]
+maxCompatible Product ID = 127
+attr: Resolution
+Previous value of attr = 8.0
+New value of attr = 13.7
+Previous value fn value of attr = 0.544
+New value fn value of attr = 1.0
+attr: OpticalZoom
+Previous value of attr = 5.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.0137733533342
+New value fn value of attr = -0.0130915041593
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.11 DigitalZoom : 0.02 Model : 0.11 Resolution : 1.77 Manufacturer : 0.11 ===================
+product List Size =  188
+Reference Product's utility = 3.23885881524
+Reference Product ID =  127
+===============
+[33, 115, 98, 2, 101]
+[1.7682141897302575, 1.3743682610877417, 1.32388904133411, 1.3197011990314056, 1.3142605635128197]
+===============
+topK product IDs =  [33, 115, 98, 2, 101]
+[(115, 0.3), (98, 0.3), (2, 0.3), (101, 0.3), (33, 0.2)]
+maxCompatible Product ID = 115
+attr: Price
+Previous value of attr = 4499.0
+New value of attr = 462.0
+Previous value fn value of attr = -0.51796821009
+New value fn value of attr = 0.876986869385
+attr: DigitalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.5
+attr: Weight
+Previous value of attr = 1000.0
+New value of attr = 270.0
+Previous value fn value of attr = 0.142857142857
+New value fn value of attr = 0.838095238095
+attr: StorageIncluded
+Previous value of attr = 0.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.88 Manufacturer : 0.11 ===================
+product List Size =  183
+Reference Product's utility = 1.08884141924
+Reference Product ID =  115
+===============
+[157, 133, 28, 29, 0]
+[1.043078415425143, 1.0360555383176078, 0.994020253805277, 0.9939283559542224, 0.9909698813872474]
+===============
+topK product IDs =  [157, 133, 28, 29, 0]
+[(157, 0.6), (133, 0.6), (28, 0.6), (29, 0.6), (0, 0.5)]
+maxCompatible Product ID = 157
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = -0.035590877678
+New value fn value of attr = -0.0352453351762
+attr: DigitalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 0.666666666667
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.22 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.44 Manufacturer : 0.11 ===================
+product List Size =  178
+Reference Product's utility = 0.632301576854
+Reference Product ID =  157
+===============
+[9, 40, 148, 61, 53]
+[0.6610418126015667, 0.6608246601643037, 0.657460247594392, 0.6569023518568142, 0.6544464176671205]
+===============
+topK product IDs =  [9, 40, 148, 61, 53]
+[(40, 0.7), (148, 0.6), (53, 0.6), (61, 0.5), (9, 0.4)]
+maxCompatible Product ID = 40
+attr: Price
+Previous value of attr = 564.0
+New value of attr = 455.0
+Previous value fn value of attr = 0.841741534209
+New value fn value of attr = 0.879405666897
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.88 StorageIncluded : 0.44 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  173
+Reference Product's utility = 0.694278582738
+Reference Product ID =  40
+===============
+[198, 88, 7, 52, 63]
+[0.6895777016173896, 0.6851522620105401, 0.6814174725407325, 0.6795969297647647, 0.6571364255600113]
+===============
+topK product IDs =  [198, 88, 7, 52, 63]
+[(52, 0.8), (7, 0.7), (63, 0.6), (88, 0.5), (198, 0.3)]
+maxCompatible Product ID = 52
+attr: OpticalZoom
+Previous value of attr = 4.0
+New value of attr = 4.1
+Previous value fn value of attr = -0.0352453351762
+New value fn value of attr = -0.0352107809261
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.44 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  168
+Reference Product's utility = 0.601240779657
+Reference Product ID =  52
+===============
+[42, 12, 11, 6, 5]
+[0.5818393275685456, 0.554165795627934, 0.5515776640073214, 0.5200564405674732, 0.516455932753198]
+===============
+topK product IDs =  [42, 12, 11, 6, 5]
+[(42, 0.7), (11, 0.5), (6, 0.5), (12, 0.3), (5, 0.3)]
+maxCompatible Product ID = 42
+attr: OpticalZoom
+Previous value of attr = 4.1
+New value of attr = 5.0
+Previous value fn value of attr = -0.0352107809261
+New value fn value of attr = -0.0348997926745
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 3.55 StorageIncluded : 0.44 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  163
+Reference Product's utility = 0.948873958149
+Reference Product ID =  42
+===============
+[186, 184, 91, 74, 207]
+[0.5201030238364255, 0.5200742286279482, 0.5187806838737952, 0.5182424534353401, 0.5182318837655618]
+===============
+topK product IDs =  [186, 184, 91, 74, 207]
+[(91, 0.4), (74, 0.3), (207, 0.3), (186, 0.1), (184, 0.1)]
+maxCompatible Product ID = 91
+attr: Price
+Previous value of attr = 617.0
+New value of attr = 399.0
+Previous value fn value of attr = 0.823427781617
+New value fn value of attr = 0.898756046994
+attr: DigitalZoom
+Previous value of attr = 2.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.333333333333
+New value fn value of attr = 0.666666666667
+attr: Weight
+Previous value of attr = 659.0
+New value of attr = 180.0
+Previous value fn value of attr = 0.467619047619
+New value fn value of attr = 0.92380952381
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  158
+Reference Product's utility = 0.387639957119
+Reference Product ID =  91
+===============
+[113, 205, 149, 43, 82]
+[0.39156225955021495, 0.38693637133882963, 0.38683469682889665, 0.3865772265290974, 0.3848623621682413]
+===============
+topK product IDs =  [113, 205, 149, 43, 82]
+[(82, 0.7), (205, 0.5), (149, 0.5), (43, 0.5), (113, 0.4)]
+maxCompatible Product ID = 82
+attr: OpticalZoom
+Previous value of attr = 3.4
+New value of attr = 4.1
+Previous value fn value of attr = -0.0354526606773
+New value fn value of attr = -0.0352107809261
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 3.55 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  153
+Reference Product's utility = 0.314333195364
+Reference Product ID =  82
+===============
+[159, 119, 122, 143, 141]
+[0.31085139596036526, 0.3104279594814198, 0.3077393325832214, 0.3049865220794607, 0.304722566001752]
+===============
+topK product IDs =  [159, 119, 122, 143, 141]
+[(119, 0.6), (141, 0.6), (159, 0.5), (122, 0.5), (143, 0.5)]
+maxCompatible Product ID = 119
+attr: Price
+Previous value of attr = 523.0
+New value of attr = 352.0
+Previous value fn value of attr = 0.85590877678
+New value fn value of attr = 0.914996544575
+attr: Weight
+Previous value of attr = 400.0
+New value of attr = 220.0
+Previous value fn value of attr = 0.714285714286
+New value fn value of attr = 0.885714285714
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  148
+Reference Product's utility = 0.366484688785
+Reference Product ID =  119
+===============
+[165, 151, 152, 138, 203]
+[0.35816292903554725, 0.35202847552289745, 0.3519769320997231, 0.3515572807868444, 0.33485920514255]
+===============
+topK product IDs =  [165, 151, 152, 138, 203]
+[(151, 0.9), (152, 0.9), (203, 0.9), (138, 0.8), (165, 0.7)]
+maxCompatible Product ID = 151
+attr: OpticalZoom
+Previous value of attr = 2.8
+New value of attr = 7.1
+Previous value fn value of attr = -0.0356599861783
+New value fn value of attr = -0.0341741534209
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 3.55 StorageIncluded : 0.22 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  143
+Reference Product's utility = 0.281165008044
+Reference Product ID =  151
+===============
+[95, 121, 57, 135, 112]
+[0.2476081384139312, 0.2475939916202986, 0.24603470803586736, 0.24424538031061307, 0.24381361966578846]
+===============
+topK product IDs =  [95, 121, 57, 135, 112]
+[(57, 0.6), (121, 0.5), (95, 0.4), (135, 0.4), (112, 0.3)]
+maxCompatible Product ID = 57
+attr: Price
+Previous value of attr = 508.0
+New value of attr = 451.0
+Previous value fn value of attr = 0.861091914305
+New value fn value of attr = 0.880787836904
+attr: OpticalZoom
+Previous value of attr = 7.1
+New value of attr = 10.0
+Previous value fn value of attr = -0.0341741534209
+New value fn value of attr = -0.0331720801659
+attr: DigitalZoom
+Previous value of attr = 2.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.392156862745
+New value fn value of attr = 0.78431372549
+attr: Weight
+Previous value of attr = 650.0
+New value of attr = 340.0
+Previous value fn value of attr = 0.47619047619
+New value fn value of attr = 0.771428571429
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 7.11 StorageIncluded : 0.22 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  138
+Reference Product's utility = 0.0861737244618
+Reference Product ID =  57
+===============
+[49, 46, 188, 182, 180]
+[0.08119351518538767, 0.08083597468012774, 0.07505328918790127, 0.07445471124025133, 0.07441496928188465]
+===============
+topK product IDs =  [49, 46, 188, 182, 180]
+[(46, 0.7), (49, 0.6), (182, 0.5), (180, 0.5), (188, 0.3)]
+maxCompatible Product ID = 46
+attr: Weight
+Previous value of attr = 340.0
+New value of attr = 310.0
+Previous value fn value of attr = 0.771428571429
+New value fn value of attr = 0.8
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 7.11 StorageIncluded : 0.22 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  133
+Reference Product's utility = 0.0808628360927
+Reference Product ID =  46
+===============
+[155, 161, 132, 206, 90]
+[0.07314294498034185, 0.0726234428540671, 0.07193846103672213, 0.07138707715674769, 0.07107419534273049]
+===============
+topK product IDs =  [155, 161, 132, 206, 90]
+[(90, 0.5), (155, 0.4), (161, 0.4), (206, 0.4), (132, 0.3)]
+maxCompatible Product ID = 90
+attr: Price
+Previous value of attr = 571.0
+New value of attr = 349.0
+Previous value fn value of attr = 0.839322736697
+New value fn value of attr = 0.91603317208
+attr: DigitalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.588235294118
+New value fn value of attr = 0.78431372549
+attr: Weight
+Previous value of attr = 310.0
+New value of attr = 180.0
+Previous value fn value of attr = 0.8
+New value fn value of attr = 0.92380952381
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 3.55 StorageIncluded : 0.22 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  128
+Reference Product's utility = 0.236863392558
+Reference Product ID =  90
+===============
+[158, 75, 51, 178, 47]
+[0.23650657291250987, 0.235610095800587, 0.23532815087948716, 0.23513762258339563, 0.235034211219618]
+===============
+topK product IDs =  [158, 75, 51, 178, 47]
+[(51, 0.5), (47, 0.5), (75, 0.4), (158, 0.3), (178, 0.3)]
+maxCompatible Product ID = 51
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  123
+Reference Product's utility = 0.273468547175
+Reference Product ID =  51
+===============
+[120, 60, 144, 162, 86]
+[0.2729942967742268, 0.272793071002493, 0.2722903693459262, 0.2713398345977414, 0.27064512082956504]
+===============
+topK product IDs =  [120, 60, 144, 162, 86]
+[(60, 0.7), (120, 0.5), (162, 0.5), (86, 0.5), (144, 0.4)]
+maxCompatible Product ID = 60
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  118
+Reference Product's utility = 0.257376801984
+Reference Product ID =  60
+===============
+[87, 166, 25, 116, 26]
+[0.2553580166037082, 0.2552336918027597, 0.2550390957849776, 0.25467832633322085, 0.25412671960437405]
+===============
+topK product IDs =  [87, 166, 25, 116, 26]
+[(25, 0.8), (116, 0.7), (26, 0.7), (166, 0.6), (87, 0.5)]
+maxCompatible Product ID = 25
+attr: Price
+Previous value of attr = 404.0
+New value of attr = 283.0
+Previous value fn value of attr = 0.897028334485
+New value fn value of attr = 0.938838977194
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  113
+Reference Product's utility = 0.242496354527
+Reference Product ID =  25
+===============
+[126, 179, 73, 64, 19]
+[0.2432190738923228, 0.24253594453983698, 0.2411913002934415, 0.24111367556313779, 0.24072666043304367]
+===============
+topK product IDs =  [126, 179, 73, 64, 19]
+[(64, 0.9), (73, 0.8), (19, 0.7), (126, 0.6), (179, 0.6)]
+maxCompatible Product ID = 64
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  108
+Reference Product's utility = 0.230643858077
+Reference Product ID =  64
+===============
+[147, 137, 154, 200, 170]
+[0.2285241311067927, 0.2283862363381965, 0.2282349792216664, 0.2279240849760775, 0.2254709035384099]
+===============
+topK product IDs =  [147, 137, 154, 200, 170]
+[(170, 0.7), (137, 0.6), (154, 0.6), (147, 0.5), (200, 0.4)]
+maxCompatible Product ID = 170
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  103
+Reference Product's utility = 0.220554898368
+Reference Product ID =  170
+===============
+[140, 56, 96, 106, 181]
+[0.21404666260653074, 0.2122354659152304, 0.2118833774679341, 0.21182686038978288, 0.21032169044189894]
+===============
+topK product IDs =  [140, 56, 96, 106, 181]
+[(96, 0.8), (106, 0.8), (140, 0.7), (56, 0.7), (181, 0.7)]
+maxCompatible Product ID = 96
+attr: Price
+Previous value of attr = 449.0
+New value of attr = 197.0
+Previous value fn value of attr = 0.881478921907
+New value fn value of attr = 0.968555632343
+attr: Weight
+Previous value of attr = 420.0
+New value of attr = 160.0
+Previous value fn value of attr = 0.695238095238
+New value fn value of attr = 0.942857142857
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  98
+Reference Product's utility = 0.190394101567
+Reference Product ID =  96
+===============
+[62, 110, 100, 93, 136]
+[0.1896529963632539, 0.18947374436605632, 0.1890752557645956, 0.18900500824609964, 0.1889458980820309]
+===============
+topK product IDs =  [62, 110, 100, 93, 136]
+[(62, 0.8), (110, 0.8), (100, 0.8), (93, 0.7), (136, 0.7)]
+maxCompatible Product ID = 62
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.035590877678
+New value fn value of attr = -0.0331720801659
+attr: DigitalZoom
+Previous value of attr = 1.6
+New value of attr = 3.0
+Previous value fn value of attr = 0.313725490196
+New value fn value of attr = 0.588235294118
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 3.55 StorageIncluded : 0.22 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  93
+Reference Product's utility = 0.119010591596
+Reference Product ID =  62
+===============
+[65, 97, 172, 146, 156]
+[0.11670899743795236, 0.11466940898873562, 0.11282329151041509, 0.11269941968571195, 0.11267169287088252]
+===============
+topK product IDs =  [65, 97, 172, 146, 156]
+[(97, 0.6), (65, 0.5), (172, 0.4), (146, 0.4), (156, 0.4)]
+maxCompatible Product ID = 97
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 1.77 StorageIncluded : 0.22 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  88
+Reference Product's utility = 0.174965923649
+Reference Product ID =  97
+===============
+[80, 78, 84, 59, 139]
+[0.1742996585488223, 0.1742978068569438, 0.1742768389174375, 0.1742616071662866, 0.17425527964775714]
+===============
+topK product IDs =  [80, 78, 84, 59, 139]
+[(80, 0.6), (59, 0.6), (78, 0.5), (84, 0.5), (139, 0.5)]
+maxCompatible Product ID = 80
+attr: Price
+Previous value of attr = 746.0
+New value of attr = 292.0
+Previous value fn value of attr = 0.778852798894
+New value fn value of attr = 0.935729094679
+attr: DigitalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.588235294118
+New value fn value of attr = 0.78431372549
+attr: Weight
+Previous value of attr = 597.0
+New value of attr = 162.0
+Previous value fn value of attr = 0.526666666667
+New value fn value of attr = 0.940952380952
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.22 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.02 Manufacturer : 0.11 ===================
+product List Size =  83
+Reference Product's utility = 0.21028836959
+Reference Product ID =  80
+===============
+[8, 191, 183, 83, 171]
+[0.2108379647259349, 0.21077946622479138, 0.21014968181083382, 0.20971347570165283, 0.20959624933056997]
+===============
+topK product IDs =  [8, 191, 183, 83, 171]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.417954418
+Preferences =  {'DigitalZoom': 4.1, 'Weight': 215.0, 'Format': 'Ultra Compact'}
+First Product Selected =  27
+product List Size =  208
+Reference Product's utility = 0.353228886386
+Reference Product ID =  27
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 4
+target ID = 6
+topK product IDs =  [190, 76, 1, 174, 192]
+[(76, 0.8), (174, 0.7), (192, 0.7), (1, 0.6), (190, 0.5)]
+maxCompatible Product ID = 76
+attr: Resolution
+Previous value of attr = 5.0
+New value of attr = 8.0
+Previous value fn value of attr = 0.304
+New value fn value of attr = 0.544
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 8.0
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0133642438293
+attr: StorageIncluded
+Previous value of attr = 32.0
+New value of attr = 64.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.22 StorageIncluded : 0.22 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  203
+Reference Product's utility = 0.493588375287
+Reference Product ID =  76
+===============
+[175, 176, 194, 45, 50]
+[0.4012486413964784, 0.3941123615053763, 0.3618857377100449, 0.3589364463583594, 0.35856701938942037]
+===============
+topK product IDs =  [175, 176, 194, 45, 50]
+[(175, 0.7), (176, 0.7), (50, 0.7), (45, 0.5), (194, 0.4)]
+maxCompatible Product ID = 175
+attr: Weight
+Previous value of attr = 512.0
+New value of attr = 320.0
+Previous value fn value of attr = 0.722558922559
+New value fn value of attr = 0.851851851852
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.11 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  198
+Reference Product's utility = 0.609178112585
+Reference Product ID =  175
+===============
+[24, 30, 36, 23, 28]
+[0.42224863674805335, 0.4215647774827434, 0.42145676828795753, 0.42144164924545846, 0.4195890601904208]
+===============
+topK product IDs =  [24, 30, 36, 23, 28]
+[(24, 0.8), (30, 0.7), (36, 0.7), (28, 0.7), (23, 0.6)]
+maxCompatible Product ID = 24
+attr: Price
+Previous value of attr = 900.0
+New value of attr = 550.0
+Previous value fn value of attr = 0.891722351016
+New value fn value of attr = 0.939451793263
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 5.0
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.304
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 4.0
+Previous value fn value of attr = 0.533333333333
+New value fn value of attr = 0.666666666667
+attr: Weight
+Previous value of attr = 320.0
+New value of attr = 186.0
+Previous value fn value of attr = 0.851851851852
+New value fn value of attr = 0.942087542088
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  193
+Reference Product's utility = 0.512724617163
+Reference Product ID =  24
+===============
+[148, 29, 61, 53, 0]
+[0.5071614914849971, 0.5068636732748131, 0.5055741323207783, 0.49869041466990466, 0.4982155018881839]
+===============
+topK product IDs =  [148, 29, 61, 53, 0]
+[(29, 0.9), (61, 0.7), (53, 0.7), (0, 0.6), (148, 0.5)]
+maxCompatible Product ID = 29
+attr: Price
+Previous value of attr = 550.0
+New value of attr = 336.0
+Previous value fn value of attr = 0.939451793263
+New value fn value of attr = 0.968634937952
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  188
+Reference Product's utility = 0.45974144667
+Reference Product ID =  29
+===============
+[40, 9, 198, 88, 7]
+[0.4533145041946351, 0.4532503420087098, 0.44912921382152404, 0.43257712995728964, 0.43035934385141167]
+===============
+topK product IDs =  [40, 9, 198, 88, 7]
+[(40, 0.9), (9, 0.6), (198, 0.6), (88, 0.6), (7, 0.5)]
+maxCompatible Product ID = 40
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0139097231692
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  183
+Reference Product's utility = 0.350709335273
+Reference Product ID =  40
+===============
+[52, 12, 113, 11, 63]
+[0.3336366558647268, 0.32330354022315777, 0.31520835846583983, 0.31394967662288903, 0.31370046078515246]
+===============
+topK product IDs =  [52, 12, 113, 11, 63]
+[(52, 0.8), (63, 0.7), (11, 0.5), (113, 0.4), (12, 0.3)]
+maxCompatible Product ID = 52
+attr: OpticalZoom
+Previous value of attr = 4.0
+New value of attr = 4.1
+Previous value fn value of attr = -0.0139097231692
+New value fn value of attr = -0.0138960861857
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  178
+Reference Product's utility = 0.251519632537
+Reference Product ID =  52
+===============
+[127, 128, 42, 134, 6]
+[0.23848340672969065, 0.2332876251032531, 0.23280491808907341, 0.23137746889729555, 0.22312374876339902]
+===============
+topK product IDs =  [127, 128, 42, 134, 6]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.468083725026
+Preferences =  {'Price': 238.0, 'DigitalZoom': 3.2, 'Weight': 315.0}
+First Product Selected =  37
+product List Size =  208
+Reference Product's utility = 0.296246527949
+Reference Product ID =  37
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 5
+target ID = 12
+topK product IDs =  [190, 76, 1, 174, 192]
+[(174, 0.9), (76, 0.8), (192, 0.7), (190, 0.6), (1, 0.6)]
+maxCompatible Product ID = 174
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 3.9
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.216
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 3.6
+Previous value fn value of attr = 0.4
+New value fn value of attr = 0.45
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 64.0
+Previous value fn value of attr = 0.25
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.11 StorageIncluded : 0.22 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  203
+Reference Product's utility = 0.480579490418
+Reference Product ID =  174
+===============
+[194, 175, 176, 45, 4]
+[0.47448024958179663, 0.45360296919059895, 0.44646668929949684, 0.42398918685089265, 0.411520402500841]
+===============
+topK product IDs =  [194, 175, 176, 45, 4]
+[(175, 0.9), (176, 0.9), (45, 0.6), (4, 0.6), (194, 0.5)]
+maxCompatible Product ID = 175
+attr: Weight
+Previous value of attr = 340.0
+New value of attr = 320.0
+Previous value fn value of attr = 0.838383838384
+New value fn value of attr = 0.851851851852
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.11 StorageIncluded : 0.22 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  198
+Reference Product's utility = 0.638807742215
+Reference Product ID =  175
+===============
+[24, 30, 36, 23, 27]
+[0.4592856737850904, 0.45860181451978044, 0.4584938053249946, 0.4584786862824955, 0.45814905952515234]
+===============
+topK product IDs =  [24, 30, 36, 23, 27]
+[(36, 0.9), (27, 0.9), (24, 0.8), (30, 0.8), (23, 0.8)]
+maxCompatible Product ID = 36
+attr: Price
+Previous value of attr = 900.0
+New value of attr = 364.0
+Previous value fn value of attr = 0.891722351016
+New value fn value of attr = 0.964816582572
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 5.0
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.304
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 4.0
+Previous value fn value of attr = 0.533333333333
+New value fn value of attr = 0.666666666667
+attr: Weight
+Previous value of attr = 320.0
+New value of attr = 206.0
+Previous value fn value of attr = 0.851851851852
+New value fn value of attr = 0.92861952862
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  193
+Reference Product's utility = 0.585214954317
+Reference Product ID =  36
+===============
+[28, 148, 29, 61, 0]
+[0.5814795381220521, 0.5812355655590711, 0.5809377473488873, 0.5796482063948525, 0.5741414278141099]
+===============
+topK product IDs =  [28, 148, 29, 61, 0]
+[(28, 0.7), (29, 0.7), (61, 0.6), (0, 0.6), (148, 0.5)]
+maxCompatible Product ID = 28
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  188
+Reference Product's utility = 0.453366837968
+Reference Product ID =  28
+===============
+[9, 53, 198, 40, 203]
+[0.44983175227483296, 0.4482982021680508, 0.44802941635598265, 0.4480213343030744, 0.44575212035196576]
+===============
+topK product IDs =  [9, 53, 198, 40, 203]
+[(40, 0.8), (9, 0.7), (53, 0.6), (198, 0.5), (203, 0.5)]
+maxCompatible Product ID = 40
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0139097231692
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  183
+Reference Product's utility = 0.411243578214
+Reference Product ID =  40
+===============
+[50, 88, 113, 7, 52]
+[0.404318637460168, 0.4015161141809704, 0.3999163457867133, 0.38648370980978075, 0.38239938185910505]
+===============
+topK product IDs =  [50, 88, 113, 7, 52]
+[(50, 0.8), (52, 0.8), (88, 0.6), (113, 0.5), (7, 0.5)]
+maxCompatible Product ID = 50
+attr: Resolution
+Previous value of attr = 5.0
+New value of attr = 8.0
+Previous value fn value of attr = 0.304
+New value fn value of attr = 0.544
+attr: OpticalZoom
+Previous value of attr = 4.0
+New value of attr = 5.0
+Previous value fn value of attr = -0.0139097231692
+New value fn value of attr = -0.0137733533342
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.44 Manufacturer : 0.11 ===================
+product List Size =  178
+Reference Product's utility = 0.434457089841
+Reference Product ID =  50
+===============
+[127, 128, 134, 10, 157]
+[0.4523529765586222, 0.4448318089297907, 0.35878589061105737, 0.34262599815143113, 0.33464555186947964]
+===============
+topK product IDs =  [127, 128, 134, 10, 157]
+[(127, 0.6), (128, 0.6), (134, 0.6), (10, 0.6), (157, 0.3)]
+maxCompatible Product ID = 127
+attr: Resolution
+Previous value of attr = 8.0
+New value of attr = 13.7
+Previous value fn value of attr = 0.544
+New value fn value of attr = 1.0
+attr: OpticalZoom
+Previous value of attr = 5.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.0137733533342
+New value fn value of attr = -0.0130915041593
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.88 Manufacturer : 0.11 ===================
+product List Size =  173
+Reference Product's utility = 1.60468626088
+Reference Product ID =  127
+===============
+[33, 115, 98, 101, 133]
+[0.8860754449787286, 0.6971012568046493, 0.6718616469278335, 0.6675081313528253, 0.6582945424772074]
+===============
+topK product IDs =  [33, 115, 98, 101, 133]
+[(133, 0.4), (115, 0.3), (33, 0.2), (98, 0.2), (101, 0.2)]
+maxCompatible Product ID = 133
+attr: Price
+Previous value of attr = 4499.0
+New value of attr = 507.0
+Previous value fn value of attr = -0.51796821009
+New value fn value of attr = 0.861437456807
+attr: DigitalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.588235294118
+attr: Weight
+Previous value of attr = 1000.0
+New value of attr = 235.0
+Previous value fn value of attr = 0.142857142857
+New value fn value of attr = 0.871428571429
+attr: StorageIncluded
+Previous value of attr = 0.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.44 Manufacturer : 0.11 ===================
+product List Size =  168
+Reference Product's utility = 0.545676162969
+Reference Product ID =  133
+===============
+[63, 91, 74, 207, 205]
+[0.4981037851403621, 0.4906528067638841, 0.4904977925582479, 0.49014596538800337, 0.48980282248698204]
+===============
+topK product IDs =  [63, 91, 74, 207, 205]
+[(63, 0.8), (207, 0.7), (74, 0.6), (205, 0.6), (91, 0.5)]
+maxCompatible Product ID = 63
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  163
+Reference Product's utility = 0.407809475308
+Reference Product ID =  63
+===============
+[42, 12, 11, 6, 149]
+[0.40026148302542175, 0.37757336473671826, 0.3750212271267023, 0.34432537886889925, 0.32007641069501086]
+===============
+topK product IDs =  [42, 12, 11, 6, 149]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.433186569149
+Preferences =  {'DigitalZoom': 3.2, 'Resolution': 3.2, 'Manufacturer': 'Canon'}
+First Product Selected =  5
+product List Size =  208
+Reference Product's utility = 0.319819104888
+Reference Product ID =  5
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 6
+target ID = 13
+topK product IDs =  [190, 76, 1, 174, 192]
+[(76, 0.9), (174, 0.9), (192, 0.9), (190, 0.8), (1, 0.8)]
+maxCompatible Product ID = 76
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 8.0
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.544
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 8.0
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0133642438293
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 4.0
+Previous value fn value of attr = 0.4
+New value fn value of attr = 0.5
+attr: StorageIncluded
+Previous value of attr = 32.0
+New value of attr = 64.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.22 StorageIncluded : 0.22 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  203
+Reference Product's utility = 0.55708043878
+Reference Product ID =  76
+===============
+[194, 175, 176, 45, 4]
+[0.472996848821156, 0.4520422921901292, 0.44490601229902715, 0.4224285098504229, 0.40995972550037124]
+===============
+topK product IDs =  [194, 175, 176, 45, 4]
+[(175, 0.6), (176, 0.6), (45, 0.6), (194, 0.5), (4, 0.5)]
+maxCompatible Product ID = 175
+attr: Weight
+Previous value of attr = 512.0
+New value of attr = 320.0
+Previous value fn value of attr = 0.722558922559
+New value fn value of attr = 0.851851851852
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.11 StorageIncluded : 0.22 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  198
+Reference Product's utility = 0.638807742215
+Reference Product ID =  175
+===============
+[24, 30, 36, 23, 27]
+[0.4592856737850904, 0.45860181451978044, 0.4584938053249946, 0.4584786862824955, 0.45814905952515234]
+===============
+topK product IDs =  [24, 30, 36, 23, 27]
+[(36, 0.9), (27, 0.9), (24, 0.8), (30, 0.8), (23, 0.7)]
+maxCompatible Product ID = 36
+attr: Price
+Previous value of attr = 900.0
+New value of attr = 364.0
+Previous value fn value of attr = 0.891722351016
+New value fn value of attr = 0.964816582572
+attr: Resolution
+Previous value of attr = 3.14
+New value of attr = 5.0
+Previous value fn value of attr = 0.1552
+New value fn value of attr = 0.304
+attr: DigitalZoom
+Previous value of attr = 3.2
+New value of attr = 4.0
+Previous value fn value of attr = 0.533333333333
+New value fn value of attr = 0.666666666667
+attr: Weight
+Previous value of attr = 320.0
+New value of attr = 206.0
+Previous value fn value of attr = 0.851851851852
+New value fn value of attr = 0.92861952862
+===================
+Weights:
+Weight : 0.22 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  193
+Reference Product's utility = 0.585214954317
+Reference Product ID =  36
+===============
+[28, 148, 29, 61, 0]
+[0.5814795381220521, 0.5812355655590711, 0.5809377473488873, 0.5796482063948525, 0.5741414278141099]
+===============
+topK product IDs =  [28, 148, 29, 61, 0]
+[(29, 0.8), (0, 0.8), (28, 0.7), (61, 0.7), (148, 0.5)]
+maxCompatible Product ID = 29
+attr: Price
+Previous value of attr = 364.0
+New value of attr = 336.0
+Previous value fn value of attr = 0.964816582572
+New value fn value of attr = 0.968634937952
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  188
+Reference Product's utility = 0.533815520744
+Reference Product ID =  29
+===============
+[9, 53, 40, 203, 198]
+[0.5291762679346357, 0.5287677689665415, 0.5273885782687091, 0.525244369999677, 0.5232032878955981]
+===============
+topK product IDs =  [9, 53, 40, 203, 198]
+[(40, 0.9), (9, 0.7), (53, 0.6), (198, 0.6), (203, 0.4)]
+maxCompatible Product ID = 40
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = -0.0140460930042
+New value fn value of attr = -0.0139097231692
+===================
+Weights:
+Weight : 0.05 Format : 0.11 StorageType : 0.11 Price : 0.05 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.22 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  183
+Reference Product's utility = 0.450927200197
+Reference Product ID =  40
+===============
+[50, 113, 88, 7, 52]
+[0.4416669260187388, 0.440480689620524, 0.4399383151901072, 0.42572412982887253, 0.42132728767300565]
+===============
+topK product IDs =  [50, 113, 88, 7, 52]
+[(50, 0.9), (52, 0.8), (88, 0.7), (7, 0.6), (113, 0.5)]
+maxCompatible Product ID = 50
+attr: Resolution
+Previous value of attr = 5.0
+New value of attr = 8.0
+Previous value fn value of attr = 0.304
+New value fn value of attr = 0.544
+attr: OpticalZoom
+Previous value of attr = 4.0
+New value of attr = 5.0
+Previous value fn value of attr = -0.0139097231692
+New value fn value of attr = -0.0137733533342
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.44 Manufacturer : 0.11 ===================
+product List Size =  178
+Reference Product's utility = 0.45313123412
+Reference Product ID =  50
+===============
+[127, 128, 134, 157, 115]
+[0.4607056289519128, 0.45195429176991975, 0.3773208240171213, 0.35417768969392616, 0.343477164240764]
+===============
+topK product IDs =  [127, 128, 134, 157, 115]
+[(127, 0.7), (128, 0.7), (134, 0.4), (157, 0.2), (115, 0.1)]
+maxCompatible Product ID = 127
+attr: Resolution
+Previous value of attr = 8.0
+New value of attr = 13.7
+Previous value fn value of attr = 0.544
+New value fn value of attr = 1.0
+attr: OpticalZoom
+Previous value of attr = 5.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.0137733533342
+New value fn value of attr = -0.0130915041593
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.88 StorageIncluded : 0.05 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.88 Manufacturer : 0.11 ===================
+product List Size =  173
+Reference Product's utility = 1.13318977089
+Reference Product ID =  127
+===============
+[10, 33, 98, 101, 133]
+[0.8772519963028622, 0.645361039761775, 0.5095377909950076, 0.5060127289691804, 0.5000316025066577]
+===============
+topK product IDs =  [10, 33, 98, 101, 133]
+[(133, 0.5), (10, 0.4), (98, 0.4), (33, 0.3), (101, 0.2)]
+maxCompatible Product ID = 133
+attr: Price
+Previous value of attr = 4499.0
+New value of attr = 507.0
+Previous value fn value of attr = 0.400927314878
+New value fn value of attr = 0.945315696168
+attr: DigitalZoom
+Previous value of attr = 0.0
+New value of attr = 3.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.588235294118
+attr: Weight
+Previous value of attr = 1000.0
+New value of attr = 235.0
+Previous value fn value of attr = 0.393939393939
+New value fn value of attr = 0.909090909091
+attr: StorageIncluded
+Previous value of attr = 0.0
+New value of attr = 16.0
+Previous value fn value of attr = 0.0
+New value fn value of attr = 0.5
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.44 Manufacturer : 0.11 ===================
+product List Size =  168
+Reference Product's utility = 0.563622776653
+Reference Product ID =  133
+===============
+[63, 207, 91, 74, 149]
+[0.5155032898627763, 0.5095179418911132, 0.5093768910762545, 0.5089411235879646, 0.5085323230409471]
+===============
+topK product IDs =  [63, 207, 91, 74, 149]
+[(63, 0.9), (207, 0.8), (74, 0.8), (149, 0.7), (91, 0.6)]
+maxCompatible Product ID = 63
+attr: StorageIncluded
+Previous value of attr = 16.0
+New value of attr = 32.0
+Previous value fn value of attr = 0.5
+New value fn value of attr = 1.0
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.22 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  163
+Reference Product's utility = 0.41650922767
+Reference Product ID =  63
+===============
+[42, 12, 11, 205, 43]
+[0.4088388557506003, 0.3869821991066791, 0.38293990945796236, 0.3294969345484131, 0.32949293064323437]
+===============
+topK product IDs =  [42, 12, 11, 205, 43]
+[(42, 0.7), (12, 0.5), (11, 0.5), (205, 0.5), (43, 0.5)]
+maxCompatible Product ID = 42
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 5.0
+Previous value fn value of attr = -0.035590877678
+New value fn value of attr = -0.0348997926745
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.22 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  158
+Reference Product's utility = 0.595691209838
+Reference Product ID =  42
+===============
+[186, 184, 82, 119, 159]
+[0.39093716467563255, 0.3908795742586779, 0.38951701241753967, 0.3885398775337927, 0.38742539495047745]
+===============
+topK product IDs =  [186, 184, 82, 119, 159]
+[(159, 0.6), (119, 0.5), (82, 0.4), (186, 0.3), (184, 0.3)]
+maxCompatible Product ID = 159
+attr: Price
+Previous value of attr = 617.0
+New value of attr = 322.0
+Previous value fn value of attr = 0.823427781617
+New value fn value of attr = 0.925362819627
+attr: DigitalZoom
+Previous value of attr = 2.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.392156862745
+New value fn value of attr = 0.78431372549
+attr: Weight
+Previous value of attr = 659.0
+New value of attr = 210.0
+Previous value fn value of attr = 0.467619047619
+New value fn value of attr = 0.895238095238
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.05 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  153
+Reference Product's utility = 0.32656200598
+Reference Product ID =  159
+===============
+[122, 143, 141, 165, 151]
+[0.3220559972581933, 0.3185572046673645, 0.31750138035652975, 0.3142873614217776, 0.2986924115474871]
+===============
+topK product IDs =  [122, 143, 141, 165, 151]
+[(141, 0.9), (151, 0.9), (122, 0.8), (143, 0.8), (165, 0.6)]
+maxCompatible Product ID = 141
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  148
+Reference Product's utility = 0.289348482478
+Reference Product ID =  141
+===============
+[152, 138, 182, 180, 155]
+[0.27818316089183825, 0.27796853603398597, 0.25252286791200385, 0.25251619473670595, 0.25227938842699016]
+===============
+topK product IDs =  [152, 138, 182, 180, 155]
+[(152, 0.9), (138, 0.8), (182, 0.8), (180, 0.8), (155, 0.7)]
+maxCompatible Product ID = 152
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 7.1
+Previous value fn value of attr = -0.035590877678
+New value fn value of attr = -0.0341741534209
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.22 Manufacturer : 0.11 ===================
+product List Size =  143
+Reference Product's utility = 0.253069344133
+Reference Product ID =  152
+===============
+[95, 112, 161, 206, 132]
+[0.22300278611129987, 0.2190399406475712, 0.2190334845790039, 0.2189545262890919, 0.21851327534350135]
+===============
+topK product IDs =  [95, 112, 161, 206, 132]
+[(206, 0.7), (95, 0.6), (112, 0.6), (161, 0.6), (132, 0.6)]
+maxCompatible Product ID = 206
+attr: Price
+Previous value of attr = 761.0
+New value of attr = 277.0
+Previous value fn value of attr = 0.773669661368
+New value fn value of attr = 0.940912232205
+attr: DigitalZoom
+Previous value of attr = 2.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.392156862745
+New value fn value of attr = 0.78431372549
+attr: Weight
+Previous value of attr = 608.0
+New value of attr = 220.0
+Previous value fn value of attr = 0.51619047619
+New value fn value of attr = 0.885714285714
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  138
+Reference Product's utility = 0.190886367762
+Reference Product ID =  206
+===============
+[158, 90, 47, 178, 51]
+[0.18972931151477013, 0.1888566470623685, 0.18884636305934088, 0.1887018156834528, 0.1886773397562471]
+===============
+topK product IDs =  [158, 90, 47, 178, 51]
+[(47, 0.9), (158, 0.8), (51, 0.8), (90, 0.7), (178, 0.6)]
+maxCompatible Product ID = 47
+attr: Price
+Previous value of attr = 277.0
+New value of attr = 245.0
+Previous value fn value of attr = 0.940912232205
+New value fn value of attr = 0.95196959226
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  133
+Reference Product's utility = 0.195457263006
+Reference Product ID =  47
+===============
+[120, 188, 57, 60, 75]
+[0.19507193951812848, 0.19493739522587408, 0.1946838602712334, 0.19462805241480358, 0.1943385070616112]
+===============
+topK product IDs =  [120, 188, 57, 60, 75]
+[(57, 0.9), (60, 0.8), (188, 0.6), (75, 0.5), (120, 0.2)]
+maxCompatible Product ID = 57
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.035590877678
+New value fn value of attr = -0.0331720801659
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.88 StorageIncluded : 0.11 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  128
+Reference Product's utility = 0.171145559902
+Reference Product ID =  57
+===============
+[135, 144, 86, 87, 121]
+[0.1703374791183752, 0.16902781590347704, 0.16891034516489367, 0.16872444238483056, 0.16777358717404256]
+===============
+topK product IDs =  [135, 144, 86, 87, 121]
+[(144, 0.5), (87, 0.5), (121, 0.5), (135, 0.4), (86, 0.4)]
+maxCompatible Product ID = 144
+attr: Price
+Previous value of attr = 451.0
+New value of attr = 330.0
+Previous value fn value of attr = 0.880787836904
+New value fn value of attr = 0.922598479613
+attr: Weight
+Previous value of attr = 340.0
+New value of attr = 220.0
+Previous value fn value of attr = 0.771428571429
+New value fn value of attr = 0.885714285714
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.02 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  123
+Reference Product's utility = 0.194328314472
+Reference Product ID =  144
+===============
+[162, 26, 166, 25, 116]
+[0.19326369721637018, 0.19322266879164685, 0.19316606774762807, 0.19287799014617346, 0.19226813528123754]
+===============
+topK product IDs =  [162, 26, 166, 25, 116]
+[(26, 0.9), (116, 0.9), (162, 0.8), (25, 0.8), (166, 0.7)]
+maxCompatible Product ID = 26
+attr: Price
+Previous value of attr = 330.0
+New value of attr = 202.0
+Previous value fn value of attr = 0.922598479613
+New value fn value of attr = 0.966827919834
+attr: Weight
+Previous value of attr = 220.0
+New value of attr = 180.0
+Previous value fn value of attr = 0.885714285714
+New value fn value of attr = 0.92380952381
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  118
+Reference Product's utility = 0.211401702288
+Reference Product ID =  26
+===============
+[126, 179, 73, 64, 49]
+[0.2111516006692356, 0.21056271849116281, 0.2090019456409875, 0.20738425717728906, 0.206704362244579]
+===============
+topK product IDs =  [126, 179, 73, 64, 49]
+[(49, 0.8), (126, 0.6), (179, 0.6), (64, 0.6), (73, 0.5)]
+maxCompatible Product ID = 49
+attr: OpticalZoom
+Previous value of attr = 0.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.0366275051831
+New value fn value of attr = -0.0331720801659
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  113
+Reference Product's utility = 0.177319924756
+Reference Product ID =  49
+===============
+[46, 19, 200, 137, 147]
+[0.17660484374563368, 0.17516182013367027, 0.17490701160118555, 0.17476016624206137, 0.17441685879699168]
+===============
+topK product IDs =  [46, 19, 200, 137, 147]
+[(46, 0.7), (19, 0.6), (137, 0.5), (200, 0.4), (147, 0.4)]
+maxCompatible Product ID = 46
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+product List Size =  108
+Reference Product's utility = 0.17077621363
+Reference Product ID =  46
+===============
+[154, 170, 181, 96, 191]
+[0.1672612494903803, 0.16517290274380075, 0.15758757288510394, 0.15745998343496945, 0.15722539129512625]
+===============
+topK product IDs =  [154, 170, 181, 96, 191]
+[(181, 0.5), (96, 0.5), (191, 0.5), (170, 0.4), (154, 0.3)]
+maxCompatible Product ID = 181
+attr: Price
+Previous value of attr = 571.0
+New value of attr = 177.0
+Previous value fn value of attr = 0.839322736697
+New value fn value of attr = 0.975466482377
+attr: DigitalZoom
+Previous value of attr = 3.0
+New value of attr = 4.0
+Previous value fn value of attr = 0.588235294118
+New value fn value of attr = 0.78431372549
+attr: Weight
+Previous value of attr = 310.0
+New value of attr = 180.0
+Previous value fn value of attr = 0.8
+New value fn value of attr = 0.92380952381
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  103
+Reference Product's utility = 0.162303401703
+Reference Product ID =  181
+===============
+[8, 146, 136, 163, 156]
+[0.16388575461391247, 0.16168166019875255, 0.1615885556913426, 0.16157141568629657, 0.161459845680117]
+===============
+topK product IDs =  [8, 146, 136, 163, 156]
+[(146, 0.7), (163, 0.7), (156, 0.7), (136, 0.6), (8, 0.4)]
+maxCompatible Product ID = 146
+attr: Weight
+Previous value of attr = 180.0
+New value of attr = 155.0
+Previous value fn value of attr = 0.92380952381
+New value fn value of attr = 0.947619047619
+===================
+Weights:
+Weight : 0.02 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  98
+Reference Product's utility = 0.16821773831
+Reference Product ID =  146
+===============
+[80, 92, 78, 139, 84]
+[0.16790537428701396, 0.16742737839695865, 0.16733500519643063, 0.16689558117373088, 0.16667122993434855]
+===============
+topK product IDs =  [80, 92, 78, 139, 84]
+[(78, 0.9), (80, 0.8), (84, 0.8), (139, 0.7), (92, 0.6)]
+maxCompatible Product ID = 78
+attr: Price
+Previous value of attr = 239.0
+New value of attr = 221.0
+Previous value fn value of attr = 0.95404284727
+New value fn value of attr = 0.960262612301
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  93
+Reference Product's utility = 0.161305082861
+Reference Product ID =  78
+===============
+[59, 183, 93, 83, 48]
+[0.16072588781070649, 0.16070128847546444, 0.16039675400714282, 0.15983487320379977, 0.15947765450832466]
+===============
+topK product IDs =  [59, 183, 93, 83, 48]
+[(59, 0.7), (48, 0.6), (183, 0.5), (93, 0.5), (83, 0.5)]
+maxCompatible Product ID = 59
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  88
+Reference Product's utility = 0.147997788624
+Reference Product ID =  59
+===============
+[140, 106, 55, 172, 105]
+[0.14735104634643673, 0.14645066751833705, 0.1462546433888035, 0.14606860510187697, 0.14601883187153747]
+===============
+topK product IDs =  [140, 106, 55, 172, 105]
+[(140, 0.7), (106, 0.7), (55, 0.7), (172, 0.7), (105, 0.6)]
+maxCompatible Product ID = 140
+attr: OpticalZoom
+Previous value of attr = 3.0
+New value of attr = 10.0
+Previous value fn value of attr = -0.035590877678
+New value fn value of attr = -0.0331720801659
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.44 StorageIncluded : 0.11 DigitalZoom : 0.01 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  83
+Reference Product's utility = 0.134534989224
+Reference Product ID =  140
+===============
+[171, 173, 56, 167, 107]
+[0.1324926201121658, 0.13190762434621758, 0.13161714965599594, 0.13155185631912653, 0.13148762700688407]
+===============
+topK product IDs =  [171, 173, 56, 167, 107]
+[(173, 0.7), (56, 0.7), (171, 0.6), (167, 0.6), (107, 0.5)]
+maxCompatible Product ID = 173
+attr: Price
+Previous value of attr = 499.0
+New value of attr = 384.0
+Previous value fn value of attr = 0.864201796821
+New value fn value of attr = 0.90393918452
+attr: Weight
+Previous value of attr = 411.0
+New value of attr = 230.0
+Previous value fn value of attr = 0.70380952381
+New value fn value of attr = 0.87619047619
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.0 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  78
+Reference Product's utility = 0.141368084411
+Reference Product ID =  173
+===============
+[104, 124, 114, 37, 131]
+[0.14144791247252544, 0.1413227194643554, 0.14126752864810724, 0.14125669561874102, 0.1410888383821675]
+===============
+topK product IDs =  [104, 124, 114, 37, 131]
+[(104, 0.8), (124, 0.7), (114, 0.7), (37, 0.7), (131, 0.6)]
+maxCompatible Product ID = 104
+attr: Price
+Previous value of attr = 384.0
+New value of attr = 234.0
+Previous value fn value of attr = 0.90393918452
+New value fn value of attr = 0.955770559779
+attr: Weight
+Previous value of attr = 230.0
+New value of attr = 190.0
+Previous value fn value of attr = 0.87619047619
+New value fn value of attr = 0.914285714286
+===================
+Weights:
+Weight : 0.01 Format : 0.11 StorageType : 0.11 Price : 0.01 OpticalZoom : 0.22 StorageIncluded : 0.11 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  73
+Reference Product's utility = 0.152391930716
+Reference Product ID =  104
+===============
+[189, 44, 99, 164, 187]
+[0.1524296118404397, 0.1519549385571665, 0.15182366387191187, 0.15172609461999093, 0.15168257782757172]
+===============
+topK product IDs =  [189, 44, 99, 164, 187]
+[(44, 0.9), (189, 0.7), (99, 0.7), (164, 0.7), (187, 0.7)]
+maxCompatible Product ID = 44
+attr: Price
+Previous value of attr = 234.0
+New value of attr = 151.0
+Previous value fn value of attr = 0.955770559779
+New value fn value of attr = 0.984450587422
+===================
+Weights:
+Weight : 0.0 Format : 0.11 StorageType : 0.11 Price : 0.02 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.0 Model : 0.11 Resolution : 0.05 Manufacturer : 0.11 ===================
+product List Size =  68
+Reference Product's utility = 0.162629620105
+Reference Product ID =  44
+===============
+[117, 129, 204, 110, 13]
+[0.16301008128806446, 0.16245620720061177, 0.1613970299141731, 0.16109465266672185, 0.1602997429228965]
+===============
+topK product IDs =  [117, 129, 204, 110, 13]
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.470718763737
+Preferences =  {'Model': 'Powershot G5', 'OpticalZoom': 4.0, 'Manufacturer': 'Canon'}
+First Product Selected =  11
+product List Size =  208
+Reference Product's utility = 0.310535927636
+Reference Product ID =  11
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 7
+target ID = 11
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.44161368067
+Preferences =  {'Model': 'Powershot A300', 'Resolution': 3.14, 'Format': 'Compact'}
+First Product Selected =  3
+product List Size =  208
+Reference Product's utility = 0.300079915004
+Reference Product ID =  3
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 8
+target ID = 3
+next Iteration!!
+===================
+Weights:
+Weight : 0.11 Format : 0.11 StorageType : 0.11 Price : 0.11 OpticalZoom : 0.11 StorageIncluded : 0.11 DigitalZoom : 0.11 Model : 0.11 Resolution : 0.11 Manufacturer : 0.11 ===================
+similarity =  0.481751040511
+Preferences =  {'StorageType': 'Compact Flash', 'Model': 'Powershot S50', 'Price': 457.0}
+First Product Selected =  0
+product List Size =  208
+Reference Product's utility = 0.34663522694
+Reference Product ID =  0
+===============
+[190, 76, 1, 174, 192]
+[0.41088081352947936, 0.4055362604228159, 0.3846069752481862, 0.378814895932674, 0.37331472862071224]
+===============
+source ID = 9
+target ID = 0
+Average number of interaction cycles =  12.4
+Iterations List(Unsorted): [7, 1, 41, 26, 7, 10, 29, 1, 1, 1]
+Iterations List: [1, 1, 1, 1, 7, 7, 10, 26, 29, 41]
