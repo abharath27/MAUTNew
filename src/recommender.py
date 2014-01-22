@@ -154,6 +154,8 @@ class Recommender:
                 self.weightIncOrDec[attr] = 0
                 
         for attr in self.nonNumericAttrNames:
+            '''THE WEIGHTS OF NOMINAL ATTR SET TO ZERO. NOT TO BE USED IN THE GUI..THIS IS ONLY FOR OFFLINE EVAL'''
+            self.weights[attr] = 0          
             if self.preferredValues[attr] == selectedProduct.attr[attr]:
                 self.weightIncOrDec[attr] = 1
                 #self.weights[attr] *= 2     #If the selected product has the same attribute value 
@@ -235,7 +237,7 @@ class Recommender:
             maxV, minV = max(priceList), min(priceList)
             if maxV-minV == 0:
                 return 0
-            return float(maxV - value)/(maxV - minV)
+            return 10*float(maxV - value)/(maxV - minV)
         
         if attr == 'Resolution':
             priceList = [prod.attr['Resolution'] for prod in self.prodList]
@@ -263,7 +265,7 @@ class Recommender:
             maxV, minV = max(priceList), min(priceList)
             if maxV-minV == 0:
                 return 0
-            return float(maxV - value)/(maxV - minV)
+            return 2*float(maxV - value)/(maxV - minV)
         
         if attr == 'StorageIncluded':
             priceList = [prod.attr['StorageIncluded'] for prod in self.prodList]

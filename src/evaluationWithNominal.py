@@ -33,34 +33,22 @@ class Evaluator:
             initialPreferences = {}
             for attr in initialPrefAttributes:
                 '''Main Part: Formulating the query'''
-                #values = [prod2.attr[attr] for prod2 in self.recommender.prodList]
-                #initialPreferences[attr] = random.choice(values)
-                #Dummy command
                 initialPreferences[attr] = prod.attr[attr]
                 
                 
             self.recommender.prodList = [tempProd for tempProd in self.recommender.prodList if tempProd.id != prod.id]
-            self.target = self.recommender.mostSimilar(prod) 
+            #self.target = self.recommender.mostSimilar(prod)
+            self.target = prod 
             self.recommender.selectFirstProduct(initialPreferences)
             self.recommender.critiqueStrings('firstTime')
-            flag = 1
             numLocalIterations = 1
-            print 'source ID =', prod.id
             print 'target ID =', self.target.id
-            bigList = []
-            if self.recommender.currentReference == self.target.id:
-                #Target is the first selected product
-                flag = 0
-            while flag == 1:
-                print 'topK product IDs = ', [x.id for x in self.recommender.topK]
-                bigList += self.recommender.topK
-                if self.recommender.topK == []:
-                    print sorted([x.id for x in bigList])
-                    print 'length = ', len(bigList)
-                for product in self.recommender.topK:
-                    if self.target.id == product.id:    
-                        flag = 0
-                if flag == 0:
+            
+            while 1 and self.recommender.currentReference != self.target.id:
+                #When the target is selected as the first product (justification of above condition)
+                topKIds = [x.id for x in self.recommender.topK]
+                print 'topK product IDs = ', topKIds
+                if self.target.id in topKIds:    
                     break
                 #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
                 #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
