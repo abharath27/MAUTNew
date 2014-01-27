@@ -7,23 +7,24 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
         self.target = None
-        self.startAll()
+        #self.startAll()
         
     def startAll(self):
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 4
+        numExperiments = 1
         numGlobalIterations = 0; numIterationsList = []
         for tempVar in range(numExperiments):
-            for prod in self.recommender.caseBase[:numExperiments]:
-                print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
+            for prod in self.recommender.caseBase:
+                #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 self.recommender.resetWeights()
-                print '==================='
-                print 'Weights:'
+                #print '==================='
+                #print 'Weights:'
                 for attr in self.recommender.weights:
-                    print attr,':', (int(self.recommender.weights[attr]*100)/100.0),
-                print '==================='
+                    #print attr,':', (int(self.recommender.weights[attr]*100)/100.0),
+                    pass
+                #print '==================='
                 
                 self.recommender.prodList = copy.copy(self.recommender.caseBase)
                 numberOfAttributesInQuery = 1
@@ -40,12 +41,12 @@ class Evaluator:
                 self.recommender.selectFirstProduct(initialPreferences)
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
-                print 'target ID =', self.target.id
+                #print 'target ID =', self.target.id
                 
                 while 1 and self.recommender.currentReference != self.target.id:
                     #When the target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
-                    print 'topK product IDs = ', topKIds
+                    #print 'topK product IDs = ', topKIds
                     if self.target.id in topKIds:    
                         break
                     #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
@@ -54,16 +55,30 @@ class Evaluator:
                     self.recommender.critiqueStrings(selection)
                     numLocalIterations += 1
                     
-                print 'Number of interaction cycles =', numLocalIterations
+                #print 'Number of interaction cycles =', numLocalIterations
                 numIterationsList.append(numLocalIterations)
                 numGlobalIterations += numLocalIterations
                 
                 
-            print 'Average number of interaction cycles = ', float(numGlobalIterations)/numExperiments
+            print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
             print 'Iterations List(Unsorted):', numIterationsList
             print 'Iterations List:', sorted(numIterationsList)
             
-        
+    def dominatingProducts(self, p):
+        dominators = []
+        for prod in self.recommender.caseBase:
+            if prod.id == p.id: continue
+            flag = 0
+            for attr in self.recommender.libAttributes:
+                if prod.attr[attr] > p.attr[attr]:
+                    flag = 1
+            for attr in self.recommender.mibAttributes:
+                if prod.attr[attr] < p.attr[attr]:
+                    flag = 1
+            if flag == 0:
+                dominators.append(prod)
+        return dominators
+    
     def maxCompatible(self, products):
         #Return the indices of those products whose critique strings are compatible with target
         #Keep a threshold of atleast 4 out of 6 attributes should be compatible..
@@ -80,8 +95,8 @@ class Evaluator:
         l = sorted(l, key = lambda x: -x[1])
         #If multiple products have the same overlapping 
         l2 = [(products[i].id, int(j*100)/100.0) for i, j in l]
-        print l2
-        print 'maxCompatible Product ID =', l2[0][0]
+        #print l2
+        #print 'maxCompatible Product ID =', l2[0][0]
         return l[0][0]
     
     def direction(self, prod, reference):

@@ -40,9 +40,9 @@ class Recommender:
     def printMaxMinValues(self):
         for attr in self.numericAttrNames:
             priceList = sorted([prod.attr[attr] for prod in self.prodList])
-            print attr
-            print priceList[:5], priceList[-5:]
-            print max(priceList), min(priceList), '\n'
+            #print attr
+            #print priceList[:5], priceList[-5:]
+            #print max(priceList), min(priceList), '\n'
             
     #MODIFY THE UTILITY AND THE VALUE FUNCTION FOR THE NOMINAL ATTRIBUTES.....
     def utility(self, product, weights):
@@ -67,13 +67,13 @@ class Recommender:
     
     def selectFirstProduct(self, preferences, specialArg = None):
         #Return the most similar product...
-        print 'Preferences = ', preferences
+        #print 'Preferences = ', preferences
         similarities = [(prod, self.sim(prod, preferences)) for prod in self.prodList]
         similarities = sorted(similarities, key = lambda x: -x[1])
         #print similarities[:5]
         topProduct = similarities[0][0]
         self.currentReference = topProduct.id
-        print 'First Product Selected = ', topProduct.id
+        #print 'First Product Selected = ', topProduct.id
         if specialArg != None:          #'specialArg'th product is the current reference
             self.currentReference = specialArg
         
@@ -147,7 +147,7 @@ class Recommender:
         self.selectTopK(newList)
         #TODO: Reject all products that are being fully dominated by the current product
         #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
-        print 'Product selected with unit critiques ID = ', self.topK[0].id
+        #print 'Product selected with unit critiques ID = ', self.topK[0].id
         return self.critiqueStrings(0)
     
     def updateWeightsUtil(self, topK, selection):
@@ -176,7 +176,7 @@ class Recommender:
                 continue
             if abs(directions.count('Positive') - directions.count('Negative')) == 3:
                 #if selected product attr's direction is equal to less frequent direction, update it's weight by factor of 4
-                print 'Attr', attr, 'entered here'
+                #print 'Attr', attr, 'entered here'
                 if directions.count(directions[selection]) == min(directions.count('Positive'), directions.count('Negative')):
                     weightUpdateFactors[attr] = 4
                     continue
@@ -185,14 +185,15 @@ class Recommender:
             
         
         for attr in self.numericAttrNames:
-            print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
-            print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
+            #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
+            #print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
+            pass
         return weightUpdateFactors
     
     def updateWeights(self, topK, selection):
         selectedProduct = copy.copy(self.topK[selection])
         weightUpdateFactors = self.updateWeightsUtil(topK, selection)
-        print weightUpdateFactors 
+        #print weightUpdateFactors 
         for attr in self.numericAttrNames:
             if self.notCrossingThreshold(attr, self.preferredValues[attr], selectedProduct.attr[attr]) and self.neutralDirectionEnabled:
                 self.weightIncOrDec[attr] = 0
@@ -250,11 +251,12 @@ class Recommender:
             self.updateWeights(self.topK, selection)
             self.currentReference = selectedProduct.id  #Changing the reference product...    
             
-            print '==================='
-            print 'Weights:'
+            #print '==================='
+            #print 'Weights:'
             for attr in self.weights:
-                print attr,':', (int(self.weights[attr]*1000)/1000.0),
-            print '==================='
+                #print attr,':', (int(self.weights[attr]*1000)/1000.0),
+                pass
+            #print '==================='
             
             for attr in self.numericAttrNames:
                 self.preferredValues[attr] = selectedProduct.attr[attr]  #Changing the preferred values for all attr...
@@ -266,17 +268,17 @@ class Recommender:
 #                    print "HELLO HOW ARE YOU"
 #                    self.prodList.remove(self.prodList[i])
 #                    break
-        print 'Product List Size = ', len(self.prodList)
+        #print 'Product List Size = ', len(self.prodList)
         
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []
         self.selectTopK()
-        print "Reference Product's utility =", self.utility(self.caseBase[self.currentReference], self.weights)
-        print "Reference Product ID = ", self.caseBase[self.currentReference].id
-        print '==============='
-        print [x.id for x in self.topK]
-        print '==============='
-        
+#        print "Reference Product's utility =", self.utility(self.caseBase[self.currentReference], self.weights)
+#        print "Reference Product ID = ", self.caseBase[self.currentReference].id
+#        print '==============='
+#        print [x.id for x in self.topK]
+#        print '==============='
+#        
         #TODO: Reject all products that are being fully dominated by the current product
         #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
         #Clear the backup dictionary here...
@@ -480,7 +482,7 @@ class Recommender:
         similarities = sorted(similarities, key = lambda x: -x[1])
         #print similarities[:5]
         topProduct = similarities[0][0]
-        print 'similarity = ', similarities[0][1]
+        #print 'similarity = ', similarities[0][1]
         return topProduct
     
 Recommender()
