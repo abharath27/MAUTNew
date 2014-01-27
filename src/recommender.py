@@ -268,7 +268,7 @@ class Recommender:
 #                    print "HELLO HOW ARE YOU"
 #                    self.prodList.remove(self.prodList[i])
 #                    break
-        #print 'Product List Size = ', len(self.prodList)
+        print 'Product List Size = ', len(self.prodList)
         
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []

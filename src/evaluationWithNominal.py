@@ -3,17 +3,17 @@ import random, itertools
 class Evaluator:
     def __init__(self):
         self.recommender = Recommender()
-        self.recommender.selectiveWtUpdateEnabled = False
+        self.recommender.selectiveWtUpdateEnabled = True
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
-        self.target = None
-        #self.startAll()
+        self.targets = None
+        self.startAll()
         
     def startAll(self):
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 1
+        numExperiments = 10
         numGlobalIterations = 0; numIterationsList = []
         for tempVar in range(numExperiments):
             for prod in self.recommender.caseBase:
@@ -37,17 +37,18 @@ class Evaluator:
                     initialPreferences[attr] = prod.attr[attr]
             
                 #self.target = self.recommender.mostSimilar(prod)
-                self.target = prod 
+                self.targets = [prod] + self.dominatingProducts(prod) 
                 self.recommender.selectFirstProduct(initialPreferences)
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
-                #print 'target ID =', self.target.id
-                
-                while 1 and self.recommender.currentReference != self.target.id:
+                targets = [x.id for x in self.targets]
+                print 'Targets:', targets
+                print 'First product selected:', self.recommender.currentReference
+                while 1 and self.recommender.currentReference not in targets:
                     #When the target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
-                    #print 'topK product IDs = ', topKIds
-                    if self.target.id in topKIds:    
+                    print 'topK product IDs = ', topKIds
+                    if len(set(targets).intersection(set(topKIds))) != 0:
                         break
                     #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
                     #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
@@ -84,13 +85,18 @@ class Evaluator:
         #Keep a threshold of atleast 4 out of 6 attributes should be compatible..
         l = [];
         reference = self.recommender.caseBase[self.recommender.currentReference]
-        for i, prod in enumerate(products):    
-            attrDirections = self.direction(prod, reference)
-            targetAttrDirections = self.direction(prod, self.target)    
-            #print 'Compound critique product ID = ', prod.id
-            #print 'attrDirections:', attrDirections
-            #print 'targetAttrDirections: ', targetAttrDirections
-            l.append((i, self.overlappingDegree(attrDirections, targetAttrDirections)))
+        for i, prod in enumerate(products):
+            maxDegree = -1
+            for target in self.targets:    
+                attrDirections = self.direction(prod, reference)
+                targetAttrDirections = self.direction(prod, target)
+                overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
+                #print 'Compound critique product ID = ', prod.id
+                #print 'attrDirections:', attrDirections
+                #print 'targetAttrDirections: ', targetAttrDirections
+                if overlapDegree > maxDegree:
+                    maxDegree = overlapDegree
+            l.append((i, maxDegree))
         
         l = sorted(l, key = lambda x: -x[1])
         #If multiple products have the same overlapping 
