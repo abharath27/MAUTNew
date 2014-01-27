@@ -6,7 +6,9 @@ from recommender import *
 class App:
     def __init__ (self, master):
         self.master = master
-        self.recommender = Recommender()   
+        self.recommender = Recommender()
+        self.recommender.selectiveWtUpdateEnabled = True
+        self.recommender.diversityEnabled = True   
         self.createUnitCritiqueFrame()
         
     def chooseFirstProduct(self):
@@ -77,7 +79,6 @@ class App:
             tempStr += attr + '\n'
         
         self.weightStatusBox.insert(END, tempStr)
-        
         
     def createUtilitiesFrame(self):
         scrollbar = Scrollbar(self.master)
@@ -195,7 +196,7 @@ class App:
         
 root = Tk()
 app = App(root)
-root.wm_title("MAUT Recommender")
+root.wm_title("MAUT with Normalized Weights, Diverse Critiques, Selective Weight updation")
 RWidth=root.winfo_screenwidth()
 RHeight=root.winfo_screenheight()
 root.geometry(("%dx%d")%(RWidth,RHeight))

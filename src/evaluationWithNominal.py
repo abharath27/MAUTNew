@@ -3,77 +3,75 @@ import random, itertools
 class Evaluator:
     def __init__(self):
         self.recommender = Recommender()
+        self.recommender.selectiveWtUpdateEnabled = False
+        self.recommender.diversityEnabled = False
+        self.recommender.neutralDirectionEnabled = False
         self.target = None
-        self.threshold = 0.6            #Min fraction of attributes whose values need to be compatible
-                                        #with the target product. 4 out of 6 attributes must overlap here
         self.startAll()
         
     def startAll(self):
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 1
+        numExperiments = 4
         numGlobalIterations = 0; numIterationsList = []
-        
-        for prod in self.recommender.caseBase[:numExperiments]:
-            print '-------------------------------------------\nNew Iteration:\n\n'
+        for tempVar in range(numExperiments):
+            for prod in self.recommender.caseBase[:numExperiments]:
+                print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
+                self.recommender.resetWeights()
+                print '==================='
+                print 'Weights:'
+                for attr in self.recommender.weights:
+                    print attr,':', (int(self.recommender.weights[attr]*100)/100.0),
+                print '==================='
+                
+                self.recommender.prodList = copy.copy(self.recommender.caseBase)
+                numberOfAttributesInQuery = 1
+                initialPrefAttributes = random.choice(list(itertools.combinations\
+                                       (self.recommender.attrNames, numberOfAttributesInQuery)))  
+                #returns ('Price', 'Resolution) in case number of attr = 2
+                initialPreferences = {}
+                for attr in initialPrefAttributes:
+                    '''Main Part: Formulating the query'''
+                    initialPreferences[attr] = prod.attr[attr]
             
-            self.recommender.setWeights()
-            print '==================='
-            print 'Weights:'
-            for attr in self.recommender.weights:
-                print attr,':', (int(self.recommender.weights[attr]*100)/100.0),
-            print '==================='
-            
-            self.recommender.prodList = copy.copy(self.recommender.caseBase)
-            numberOfAttributesInQuery = 3
-            initialPrefAttributes = random.choice(list(itertools.combinations\
-                                   (self.recommender.attrNames, numberOfAttributesInQuery)))  
-            #returns ('Price', 'Resolution) in case number of attr = 2
-            initialPreferences = {}
-            for attr in initialPrefAttributes:
-                '''Main Part: Formulating the query'''
-                initialPreferences[attr] = prod.attr[attr]
+                #self.target = self.recommender.mostSimilar(prod)
+                self.target = prod 
+                self.recommender.selectFirstProduct(initialPreferences)
+                self.recommender.critiqueStrings('firstTime')
+                numLocalIterations = 1
+                print 'target ID =', self.target.id
+                
+                while 1 and self.recommender.currentReference != self.target.id:
+                    #When the target is selected as the first product (justification of above condition)
+                    topKIds = [x.id for x in self.recommender.topK]
+                    print 'topK product IDs = ', topKIds
+                    if self.target.id in topKIds:    
+                        break
+                    #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
+                    #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
+                    selection = self.maxCompatible(self.recommender.topK)
+                    self.recommender.critiqueStrings(selection)
+                    numLocalIterations += 1
+                    
+                print 'Number of interaction cycles =', numLocalIterations
+                numIterationsList.append(numLocalIterations)
+                numGlobalIterations += numLocalIterations
                 
                 
-            self.recommender.prodList = [tempProd for tempProd in self.recommender.prodList if tempProd.id != prod.id]
-            #self.target = self.recommender.mostSimilar(prod)
-            self.target = prod 
-            self.recommender.selectFirstProduct(initialPreferences)
-            self.recommender.critiqueStrings('firstTime')
-            numLocalIterations = 1
-            print 'target ID =', self.target.id
+            print 'Average number of interaction cycles = ', float(numGlobalIterations)/numExperiments
+            print 'Iterations List(Unsorted):', numIterationsList
+            print 'Iterations List:', sorted(numIterationsList)
             
-            while 1 and self.recommender.currentReference != self.target.id:
-                #When the target is selected as the first product (justification of above condition)
-                topKIds = [x.id for x in self.recommender.topK]
-                print 'topK product IDs = ', topKIds
-                if self.target.id in topKIds:    
-                    break
-                #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
-                #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
-                selection = self.maxCompatible(self.recommender.topK)
-                self.recommender.critiqueStrings(selection)
-                numLocalIterations += 1
-            print 'Number of interaction cycles =', numLocalIterations
-            numIterationsList.append(numLocalIterations)
-            numGlobalIterations += numLocalIterations
-            
-            
-        print 'Average number of interaction cycles = ', float(numGlobalIterations)/numExperiments
-        print 'Iterations List(Unsorted):', numIterationsList
-        print 'Iterations List:', sorted(numIterationsList)
-        
         
     def maxCompatible(self, products):
         #Return the indices of those products whose critique strings are compatible with target
         #Keep a threshold of atleast 4 out of 6 attributes should be compatible..
-        ret = []; l = [];
-        for i, prod in enumerate(products):
-            reference = [temp for temp in self.recommender.caseBase if temp.id == self.recommender.currentReference][0]
+        l = [];
+        reference = self.recommender.caseBase[self.recommender.currentReference]
+        for i, prod in enumerate(products):    
             attrDirections = self.direction(prod, reference)
-            targetAttrDirections = self.direction(prod, self.target)
-            
+            targetAttrDirections = self.direction(prod, self.target)    
             #print 'Compound critique product ID = ', prod.id
             #print 'attrDirections:', attrDirections
             #print 'targetAttrDirections: ', targetAttrDirections

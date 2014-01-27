@@ -1,4 +1,4 @@
-import first, copy, util
+import first, copy, util, inspect
 
 
 class Recommender:
@@ -10,20 +10,28 @@ class Recommender:
         self.nonNumericAttrNames = ['Manufacturer', 'Format', 'StorageType']
         self.libAttributes = ['Price', 'Weight']
         self.mibAttributes = ['Resolution', 'OpticalZoom', 'DigitalZoom', 'StorageIncluded']
-        self.setWeights()
+        self.resetWeights()
         self.preferredValues = dict([(attr, None) for attr in self.attrNames])
         self.prodList = first.readList()
         self.caseBase = copy.copy(self.prodList)        #caseBase is unchanging. Items are added
         self.K = 5                                      #and deleted from prodList
         self.currentReference = -1
         self.topK = [None]*self.K
+        
+        #book-keeping attributes
+        self.attrDirection = {}
         self.unitAttrPreferences = {}
+        self.critiqueStringDirections = {}
         self.utilities = None
         self.weightIncOrDec = dict([(attr, None) for attr in self.attrNames])   #To let the interface know
+        self.preComputedAttrSigns = {}
                                                         #whether an attr weight is decreased or increased
+        self.diversityEnabled = False                   #Diversity is enabled 'True' in the evaluator
+        self.selectiveWtUpdateEnabled = True            #Enable selective weight updation....
+        self.neutralDirectionEnabled = True
         
         
-    def setWeights(self):
+    def resetWeights(self):
         self.weights = dict([(attr, 1.0/(len(self.attrNames)-1)) for attr in self.attrNames])
         #self.weights['Price'] = 10
         #self.weights['Resolution'] = 5
@@ -72,11 +80,62 @@ class Recommender:
         for attr in self.attrNames:
             self.preferredValues[attr] = self.caseBase[self.currentReference].attr[attr]
         
+        #NOT REMOVING THE FIRST PRODUCT, SINCE IT IS THE TARGET TO BE REACHED
+        #ACCORDING TO THE NEW SCHEME...
         for i in range(len(self.prodList)):
             if self.prodList[i].id == self.currentReference:
-                self.prodList.remove(self.prodList[i])
+                #self.prodList.remove(self.prodList[i])
                 break
-
+    
+    def preComputeAttributeSigns(self):
+        reference = self.caseBase[self.currentReference]
+        for prod in self.caseBase:
+            self.preComputedAttrSigns[prod.id] = self.attributeSignsUtil(prod, reference)
+    
+    def critiqueSim(self, prod1, prod2):
+        #self.precomputedAttrSigns is already set before calling this function
+        p1, n1, ne1 = self.preComputedAttrSigns[prod1.id]
+        p2, n2, ne2 = self.preComputedAttrSigns[prod2.id]
+        overlap = len(list(set(p1).intersection(set(p2))) + list(set(n1).intersection(set(n2))) + list(set(ne1).intersection(set(ne2))))
+        overlap /= float(len(p1 + n1 + ne1))
+        
+        return overlap
+    
+    def quality(self, c, P):
+        alpha = 0.5
+        retVal = alpha*self.utility(c, self.weights)
+        #diversity(c, P) = \sum(1-sim(c, Ci))/n
+        diversity = 0
+        for prod in P:
+            diversity += (1-self.critiqueSim(c, prod))
+        if len(P) != 0:
+            diversity /= len(P)     #Normalizing it to one
+        retVal += (1-alpha) * diversity
+        return retVal 
+        
+    def selectTopK(self, unitCritiqueArg = None):
+        #THIS FUNCTION SETS THE VARIABLE SELF.TOPK
+        newList = copy.copy(self.prodList)
+        if unitCritiqueArg != None: newList = unitCritiqueArg
+        #when unitCritique is selected, you need to some filtering; hence the list is changed
+        self.utilities = [(product, self.utility(product, self.weights)) for product in newList]
+        self.utilities = sorted(self.utilities, key = lambda x: -x[1])    
+            
+        if self.diversityEnabled == False:
+            self.topK = [x[0] for x in self.utilities[:self.K]]              #Getting only the products and ignoring utilities
+        if self.diversityEnabled == True:
+            #IMPLEMENT THE Smyth and McClave(2001) Algorithm
+            #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
+            tempList = []   #This will hold the topK products found so far
+            #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
+            self.preComputeAttributeSigns()
+            while len(tempList) < self.K:
+                qualities = [(c, self.quality(c, tempList)) for c in newList]
+                top = sorted(qualities, key = lambda x: -x[1])[0][0]
+                tempList.append(top)
+                newList = [p for p in newList if p.id != top.id]    #Removing the 'top' product from newList
+            
+            self.topK = tempList
     
     def unitCritiqueSelectedStrings(self, selection, value, type):
         attr = self.numericAttrNames[selection]
@@ -85,11 +144,7 @@ class Recommender:
         else:
             newList = [prod for prod in self.prodList if prod.attr[attr] > value]
         
-        weights = self.weights
-        self.utilities = [(product, self.utility(product, weights)) for product in newList]
-        self.utilities = sorted(self.utilities, key = lambda x: -x[1])
-        self.topK = [x[0] for x in self.utilities[:self.K]]              #Getting only the products and ignoring utilities
-        
+        self.selectTopK(newList)
         #TODO: Reject all products that are being fully dominated by the current product
         #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
         print 'Product selected with unit critiques ID = ', self.topK[0].id
@@ -100,15 +155,21 @@ class Recommender:
         '''Cases like: "Higher Price present in all critique strings"'''
         '''and "Higher Resolution is chosen over lesser resolution(present in 4 critique strings) etc. are handled'''
         
-        #The dictionary attrDirection must have been filled in the previous iteration itself.
-        #TODO: include nominal attributes also for adjusting priorities during weight updation.
+        #The dictionary critiqueStringDirections must have been filled in the previous iteration itself.
         weightUpdateFactors = {}
+        if self.selectiveWtUpdateEnabled == False:
+            for attr in self.numericAttrNames:
+                weightUpdateFactors[attr] = 2
+            return weightUpdateFactors
+        
+        #TODO: include nominal attributes also for adjusting priorities during weight updation.
         for attr in self.numericAttrNames:
             weightUpdateFactors[attr] = None
-            if util.allSame(self.attrDirection[attr]):
+            directions = self.critiqueStringDirections[attr]
+            if util.allSame(directions):
                 weightUpdateFactors[attr] = 1
                 continue
-            directions = self.attrDirection[attr]
+            
             if directions[selection] == 'Neutral':
                 #TODO: Check this if anything better can be done than just setting the updateFa
                 weightUpdateFactors[attr] = 1
@@ -124,33 +185,33 @@ class Recommender:
             
         
         for attr in self.numericAttrNames:
-            print 'Attr:', attr, 'Direction:', self.attrDirection[attr]
+            print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
             print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
         return weightUpdateFactors
     
     def updateWeights(self, topK, selection):
         selectedProduct = copy.copy(self.topK[selection])
-        '''MODIFY THE BELOW STATEMENT. updateBanned variable no longer exists'''
         weightUpdateFactors = self.updateWeightsUtil(topK, selection)
+        print weightUpdateFactors 
         for attr in self.numericAttrNames:
-            if self.notCrossingThreshold(attr, self.preferredValues[attr], selectedProduct.attr[attr]):
+            if self.notCrossingThreshold(attr, self.preferredValues[attr], selectedProduct.attr[attr]) and self.neutralDirectionEnabled:
                 self.weightIncOrDec[attr] = 0
                 continue
                                 
             if self.value(attr, self.preferredValues[attr]) < self.value(attr, selectedProduct.attr[attr]):
                 self.weights[attr] *= weightUpdateFactors[attr]
                 if weightUpdateFactors[attr] > 1:
-                    print 'Increasing weight of the attribute:', attr
+                    #print 'Increasing weight of the attribute:', attr
                     self.weightIncOrDec[attr] = 1
                 
             else:
                 self.weights[attr] /= weightUpdateFactors[attr]
                 if weightUpdateFactors[attr] > 1:
-                    print 'Decreasing weight of the attribute:', attr
+                    #print 'Decreasing weight of the attribute:', attr
                     self.weightIncOrDec[attr] = -1
             
             if weightUpdateFactors[attr] == 1:
-                print 'Weight Remains same for attribute:', attr
+                #print 'Weight Remains same for attribute:', attr
                 self.weightIncOrDec[attr] = 0
                 
         for attr in self.nonNumericAttrNames:
@@ -181,9 +242,10 @@ class Recommender:
         if selection != 'firstTime':
             selectedProduct = copy.copy(self.topK[selection])
             for attr in self.numericAttrNames:
-                print 'attr:', attr
-                print 'Previous value of attr =', self.preferredValues[attr]
-                print 'New value of attr =', selectedProduct.attr[attr]
+                #print 'attr:', attr
+                #print 'Previous value of attr =', self.preferredValues[attr]
+                #print 'New value of attr =', selectedProduct.attr[attr]
+                pass
                 
             self.updateWeights(self.topK, selection)
             self.currentReference = selectedProduct.id  #Changing the reference product...    
@@ -198,34 +260,28 @@ class Recommender:
                 self.preferredValues[attr] = selectedProduct.attr[attr]  #Changing the preferred values for all attr...
             #Removing previous topK items
             for prod in self.topK:
-                self.prodList.remove(prod)
-            for i in range(len(self.prodList)):
-                if self.prodList[i].id == self.currentReference:
-                    self.prodList.remove(self.prodList[i])
-                    break
-            
+                self.prodList = [c for c in self.prodList if c.id != prod.id]
+#            for i in range(len(self.prodList)):
+#                if self.prodList[i].id == self.currentReference:
+#                    print "HELLO HOW ARE YOU"
+#                    self.prodList.remove(self.prodList[i])
+#                    break
         print 'Product List Size = ', len(self.prodList)
         
-        
-        weights = self.weights
-        self.utilities = [(product, self.utility(product, weights)) for product in self.prodList]
-        self.utilities = sorted(self.utilities, key = lambda x: -x[1])
-        self.topK = [x[0] for x in self.utilities[:self.K]]              #Getting only the products and ignoring utilities
-        print "Reference Product's utility =", self.utility(self.caseBase[self.currentReference], weights)
+        for attr in self.numericAttrNames:
+            self.critiqueStringDirections[attr] = []
+        self.selectTopK()
+        print "Reference Product's utility =", self.utility(self.caseBase[self.currentReference], self.weights)
         print "Reference Product ID = ", self.caseBase[self.currentReference].id
         print '==============='
-        print [x[0].id for x in self.utilities[:self.K]]
-        print [x[1] for x in self.utilities[:self.K]]
+        print [x.id for x in self.topK]
         print '==============='
         
         #TODO: Reject all products that are being fully dominated by the current product
         #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
         #Clear the backup dictionary here...
-        self.attrDirection = {}
-        for attr in self.numericAttrNames:
-            self.attrDirection[attr] = []
-        critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
         
+        critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
         #Remove products from case base
         return critiqueStringList
         
@@ -237,7 +293,7 @@ class Recommender:
             maxV, minV = max(priceList), min(priceList)
             if maxV-minV == 0:
                 return 0
-            return 10*float(maxV - value)/(maxV - minV)
+            return float(maxV - value)/(maxV - minV)
         
         if attr == 'Resolution':
             priceList = [prod.attr['Resolution'] for prod in self.prodList]
@@ -265,7 +321,7 @@ class Recommender:
             maxV, minV = max(priceList), min(priceList)
             if maxV-minV == 0:
                 return 0
-            return 2*float(maxV - value)/(maxV - minV)
+            return float(maxV - value)/(maxV - minV)
         
         if attr == 'StorageIncluded':
             priceList = [prod.attr['StorageIncluded'] for prod in self.prodList]
@@ -301,13 +357,17 @@ class Recommender:
             return abs(v1-v2) < 2
         return False 
                 
-    def critiqueStr(self, current, reference):
+    def attributeSignsUtil(self, current, reference):
+        #This function is called by two functions "CritiqueSim" and "CritiqueStr"....
+        #For "CritiqueStr" function, we need to progressively store the attribute directions of all the topK critique strings
+        #Classifies all the numeric attributes into positive, negative and neutral attributes
+        #if self.neutralDirectionEnabled == False, then all numeric attributes are classified either as positive or negative attributes
         positiveAttributes = []
         negativeAttributes = []
         neutralAttributes = []
         for attr in self.libAttributes:
             #print 'current = ', current
-            if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]):
+            if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]) and self.neutralDirectionEnabled:
                 neutralAttributes.append(attr)
                 continue 
             if current.attr[attr] < reference.attr[attr]:
@@ -316,7 +376,7 @@ class Recommender:
                 negativeAttributes.append(attr)
                 
         for attr in self.mibAttributes:
-            if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]):
+            if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]) and self.neutralDirectionEnabled:
                 neutralAttributes.append(attr)
                 continue
             if current.attr[attr] > reference.attr[attr]:
@@ -324,17 +384,38 @@ class Recommender:
             else:
                 negativeAttributes.append(attr)
         
-        positiveString = ''
-        negativeString = 'But '
-        
         #For each attribute, self.attrDirection notes down the direction in which attribute values are changing
+        for attr in self.numericAttrNames:
+            self.attrDirection[attr] = []
         for attr in self.numericAttrNames:
             if attr in positiveAttributes:
                 self.attrDirection[attr].append('Positive')
             elif attr in negativeAttributes:
                 self.attrDirection[attr].append('Negative')
             else:
-                self.attrDirection[attr].append('Neutral') 
+                self.attrDirection[attr].append('Neutral')
+        
+        #if the caller is critiqueStr, you need to store the directions of all topK critiqueStrings.
+        #critiqueStringDirections will be reset in every iteration; in critiqueStrings() function..
+        if inspect.stack()[1][3] == 'critiqueStr':
+            for attr in self.numericAttrNames:
+                if attr in positiveAttributes:
+                    self.critiqueStringDirections[attr].append('Positive')
+                elif attr in negativeAttributes:
+                    self.critiqueStringDirections[attr].append('Negative')
+                else:
+                    self.critiqueStringDirections[attr].append('Neutral')
+            
+        return positiveAttributes, negativeAttributes, neutralAttributes
+    
+    def critiqueStr(self, current, reference):
+        p, n, neu = self.attributeSignsUtil(current, reference)
+        positiveAttributes = p
+        negativeAttributes = n
+        neutralAttributes = neu
+         
+        positiveString = ''
+        negativeString = 'But '
         
         #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
         if 'Price' in positiveAttributes:
@@ -367,7 +448,15 @@ class Recommender:
         if 'Weight' in negativeAttributes:
             negativeString += 'Higher Weight '
         
-        str2 =  positiveString + '\n' + negativeString
+        str2 = ''
+        if len(positiveAttributes) != 0:
+            str2 += positiveString
+        if len(positiveAttributes) == 0:
+            negativeString = negativeString[4:]     #Removing the 'but' part...
+        str2 += '\n'
+        if len(negativeAttributes) != 0:
+            str2 += negativeString
+        
         str2 = str2 + '\n Product ID:' + str(current.id)
         product = current
         string = product.attr['Manufacturer'] + ' '
