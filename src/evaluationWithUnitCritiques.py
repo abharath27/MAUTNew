@@ -14,10 +14,11 @@ class Evaluator:
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 1
-        numGlobalIterations = 0; numIterationsList = []
+        numExperiments = 10
+        numGlobalIterations = 0; numIterationsList = []; averages = []
         for tempVar in range(numExperiments):
-            for prod in self.recommender.caseBase[:100]:
+            numIterationsList = []
+            for prod in self.recommender.caseBase:
                 #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 self.recommender.resetWeights()
                 #print '==================='
@@ -33,7 +34,7 @@ class Evaluator:
                                        (self.recommender.attrNames, numberOfAttributesInQuery)))  
                 #returns ('Price', 'Resolution) in case number of attr = 2
                 initialPreferences = {}
-                print initialPrefAttributes
+                #print initialPrefAttributes
                 for attr in initialPrefAttributes:
                     '''Main Part: Formulating the query'''
                     initialPreferences[attr] = prod.attr[attr]
@@ -44,8 +45,8 @@ class Evaluator:
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
                 targets = [x.id for x in self.targets]
-                print 'Targets:', targets
-                print 'First product selected:', self.recommender.currentReference
+                #print 'Targets:', targets
+                #print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
                     #When the target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
@@ -59,34 +60,47 @@ class Evaluator:
                         self.recommender.critiqueStrings(selection)
                     else:
                         unitAttributeNumber = random.randint(0,5)
-                        print 'max overlap degree =', degree
-                        print 'Entered here'
+                        #print 'max overlap degree =', degree
+                        #print 'Entered here'
                         
                         attr = self.recommender.numericAttrNames[unitAttributeNumber]
                         value = self.recommender.caseBase[self.recommender.currentReference].attr[attr]
                         #the value of 'type' argument is decided by the direction of the target product..
-                        target = random.choice(self.targets)
+                        while 1:
+                            #to ensure that applying the unit critique "low" or "high" will be meaningful
+                            #Sometimes, we may just encounter the case when both the target's and current prod's storage values are same as 32MB.
+                            target = random.choice(self.targets)
+                            if value != target.attr[attr]:
+                                break
                         if value > target.attr[attr]:
                             type = 'low'
                         else:
                             type = 'high'
-                        print 'attr =', attr
-                        print 'current Reference =', self.recommender.currentReference
-                        print 'value of current ref attr =', value
-                        print 'target =', target.id, "target's value = ", target.attr[attr]
-                        print 'type =', type
-                        self.recommender.unitCritiqueSelectedStrings(unitAttributeNumber, value, type)
+                        try:
+                            self.recommender.unitCritiqueSelectedStrings(unitAttributeNumber, value, type)
+                        except:
+                            print 'attr =', attr
+                            print 'current Reference =', self.recommender.currentReference
+                            print 'value of current ref attr =', value
+                            print 'target =', target.id, "target's value = ", target.attr[attr]
+                            print 'type =', type
+                            print 'True or false:', target.id in [x.id for x in self.recommender.prodList]
+                            print '!!!!!!!!!!!!!!!!!!EXITING!!!!!!!!!!!'
+                            exit()
                     numLocalIterations += 1
                     
                 #print 'Number of interaction cycles =', numLocalIterations
                 numIterationsList.append(numLocalIterations)
-                numGlobalIterations += numLocalIterations
-                
-                
-            print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
+            numGlobalIterations += sum(numIterationsList)
             print 'Iterations List(Unsorted):', numIterationsList
             print 'Iterations List:', sorted(numIterationsList)
-            
+            print 'Average iteration for iteration number', tempVar, '=', sum(numIterationsList)/float(len(numIterationsList))
+            averages.append(sum(numIterationsList)/float(len(numIterationsList)))
+                
+                
+        print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
+        print 'Final average using the previous 10 averages =', sum(averages)/len(averages)
+        
     def dominatingProducts(self, p):
         dominators = []
         for prod in self.recommender.caseBase:

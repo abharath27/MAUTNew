@@ -183,8 +183,9 @@ class Recommender:
             self.weights[attr] = self.weights[attr]*2 if attr in self.mibAttributes else self.weights[attr]/2
         
         utilities = [(product, self.utility(product, self.weights)) for product in newList]
-        print 'Product list size = ', len(self.prodList)
-        print 'newList size = ', len(newList)
+        #print 'Product list size = ', len(self.prodList)
+        #print 'newList size = ', len(newList)
+        
         topProduct = sorted(utilities, key = lambda x: -x[1])[0][0]    
         newList = [prod for prod in newList if prod.id != topProduct.id]        #removing the topProduct
         self.currentReference = topProduct.id
