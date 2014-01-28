@@ -136,19 +136,74 @@ class Recommender:
                 newList = [p for p in newList if p.id != top.id]    #Removing the 'top' product from newList
             
             self.topK = tempList
+    def critiqueStrings(self, selection):
+        '''This function updates weights, calls  selectTopK function'''
+        '''sets the currentReference and returns critique strings corresponding to the topK products''' 
+        #return the current recommendation product also...
+        #return critique strings corresponding to the top K products...
+        
+        selectedProduct = ''
+        if selection == 'firstTime':
+            selectedProduct = [prod for prod in self.caseBase if prod.id == self.currentReference][0]
+            
+        if selection != 'firstTime':
+            selectedProduct = copy.copy(self.topK[selection])
+            self.updateWeights(self.topK, selection)
+            self.currentReference = selectedProduct.id  #Changing the reference product...                
+            for attr in self.weights:
+                #print attr,':', (int(self.weights[attr]*1000)/1000.0),
+                pass
+            
+            for attr in self.numericAttrNames:
+                self.preferredValues[attr] = selectedProduct.attr[attr]  #Changing the preferred values for all attr...
+            #Removing previous topK items
+            for prod in self.topK:
+                self.prodList = [c for c in self.prodList if c.id != prod.id]
+        #print 'Product List Size = ', len(self.prodList)
+        
+        for attr in self.numericAttrNames:
+            self.critiqueStringDirections[attr] = []
+        self.selectTopK()
+#        print '==============='
+#        print [x.id for x in self.topK]
+#        print '==============='
+
+        #TODO: Reject all products that are being fully dominated by the current product
+        #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
+        critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
+        return critiqueStringList
     
     def unitCritiqueSelectedStrings(self, selection, value, type):
         attr = self.numericAttrNames[selection]
         if type == 'low':
             newList = [prod for prod in self.prodList if prod.attr[attr] < value]
+            self.weights[attr] = self.weights[attr]*2 if attr in self.libAttributes else self.weights[attr]/2
         else:
             newList = [prod for prod in self.prodList if prod.attr[attr] > value]
+            self.weights[attr] = self.weights[attr]*2 if attr in self.mibAttributes else self.weights[attr]/2
         
+        utilities = [(product, self.utility(product, self.weights)) for product in newList]
+        print 'Product list size = ', len(self.prodList)
+        print 'newList size = ', len(newList)
+        topProduct = sorted(utilities, key = lambda x: -x[1])[0][0]    
+        newList = [prod for prod in newList if prod.id != topProduct.id]        #removing the topProduct
+        self.currentReference = topProduct.id
+        #Removing previous topK items
+        for prod in self.topK:
+            self.prodList = [c for c in self.prodList if c.id != prod.id]
+            newList = [c for c in newList if c.id != prod.id]
+        for attr in self.numericAttrNames:
+            self.preferredValues[attr] = topProduct.attr[attr]  #Changing the preferred values for all attr...
+        #Here is the chance to eliminate all the other products and reduce the number of interaction cycles
+        #self.prodList = newList                                
+        for attr in self.numericAttrNames:
+            self.critiqueStringDirections[attr] = []
         self.selectTopK(newList)
+
         #TODO: Reject all products that are being fully dominated by the current product
         #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
         #print 'Product selected with unit critiques ID = ', self.topK[0].id
-        return self.critiqueStrings(0)
+        return [self.critiqueStr(prod1, topProduct) for prod1 in self.topK]
     
     def updateWeightsUtil(self, topK, selection):
         '''Determines which attribute weights should actually be updated and which should be not'''
@@ -230,63 +285,7 @@ class Recommender:
         weightSum = sum([self.weights[attr] for attr in self.numericAttrNames + self.nonNumericAttrNames])
         for attr in self.numericAttrNames + self.nonNumericAttrNames:
             self.weights[attr] /= weightSum
-        
-    def critiqueStrings(self, selection):
-        #update the weights
-        #generate the topK utility products
-        #return the current recommendation product also...
-        #return critique strings corresponding to the top K products...
-        selectedProduct = ''
-        if selection == 'firstTime':
-            selectedProduct = [prod for prod in self.caseBase if prod.id == self.currentReference][0]
-            
-        if selection != 'firstTime':
-            selectedProduct = copy.copy(self.topK[selection])
-            for attr in self.numericAttrNames:
-                #print 'attr:', attr
-                #print 'Previous value of attr =', self.preferredValues[attr]
-                #print 'New value of attr =', selectedProduct.attr[attr]
-                pass
                 
-            self.updateWeights(self.topK, selection)
-            self.currentReference = selectedProduct.id  #Changing the reference product...    
-            
-            #print '==================='
-            #print 'Weights:'
-            for attr in self.weights:
-                #print attr,':', (int(self.weights[attr]*1000)/1000.0),
-                pass
-            #print '==================='
-            
-            for attr in self.numericAttrNames:
-                self.preferredValues[attr] = selectedProduct.attr[attr]  #Changing the preferred values for all attr...
-            #Removing previous topK items
-            for prod in self.topK:
-                self.prodList = [c for c in self.prodList if c.id != prod.id]
-#            for i in range(len(self.prodList)):
-#                if self.prodList[i].id == self.currentReference:
-#                    print "HELLO HOW ARE YOU"
-#                    self.prodList.remove(self.prodList[i])
-#                    break
-        print 'Product List Size = ', len(self.prodList)
-        
-        for attr in self.numericAttrNames:
-            self.critiqueStringDirections[attr] = []
-        self.selectTopK()
-#        print "Reference Product's utility =", self.utility(self.caseBase[self.currentReference], self.weights)
-#        print "Reference Product ID = ", self.caseBase[self.currentReference].id
-#        print '==============='
-#        print [x.id for x in self.topK]
-#        print '==============='
-#        
-        #TODO: Reject all products that are being fully dominated by the current product
-        #prod2 = [prod for prod in self.prodList if prod.id == self.currentReference][0]
-        #Clear the backup dictionary here...
-        
-        critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
-        #Remove products from case base
-        return critiqueStringList
-        
     def value(self, attr, value):
         #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
         #TODO: Modify these value functions later and check performance 
