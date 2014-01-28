@@ -1,4 +1,4 @@
-class Product:
+class Camera:
     def __init__(self, id, line):
         self.id = id
         self.attrNames = ['Manufacturer', 'Model', 'Price', 'Format', \
@@ -8,10 +8,17 @@ class Product:
         for x,y in zip(line, self.attrNames):
             self.attr[y] = x 
     def __str__(self):
-        return str(self.attr)
+        string = self.attr['Manufacturer'] + ' '
+        string = string + self.attr['Model'] + '\n'
+        string = string + 'Configuration: ' + str(self.attr['Resolution']) + 'MP,  ' \
+           + str(self.attr['OpticalZoom']) + 'x Optical Zoom,  ' + str(self.attr['Weight']) + 'gm,  ' \
+            + str(self.attr['StorageIncluded']) + 'MB Storage\n'
+        
+        string += 'Price: ' + str(self.attr['Price'])
+        return string
     
 def readList():        
-    productList = []
+    selfList = []
     lines = open('Camera2.csv').read().split('\r')[1:]
     for id, line in enumerate(lines):
         line = line.split(',')[1:]
@@ -22,5 +29,5 @@ def readList():
                 pass
         
         #print line
-        productList.append(Product(id, line))
-    return productList
+        selfList.append(Camera(id, line))
+    return selfList

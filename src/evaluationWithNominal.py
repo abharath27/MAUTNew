@@ -1,8 +1,11 @@
 from recommender import *
+from PCRecommender import *
 import random, itertools
 class Evaluator:
-    def __init__(self):
+    def __init__(self, domain = 'Camera'):
         self.recommender = Recommender()
+        if domain == 'PC':
+            self.recommender = PCRecommender()
         self.recommender.selectiveWtUpdateEnabled = True
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
@@ -14,9 +17,10 @@ class Evaluator:
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
         numExperiments = 10
-        numGlobalIterations = 0; numIterationsList = []
+        numGlobalIterations = 0; numIterationsList = [];averages = []
         for tempVar in range(numExperiments):
-            for prod in self.recommender.caseBase:
+            numIterationsList = []
+            for prod in self.recommender.caseBase[:10]:
                 #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 self.recommender.resetWeights()
                 #print '==================='
@@ -42,12 +46,12 @@ class Evaluator:
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
                 targets = [x.id for x in self.targets]
-                print 'Targets:', targets
-                print 'First product selected:', self.recommender.currentReference
+                #print 'Targets:', targets
+                #print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
                     #When the target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
-                    print 'topK product IDs = ', topKIds
+                    #print 'topK product IDs = ', topKIds
                     if len(set(targets).intersection(set(topKIds))) != 0:
                         break
                     #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
@@ -57,14 +61,17 @@ class Evaluator:
                     numLocalIterations += 1
                     
                 #print 'Number of interaction cycles =', numLocalIterations
-                numIterationsList.append(numLocalIterations)
-                numGlobalIterations += numLocalIterations
-                
-                
-            print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
+                    numIterationsList.append(numLocalIterations)
+            numGlobalIterations += sum(numIterationsList)
             print 'Iterations List(Unsorted):', numIterationsList
             print 'Iterations List:', sorted(numIterationsList)
-            
+            print 'Average iteration for iteration number', tempVar, '=', sum(numIterationsList)/float(len(numIterationsList))
+            averages.append(sum(numIterationsList)/float(len(numIterationsList)))
+                
+                
+        print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
+        print 'Final average using the previous 10 averages =', sum(averages)/len(averages)
+                    
     def dominatingProducts(self, p):
         dominators = []
         for prod in self.recommender.caseBase:
@@ -126,4 +133,4 @@ class Evaluator:
         #print 'Overlap Ratio:', float(overlapping)/total
         return float(overlapping)/total
      
-eval = Evaluator()
+eval = Evaluator('PC')

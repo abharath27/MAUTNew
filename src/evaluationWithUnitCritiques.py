@@ -28,7 +28,7 @@ class Evaluator:
                     pass
                 #print '==================='
                 
-                self.recommender.prodList = copy.copy(self.recommender.caseBase)
+                self.recommender.prodList = [copy.copy(x) for x in self.recommender.caseBase]
                 numberOfAttributesInQuery = 1
                 initialPrefAttributes = random.choice(list(itertools.combinations\
                                        (self.recommender.attrNames, numberOfAttributesInQuery)))  
@@ -59,17 +59,18 @@ class Evaluator:
                     if degree > self.threshold:
                         self.recommender.critiqueStrings(selection)
                     else:
-                        unitAttributeNumber = random.randint(0,5)
                         #print 'max overlap degree =', degree
                         #print 'Entered here'
                         
-                        attr = self.recommender.numericAttrNames[unitAttributeNumber]
-                        value = self.recommender.caseBase[self.recommender.currentReference].attr[attr]
                         #the value of 'type' argument is decided by the direction of the target product..
+                        target = random.choice(self.targets)
                         while 1:
                             #to ensure that applying the unit critique "low" or "high" will be meaningful
                             #Sometimes, we may just encounter the case when both the target's and current prod's storage values are same as 32MB.
-                            target = random.choice(self.targets)
+                            unitAttributeNumber = random.randint(0,5)
+                            attr = self.recommender.numericAttrNames[unitAttributeNumber]
+                            value = self.recommender.caseBase[self.recommender.currentReference].attr[attr]
+                        
                             if value != target.attr[attr]:
                                 break
                         if value > target.attr[attr]:

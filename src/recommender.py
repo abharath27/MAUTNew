@@ -10,10 +10,13 @@ class Recommender:
         self.nonNumericAttrNames = ['Manufacturer', 'Format', 'StorageType']
         self.libAttributes = ['Price', 'Weight']
         self.mibAttributes = ['Resolution', 'OpticalZoom', 'DigitalZoom', 'StorageIncluded']
+        self.prodList = first.readList()
+        self.caseBase = [copy.copy(x) for x in self.prodList]        #caseBase is unchanging. Items are added
+        self.initializeOtherVars()
+    
+    def initializeOtherVars(self):
         self.resetWeights()
         self.preferredValues = dict([(attr, None) for attr in self.attrNames])
-        self.prodList = first.readList()
-        self.caseBase = copy.copy(self.prodList)        #caseBase is unchanging. Items are added
         self.K = 5                                      #and deleted from prodList
         self.currentReference = -1
         self.topK = [None]*self.K
@@ -357,6 +360,11 @@ class Recommender:
             return abs(v1-v2) < 10
         if attr == 'StorageIncluded':
             return abs(v1-v2) < 2
+        #PC attributes can come here....
+        #attributes are ['ProcessorSpeed', 'Monitor', 'Memory', 'HardDrive', 'Price']
+        if attr == 'ProcessorSpeed':
+            return abs(v1-v2) < 10
+        #Price is already taken care of above....Rest all attributes don't need a criteria here.
         return False 
                 
     def attributeSignsUtil(self, current, reference):
@@ -420,35 +428,28 @@ class Recommender:
         negativeString = 'But '
         
         #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
-        if 'Price' in positiveAttributes:
-            positiveString += 'Lesser Price '
-        if 'Price' in negativeAttributes:
-            negativeString += 'Higher Price '
+        for attr in self.libAttributes:
+            if attr in positiveAttributes:
+                positiveString += 'Lesser ' + attr + ' '
+            if attr in negativeAttributes:
+                negativeString += 'Higher ' + attr + ' '
+            
+#        if 'Weight' in positiveAttributes:
+#            positiveString += 'Lesser Weight '
+#        if 'Weight' in negativeAttributes:
+#            negativeString += 'Higher Weight '
+#        
+        for attr in self.mibAttributes:
+            if attr in positiveAttributes:
+                positiveString += 'Higher ' + attr + ' '
+            if attr in negativeAttributes:
+                negativeString += 'Lower ' + attr + ' '
         
-        if 'Resolution' in positiveAttributes:
-            positiveString += 'Higher Resolution '
-        if 'Resolution' in negativeAttributes:
-            negativeString += 'Lower Resolution '
+#        if 'OpticalZoom' in positiveAttributes:
+#            positiveString += 'Higher Optical Zoom  '
+#        if 'OpticalZoom' in negativeAttributes:
+#            negativeString += 'Lower Optical Zoom '
         
-        if 'OpticalZoom' in positiveAttributes:
-            positiveString += 'Higher Optical Zoom  '
-        if 'OpticalZoom' in negativeAttributes:
-            negativeString += 'Lower Optical Zoom '
-        
-        if 'DigitalZoom' in positiveAttributes:
-            positiveString += 'Higher Digital Zoom  '
-        if 'DigitalZoom' in negativeAttributes:
-            negativeString += 'Lower Digital Zoom '
-        
-        if 'StorageIncluded' in positiveAttributes:
-            positiveString += 'Higher Storage '
-        if 'StorageIncluded' in negativeAttributes:
-            negativeString += 'Lower Storage '
-        
-        if 'Weight' in positiveAttributes:
-            positiveString += 'Lesser Weight '
-        if 'Weight' in negativeAttributes:
-            negativeString += 'Higher Weight '
         
         str2 = ''
         if len(positiveAttributes) != 0:
@@ -460,15 +461,7 @@ class Recommender:
             str2 += negativeString
         
         str2 = str2 + '\n Product ID:' + str(current.id)
-        product = current
-        string = product.attr['Manufacturer'] + ' '
-        string = string + product.attr['Model'] + '\n'
-        string = string + 'Configuration: ' + str(product.attr['Resolution']) + 'MP,  ' \
-           + str(product.attr['OpticalZoom']) + 'x Optical Zoom,  ' + str(product.attr['Weight']) + 'gm,  ' \
-            + str(product.attr['StorageIncluded']) + 'MB Storage\n'
-        
-        string += 'Price: ' + str(product.attr['Price'])
-        str2 = str2 + '\n' + string
+        str2 = str2 + '\n' + str(current)
         return str2
     
     def mostSimilar(self, baseProduct):
