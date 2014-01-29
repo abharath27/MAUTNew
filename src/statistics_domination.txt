@@ -1,0 +1,7 @@
+Number of products with atleast one dominator =  131
+Average number of dominators per product = 14.0992366412
+Product with highest number of dominators: 177
+Number of dominators it has: 114
+Product that dominates the highest number of products: 181
+Number of products it dominates: 47
+Average Number of targets per product = 8.79523809524

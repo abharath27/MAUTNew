@@ -9,10 +9,15 @@ class Evaluator:
             self.recommender = PCRecommender()
         if domain == 'Cars':
             self.recommender = CarRecommender() 
-        self.recommender.selectiveWtUpdateEnabled = True
+        self.recommender.selectiveWtUpdateEnabled = False
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
         self.targets = None
+        numProductsWithDominators = 0
+        totalNumberOfDominators = 0
+        maxDominators = -1; maxDominatorsProduct = None
+        dominating = dict([(x.id, 0) for x in self.recommender.caseBase])
+        
         self.startAll()
         
     def startAll(self):
@@ -24,7 +29,7 @@ class Evaluator:
         for tempVar in range(numExperiments):
             numIterationsList = []
             print 'len(caseBase) = ', len(self.recommender.caseBase)
-            for prod in self.recommender.caseBase[450:460]:
+            for prod in self.recommender.caseBase[34:35]:
                 #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 self.recommender.resetWeights()
                 #print '==================='
@@ -138,4 +143,32 @@ class Evaluator:
         #print 'Overlap Ratio:', float(overlapping)/total
         return float(overlapping)/total
      
-eval = Evaluator('Cars')
+eval = Evaluator()
+
+'''Code with statistics about dominating products. works perfectly fine'''
+#Statistics:
+#1. Number of products that have at least one dominator (report the percentage)
+#2. Average number of dominators per product
+#3. Product with highest number of dominators; and the number of dominators it has.
+#4. Product which is dominating the highest number of products
+#
+#        for prod in self.recommender.caseBase:
+#            dominators = [x.id for x in self.dominatingProducts(prod)]
+#            if len(dominators) > 0:
+#                numProductsWithDominators += 1              #Objective-1
+#                totalNumberOfDominators += len(dominators)  #Objective-2
+#                if len(dominators) > maxDominators:         #Objective-3
+#                    maxDominators = len(dominators)
+#                    maxDominatorsProduct = prod.id
+#                for temp in dominators:                     #Objective-4
+#                    dominating[temp] += 1
+#        
+#        tempVar = sorted([(x, dominating[x]) for x in dominating], key = lambda t: -t[1])[0]
+#        print 'Number of products with atleast one dominator = ', numProductsWithDominators
+#        print 'Average number of dominators per product =', totalNumberOfDominators/float(numProductsWithDominators)
+#        print 'Product with highest number of dominators:', maxDominatorsProduct
+#        print 'Number of dominators it has:', maxDominators
+#        print 'Product that dominates the highest number of products:', tempVar[0]
+#        print 'Number of products it dominates:', tempVar[1]
+#        
+#        print 'Average Number of targets per product =', totalNumberOfDominators/float(len(self.recommender.caseBase))
