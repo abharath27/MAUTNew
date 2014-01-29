@@ -1,11 +1,14 @@
 from recommender import *
 from PCRecommender import *
+from carRecommender import *
 import random, itertools
 class Evaluator:
     def __init__(self, domain = 'Camera'):
         self.recommender = Recommender()
         if domain == 'PC':
             self.recommender = PCRecommender()
+        if domain == 'Cars':
+            self.recommender = CarRecommender() 
         self.recommender.selectiveWtUpdateEnabled = True
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
@@ -16,11 +19,12 @@ class Evaluator:
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 10
-        numGlobalIterations = 0; numIterationsList = [];averages = []
+        numExperiments = 5
+        numGlobalIterations = 0; numIterationsList = [];averages = [];uniqueItemsList = []
         for tempVar in range(numExperiments):
             numIterationsList = []
-            for prod in self.recommender.caseBase[:10]:
+            print 'len(caseBase) = ', len(self.recommender.caseBase)
+            for prod in self.recommender.caseBase[450:460]:
                 #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 self.recommender.resetWeights()
                 #print '==================='
@@ -46,7 +50,8 @@ class Evaluator:
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
                 targets = [x.id for x in self.targets]
-                #print 'Targets:', targets
+                print 'Source ID:', prod.id
+                print 'Targets:', targets
                 #print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
                     #When the target is selected as the first product (justification of above condition)
@@ -61,7 +66,7 @@ class Evaluator:
                     numLocalIterations += 1
                     
                 #print 'Number of interaction cycles =', numLocalIterations
-                    numIterationsList.append(numLocalIterations)
+                numIterationsList.append(numLocalIterations)
             numGlobalIterations += sum(numIterationsList)
             print 'Iterations List(Unsorted):', numIterationsList
             print 'Iterations List:', sorted(numIterationsList)
@@ -133,4 +138,4 @@ class Evaluator:
         #print 'Overlap Ratio:', float(overlapping)/total
         return float(overlapping)/total
      
-eval = Evaluator('PC')
+eval = Evaluator('Cars')
