@@ -1,8 +1,14 @@
 from recommender import *
+from PCRecommender import *
+from carRecommender import *
 import random, itertools
 class Evaluator:
-    def __init__(self):
+    def __init__(self, domain = "Camera"):
         self.recommender = Recommender()
+        if domain == 'PC':
+            self.recommender = PCRecommender()
+        if domain == 'Cars':
+            self.recommender = CarRecommender() 
         self.recommender.selectiveWtUpdateEnabled = True
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
@@ -45,6 +51,7 @@ class Evaluator:
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
                 targets = [x.id for x in self.targets]
+                #print 'Source ID:', prod.id
                 #print 'Targets:', targets
                 #print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
@@ -59,24 +66,18 @@ class Evaluator:
                     if degree > self.threshold:
                         self.recommender.critiqueStrings(selection)
                     else:
-                        #print 'max overlap degree =', degree
-                        #print 'Entered here'
-                        
-                        #the value of 'type' argument is decided by the direction of the target product..
                         target = random.choice(self.targets)
                         while 1:
                             #to ensure that applying the unit critique "low" or "high" will be meaningful
-                            #Sometimes, we may just encounter the case when both the target's and current prod's storage values are same as 32MB.
+                            #We may encounter the case when both the target's and current prod's storage values are same as 32MB.
                             unitAttributeNumber = random.randint(0,5)
                             attr = self.recommender.numericAttrNames[unitAttributeNumber]
                             value = self.recommender.caseBase[self.recommender.currentReference].attr[attr]
                         
                             if value != target.attr[attr]:
                                 break
-                        if value > target.attr[attr]:
-                            type = 'low'
-                        else:
-                            type = 'high'
+                        
+                        type = 'low' if target.attr[attr] < value else 'high'
                         try:
                             self.recommender.unitCritiqueSelectedStrings(unitAttributeNumber, value, type)
                         except:

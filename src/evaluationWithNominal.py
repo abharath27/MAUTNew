@@ -13,10 +13,6 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
         self.targets = None
-        numProductsWithDominators = 0
-        totalNumberOfDominators = 0
-        maxDominators = -1; maxDominatorsProduct = None
-        dominating = dict([(x.id, 0) for x in self.recommender.caseBase])
         
         self.startAll()
         
@@ -25,11 +21,11 @@ class Evaluator:
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
         numExperiments = 5
-        numGlobalIterations = 0; numIterationsList = [];averages = [];uniqueItemsList = []
+        numGlobalIterations = 0; numIterationsList = [];averages = []
         for tempVar in range(numExperiments):
             numIterationsList = []
             print 'len(caseBase) = ', len(self.recommender.caseBase)
-            for prod in self.recommender.caseBase[34:35]:
+            for prod in self.recommender.caseBase:
                 #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 self.recommender.resetWeights()
                 #print '==================='
@@ -39,7 +35,7 @@ class Evaluator:
                     pass
                 #print '==================='
                 
-                self.recommender.prodList = copy.copy(self.recommender.caseBase)
+                self.recommender.prodList = [copy.copy(x) for x in self.recommender.caseBase]
                 numberOfAttributesInQuery = 1
                 initialPrefAttributes = random.choice(list(itertools.combinations\
                                        (self.recommender.attrNames, numberOfAttributesInQuery)))  
@@ -151,7 +147,11 @@ eval = Evaluator()
 #2. Average number of dominators per product
 #3. Product with highest number of dominators; and the number of dominators it has.
 #4. Product which is dominating the highest number of products
-#
+#        numProductsWithDominators = 0
+#        totalNumberOfDominators = 0
+#        maxDominators = -1; maxDominatorsProduct = None
+#        dominating = dict([(x.id, 0) for x in self.recommender.caseBase])
+#        
 #        for prod in self.recommender.caseBase:
 #            dominators = [x.id for x in self.dominatingProducts(prod)]
 #            if len(dominators) > 0:
