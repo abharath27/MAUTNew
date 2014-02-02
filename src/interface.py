@@ -8,7 +8,7 @@ class App:
         self.master = master
         self.recommender = Recommender()
         self.recommender.selectiveWtUpdateEnabled = True
-        self.recommender.diversityEnabled = True   
+        self.recommender.diversityEnabled = False   
         self.createUnitCritiqueFrame()
         
     def chooseFirstProduct(self):
@@ -20,7 +20,7 @@ class App:
             if self.textBoxList[i].get() != '':
                 preference[attr] = float(self.textBoxList[i].get())
             i += 1
-        self.recommender.selectFirstProduct(preference, 43) #pass second argument if you want a particular product to become the reference    
+        self.recommender.selectFirstProduct(preference, 10) #pass second argument if you want a particular product to become the reference    
         currentProd = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()

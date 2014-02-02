@@ -2,7 +2,7 @@ from recommender import *
 from PCRecommender import *
 from carRecommender import *
 import random, itertools
-class Evaluator:
+class EvaluatorWithUnitCritiques:
     def __init__(self, domain = "Camera"):
         self.recommender = Recommender()
         if domain == 'PC':
@@ -10,7 +10,7 @@ class Evaluator:
         if domain == 'Cars':
             self.recommender = CarRecommender() 
         self.recommender.selectiveWtUpdateEnabled = True
-        self.recommender.diversityEnabled = False
+        self.recommender.diversityEnabled = True
         self.recommender.neutralDirectionEnabled = False
         self.threshold = 0.5
         self.targets = None
@@ -20,7 +20,7 @@ class Evaluator:
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 10
+        numExperiments = 3
         numGlobalIterations = 0; numIterationsList = []; averages = []
         for tempVar in range(numExperiments):
             numIterationsList = []
@@ -70,7 +70,7 @@ class Evaluator:
                         while 1:
                             #to ensure that applying the unit critique "low" or "high" will be meaningful
                             #We may encounter the case when both the target's and current prod's storage values are same as 32MB.
-                            unitAttributeNumber = random.randint(0,5)
+                            unitAttributeNumber = random.randint(0, len(self.recommender.numericAttrNames)-1)
                             attr = self.recommender.numericAttrNames[unitAttributeNumber]
                             value = self.recommender.caseBase[self.recommender.currentReference].attr[attr]
                         
@@ -164,4 +164,4 @@ class Evaluator:
         #print 'Overlap Ratio:', float(overlapping)/total
         return float(overlapping)/total
      
-eval = Evaluator()
+eval = EvaluatorWithUnitCritiques('PC')

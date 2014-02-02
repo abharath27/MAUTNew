@@ -1,7 +1,8 @@
 from recommender import *
 from PCRecommender import *
 from carRecommender import *
-import random, itertools
+import random, itertools, util
+
 class Evaluator:
     def __init__(self, domain = 'Camera'):
         self.recommender = Recommender()
@@ -13,15 +14,15 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.neutralDirectionEnabled = False
         self.targets = None
-        
         self.startAll()
         
     def startAll(self):
         #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
         #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 5
+        numExperiments = 1
         numGlobalIterations = 0; numIterationsList = [];averages = []
+        iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
         for tempVar in range(numExperiments):
             numIterationsList = []
             print 'len(caseBase) = ', len(self.recommender.caseBase)
@@ -42,17 +43,18 @@ class Evaluator:
                 #returns ('Price', 'Resolution) in case number of attr = 2
                 initialPreferences = {}
                 for attr in initialPrefAttributes:
-                    '''Main Part: Formulating the query'''
+                    #'''Main Part: Formulating the query'''
                     initialPreferences[attr] = prod.attr[attr]
             
                 #self.target = self.recommender.mostSimilar(prod)
-                self.targets = [prod] + self.dominatingProducts(prod) 
+                #self.targets = [prod] + self.dominatingProducts(prod)
+                self.targets = [prod] 
                 self.recommender.selectFirstProduct(initialPreferences)
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
                 targets = [x.id for x in self.targets]
                 print 'Source ID:', prod.id
-                print 'Targets:', targets
+                #print 'Targets:', targets
                 #print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
                     #When the target is selected as the first product (justification of above condition)
@@ -67,17 +69,29 @@ class Evaluator:
                     numLocalIterations += 1
                     
                 #print 'Number of interaction cycles =', numLocalIterations
+                iterationsPerProduct[prod.id].append(numLocalIterations)
                 numIterationsList.append(numLocalIterations)
             numGlobalIterations += sum(numIterationsList)
-            print 'Iterations List(Unsorted):', numIterationsList
-            print 'Iterations List:', sorted(numIterationsList)
-            print 'Average iteration for iteration number', tempVar, '=', sum(numIterationsList)/float(len(numIterationsList))
+            #print 'Iterations List(Unsorted):', numIterationsList
+            #print 'Iterations List:', sorted(numIterationsList)
+            #print 'Average iteration for iteration number', tempVar, '=', sum(numIterationsList)/float(len(numIterationsList))
             averages.append(sum(numIterationsList)/float(len(numIterationsList)))
                 
                 
         print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
         print 'Final average using the previous 10 averages =', sum(averages)/len(averages)
-                    
+        
+        print 'ID, NumDominators, IterationCycles'
+        numDominators = []; avgCycles = []                      #d denotes numDominators, i denotes iterationCycles
+        for prod in self.recommender.caseBase:
+            l = copy.copy(iterationsPerProduct[prod.id])
+            averageIterations = sum(l)/float(len(l))
+            numDominators.append(len(self.dominatingProducts(prod))); avgCycles.append(averageIterations)
+            #print prod.id, ',', len(self.dominatingProducts(prod)), ',', averageIterations
+             
+        print util.correlationCoefficient(numDominators, avgCycles)
+    
+    
     def dominatingProducts(self, p):
         dominators = []
         for prod in self.recommender.caseBase:
