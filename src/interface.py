@@ -7,9 +7,51 @@ class App:
     def __init__ (self, master):
         self.master = master
         self.recommender = Recommender()
-        self.recommender.selectiveWtUpdateEnabled = True
-        self.recommender.diversityEnabled = False   
+        self.recommender.selectiveWtUpdateEnabled = False
+        self.recommender.diversityEnabled = False
         self.createUnitCritiqueFrame()
+        self.createTargetComparisonBox()
+        
+    def createTargetComparisonBox(self):
+        self.targetComparisonBox = Text(self.unitCritiqueFrame, font= 'Helvetica', wrap = WORD, width = 40, height = 7,\
+                         borderwidth = 4, relief = GROOVE)
+        self.targetComparisonBox.grid(row = 0, column = 1)
+        
+    def updateTargetComparisonBox(self):
+        target = self.recommender.caseBase[158]
+        reference = self.recommender.caseBase[self.recommender.currentReference]
+        tempStr = self.recommender.critiqueStr(target, reference)
+        self.targetComparisonBox.delete(1.0, END)
+        self.targetComparisonBox.insert(END, tempStr)
+        
+    def createUnitCritiqueFrame(self):
+        self.unitCritiqueL = []
+        self.unitCritiqueFrame = Frame(self.master, width = 490, height = 600, borderwidth = 4, \
+                                       relief = GROOVE)
+        self.unitCritiqueFrame.grid(row = 1, column = 0) 
+        #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
+        self.textBoxList = []
+        for i, attrName in enumerate(self.recommender.numericAttrNames):
+            i = i + 1   #to accomodate target comparison box
+            Label(self.unitCritiqueFrame, text = attrName).grid(row = 2*i, column = 1, sticky = 'NWES')
+            temp = Entry(self.unitCritiqueFrame)
+            temp.grid(row = 2*i + 1, column = 1, sticky = 'NWES')
+            self.textBoxList.append(temp)
+        for i, attrName in enumerate(self.recommender.numericAttrNames):
+            '''lowButtons'''
+            i = i + 1
+            Button(self.unitCritiqueFrame, text = "L", width = 1, height = 1,\
+                    command = lambda i = i: self.unitCritiqueButtonSelect(i, self.textBoxList[i].get(), 'low')).\
+                    grid(row = 2*i + 1, column = 0, sticky = 'NWES')
+            '''highButtons'''
+            Button(self.unitCritiqueFrame, text = "H", width = 1, height = 1,\
+                    command = lambda i = i: self.unitCritiqueButtonSelect(i, self.textBoxList[i].get(), 'high')).\
+                    grid(row = 2*i + 1, column = 2, sticky = 'NWES')
+        
+        self.unitCritiqueButton = Button(self.unitCritiqueFrame, text = "Start", width = 4, height = 1, command = self.chooseFirstProduct)
+        self.unitCritiqueButton.grid(row = 20, column = 1, sticky = 'NWES')
+    
+
         
     def chooseFirstProduct(self):
         '''This function is invoked when the 'Start' button is clicked'''
@@ -20,7 +62,7 @@ class App:
             if self.textBoxList[i].get() != '':
                 preference[attr] = float(self.textBoxList[i].get())
             i += 1
-        self.recommender.selectFirstProduct(preference, 10) #pass second argument if you want a particular product to become the reference    
+        self.recommender.selectFirstProduct(preference, 116) #pass second argument if you want a particular product to become the reference    
         currentProd = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()
@@ -33,6 +75,7 @@ class App:
         self.createWeightStatusBox()
         self.updateCompoundCritiqueBoxes()
         self.updateWeightBox()
+        self.updateTargetComparisonBox()
         
     def createWeightBox(self):
         self.weightBox = Text(self.master, font= 'Helvetica', wrap = WORD, width = 25, height = 7,\
@@ -117,31 +160,6 @@ class App:
                            command = lambda i = i: self.userSelect(i))
             temp.grid(row = i, column = 1)
                 
-    def createUnitCritiqueFrame(self):
-        self.unitCritiqueL = []
-        self.unitCritiqueFrame = Frame(self.master, width = 490, height = 600, borderwidth = 4, \
-                                       relief = GROOVE)
-        self.unitCritiqueFrame.grid(row = 1, column = 0) 
-        #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
-        self.textBoxList = []
-        for i, attrName in enumerate(self.recommender.numericAttrNames):
-            Label(self.unitCritiqueFrame, text = attrName).grid(row = 2*i, column = 1, sticky = 'NWES')
-            temp = Entry(self.unitCritiqueFrame)
-            temp.grid(row = 2*i + 1, column = 1, sticky = 'NWES')
-            self.textBoxList.append(temp)
-        for i, attrName in enumerate(self.recommender.numericAttrNames):
-            '''lowButtons'''
-            Button(self.unitCritiqueFrame, text = "L", width = 1, height = 1,\
-                    command = lambda i = i: self.unitCritiqueButtonSelect(i, self.textBoxList[i].get(), 'low')).\
-                    grid(row = 2*i + 1, column = 0, sticky = 'NWES')
-            '''highButtons'''
-            Button(self.unitCritiqueFrame, text = "H", width = 1, height = 1,\
-                    command = lambda i = i: self.unitCritiqueButtonSelect(i, self.textBoxList[i].get(), 'high')).\
-                    grid(row = 2*i + 1, column = 2, sticky = 'NWES')
-        
-        self.unitCritiqueButton = Button(self.unitCritiqueFrame, text = "Start", width = 4, height = 1, command = self.chooseFirstProduct)
-        self.unitCritiqueButton.grid(row = 20, column = 1, sticky = 'NWES')
-    
     def displayProduct(self, product):
         t = Text(self.master, font= 'Helvetica', wrap = WORD, width = 60, borderwidth = 4, relief = GROOVE)
         string = product.attr['Manufacturer'] + ' '
@@ -172,7 +190,8 @@ class App:
         self.updateWeightBox()
         self.updateWeightStatusBox()
         self.updateUtilitiesFrame()
-    
+        self.updateTargetComparisonBox()
+        
     def userSelect(self, selection):
         i = 0
         for k in self.recommender.critiqueStrings(selection):
@@ -185,6 +204,7 @@ class App:
         self.updateWeightBox()
         self.updateWeightStatusBox()
         self.updateUtilitiesFrame()
+        self.updateTargetComparisonBox()
     
     def updateCompoundCritiqueBoxes(self):
         currentRefProduct = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]

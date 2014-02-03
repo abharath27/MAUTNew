@@ -3,7 +3,7 @@ def allSame(list):
 def directionCount(list):
     return [list.count("Positive"), list.count("Negative"), list.count("Neutral")]
 
-def correlationCoefficient(self, x, y):
+def correlationCoefficient(x, y):
         mux = sum(x)/float(len(x))
         muy = sum(y)/float(len(y))
         covariance = sum([(i-mux)*(j-muy) for i,j in zip(x,y)])/float(len(x)-1)

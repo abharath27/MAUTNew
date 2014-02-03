@@ -1,4 +1,4 @@
-import first, copy, util, inspect
+import first, copy, util, inspect, random
 
 
 class Recommender:
@@ -71,7 +71,8 @@ class Recommender:
     def selectFirstProduct(self, preferences, specialArg = None):
         #Return the most similar product...
         #print 'Preferences = ', preferences
-        similarities = [(prod, self.sim(prod, preferences)) for prod in self.prodList]
+        newBase = [copy.copy(x) for x in self.prodList]; random.shuffle(newBase)
+        similarities = [(prod, self.sim(prod, preferences)) for prod in newBase]
         similarities = sorted(similarities, key = lambda x: -x[1])
         #print similarities[:5]
         topProduct = similarities[0][0]
@@ -153,9 +154,6 @@ class Recommender:
             selectedProduct = copy.copy(self.topK[selection])
             self.updateWeights(self.topK, selection)
             self.currentReference = selectedProduct.id  #Changing the reference product...                
-            for attr in self.weights:
-                #print attr,':', (int(self.weights[attr]*1000)/1000.0),
-                pass
             
             for attr in self.numericAttrNames:
                 self.preferredValues[attr] = selectedProduct.attr[attr]  #Changing the preferred values for all attr...
@@ -163,9 +161,12 @@ class Recommender:
             for prod in self.topK:
                 self.prodList = [c for c in self.prodList if c.id != prod.id]
         #print 'Product List Size = ', len(self.prodList)
-        
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []
+        for attr in self.numericAttrNames + self.nonNumericAttrNames:
+            #print attr,':', (int(self.weights[attr]*1000)/1000.0),
+            pass
+        #print
         self.selectTopK()
 #        print '==============='
 #        print [x.id for x in self.topK]
