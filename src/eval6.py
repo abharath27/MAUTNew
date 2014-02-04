@@ -138,8 +138,8 @@ class Evaluator:
         d = {}
         for attr in self.recommender.numericAttrNames:
             d[attr] = 'less' if prod.attr[attr] < reference.attr[attr] else 'more'
-        for attr in self.recommender.nonNumericAttrNames:
-            d[attr] = 1 if prod.attr[attr] == target.attr[attr] else 0
+#        for attr in self.recommender.nonNumericAttrNames:
+#            d[attr] = 1 if prod.attr[attr] == target.attr[attr] else 0
         return d
     
     def overlappingDegree(self, direction1, direction2):
@@ -150,9 +150,9 @@ class Evaluator:
         for attr in self.recommender.numericAttrNames:
             if direction1[attr] == direction2[attr]:
                 overlapping += 1
-        for attr in self.recommender.nonNumericAttrNames:
-            if direction1[attr] == direction2[attr]:
-                overlapping += 1
+#        for attr in self.recommender.nonNumericAttrNames:
+#            if direction1[attr] == direction2[attr]:
+#                overlapping += 1
 #        #print 'Overlap Ratio:', float(overlapping)/total
         return float(overlapping)/total
     

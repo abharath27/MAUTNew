@@ -1,0 +1,9 @@
+cp evaluationWithNominal.py eval1.py
+cp evaluationWithNominal.py eval2.py
+cp evaluationWithNominal.py eval3.py
+cp evaluationWithNominal.py eval4.py
+cp evaluationWithNominal.py eval5.py
+cp evaluationWithNominal.py eval6.py
+cp evaluationWithNominal.py eval7.py
+cp evaluationWithNominal.py eval8.py
+cp evaluationWithNominal.py eval9.py

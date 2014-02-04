@@ -3,7 +3,7 @@ import first, copy, util, inspect, random
 
 class Recommender:
     def __init__(self):
-        self.attrNames = ['Manufacturer', 'Model', 'Price', 'Format', \
+        self.attrNames = ['Manufacturer', 'Price', 'Format', \
                           'Resolution', 'OpticalZoom', 'DigitalZoom',\
                            'Weight', 'StorageType', 'StorageIncluded']
         self.numericAttrNames = ['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
@@ -11,31 +11,42 @@ class Recommender:
         self.libAttributes = ['Price', 'Weight']
         self.mibAttributes = ['Resolution', 'OpticalZoom', 'DigitalZoom', 'StorageIncluded']
         self.prodList = first.readList()
+        #self.prodList = [x for x in self.prodList if x.attr['Price'] < 1000]
         self.caseBase = [copy.copy(x) for x in self.prodList]        #caseBase is unchanging. Items are added
         self.initializeOtherVars()
     
     def initializeOtherVars(self):
         self.resetWeights()
-        self.preferredValues = dict([(attr, None) for attr in self.attrNames])
-        self.K = 5                                      #and deleted from prodList
+        self.preferredValues = dict([(attr, None) for attr in self.attrNames])  #Variable 'attrNames' is used only with preferredValues variable
+        self.K = 5                                      
         self.currentReference = -1
         self.topK = [None]*self.K
-        
+        self.alpha = 0.5
+        #non-numeric attributes
+        self.nonNumericValueDict = {}
+        for attr in self.nonNumericAttrNames:
+            distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
+            self.nonNumericValueDict[attr] = dict([(val, 1.0/len(distinctVals)) for val in distinctVals])
         #book-keeping attributes
         self.attrDirection = {}
         self.unitAttrPreferences = {}
         self.critiqueStringDirections = {}
         self.utilities = None
-        self.weightIncOrDec = dict([(attr, None) for attr in self.attrNames])   #To let the interface know
+        self.weightIncOrDec = dict([(attr, None) for attr in self.numericAttrNames + self.nonNumericAttrNames])   #To let the interface know
         self.preComputedAttrSigns = {}
-                                                        #whether an attr weight is decreased or increased
-        self.diversityEnabled = False                   #Diversity is enabled 'True' in the evaluator
-        self.selectiveWtUpdateEnabled = True            #Enable selective weight updation....
+        
+        #modifications turn on/off
+        self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
+        self.diversityEnabled = False                       #Diversity should be enabled true
+        self.selectiveWtUpdateEnabled = False               #Enable selective weight updation....
         self.neutralDirectionEnabled = True
+        if self.nominalAttributesEnabled == False:
+            self.nonNumericAttrNames = []
         
         
     def resetWeights(self):
-        self.weights = dict([(attr, 1.0/(len(self.attrNames)-1)) for attr in self.attrNames])
+        realAttributes = self.numericAttrNames
+        self.weights = dict([(attr, 1.0/(len(realAttributes))) for attr in self.numericAttrNames])
         #self.weights['Price'] = 10
         #self.weights['Resolution'] = 5
         #self.weights['Weight'] = 5
@@ -50,8 +61,10 @@ class Recommender:
     #MODIFY THE UTILITY AND THE VALUE FUNCTION FOR THE NOMINAL ATTRIBUTES.....
     def utility(self, product, weights):
         retVal = 0
-        for attr in self.attrNames:
+        for attr in self.numericAttrNames:
             retVal += self.weights[attr] * self.value(attr, product.attr[attr])
+        for attr in self.nonNumericAttrNames:
+            retVal += self.nonNumericValueDict[attr][product.attr[attr]]
         return retVal
     
     def sim(self, product, preferences):
@@ -86,10 +99,10 @@ class Recommender:
         
         #NOT REMOVING THE FIRST PRODUCT, SINCE IT IS THE TARGET TO BE REACHED
         #ACCORDING TO THE NEW SCHEME...
-        for i in range(len(self.prodList)):
-            if self.prodList[i].id == self.currentReference:
-                #self.prodList.remove(self.prodList[i])
-                break
+#        for i in range(len(self.prodList)):
+#            if self.prodList[i].id == self.currentReference:
+#                #self.prodList.remove(self.prodList[i])
+#                break
     
     def preComputeAttributeSigns(self):
         reference = self.caseBase[self.currentReference]
@@ -102,11 +115,10 @@ class Recommender:
         p2, n2, ne2 = self.preComputedAttrSigns[prod2.id]
         overlap = len(list(set(p1).intersection(set(p2))) + list(set(n1).intersection(set(n2))) + list(set(ne1).intersection(set(ne2))))
         overlap /= float(len(p1 + n1 + ne1))
-        
         return overlap
     
     def quality(self, c, P):
-        alpha = 0.5
+        alpha = self.alpha
         retVal = alpha*self.utility(c, self.weights)
         #diversity(c, P) = \sum(1-sim(c, Ci))/n
         diversity = 0
@@ -163,7 +175,7 @@ class Recommender:
         #print 'Product List Size = ', len(self.prodList)
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []
-        for attr in self.numericAttrNames + self.nonNumericAttrNames:
+        for attr in self.numericAttrNames:
             #print attr,':', (int(self.weights[attr]*1000)/1000.0),
             pass
         #print
@@ -274,26 +286,27 @@ class Recommender:
             if weightUpdateFactors[attr] == 1:
                 #print 'Weight Remains same for attribute:', attr
                 self.weightIncOrDec[attr] = 0
+        #Normalizing the weights
+        weightSum = sum([self.weights[attr] for attr in self.numericAttrNames])
+        for attr in self.numericAttrNames:
+            self.weights[attr] /= weightSum
                 
         for attr in self.nonNumericAttrNames:
             '''THE WEIGHTS OF NOMINAL ATTR SET TO ZERO. NOT TO BE USED IN THE GUI..THIS IS ONLY FOR OFFLINE EVAL'''
-            self.weights[attr] = 0          
-            if self.preferredValues[attr] == selectedProduct.attr[attr]:
-                self.weightIncOrDec[attr] = 1
-                #self.weights[attr] *= 2     #If the selected product has the same attribute value 
-                                            #as the preferred value, increasing the weight will 
-                                            #more likely give same attr as top products
-            else:
-                self.weightIncOrDec[attr] = -1
-                #self.weights[attr] = 1.0/9  #Resetting the weight to default
-        #Normalizing the weights
-        weightSum = sum([self.weights[attr] for attr in self.numericAttrNames + self.nonNumericAttrNames])
-        for attr in self.numericAttrNames + self.nonNumericAttrNames:
-            self.weights[attr] /= weightSum
+            #selective weight update is not for nominal attributes. It's a little complicated to model this 
+            #for nominal attributes          
+            attrValue = selectedProduct.attr[attr]
+            self.nonNumericValueDict[attr][attrValue] *= 2
+            normalizingFactor = sum(self.nonNumericValueDict[attr].values())
+            for attrValue in self.nonNumericValueDict[attr]:
+                self.nonNumericValueDict[attr][attrValue] /= normalizingFactor
+            
+            #print self.nonNumericValueDict[attr]
                 
     def value(self, attr, value):
         #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
-        #TODO: Modify these value functions later and check performance 
+        #TODO: Modify these value functions later and check performance
+        #value functions for non-numeric attributes are there in the dictionary self.nonNumericValueDict 
         if attr == 'Price':
             priceList = [prod.attr['Price'] for prod in self.prodList]
             maxV, minV = max(priceList), min(priceList)
@@ -336,18 +349,7 @@ class Recommender:
                 return 0
             return float(value - minV)/(maxV - minV)
         
-        #TODO: Fill these value functions up...
-        if attr == 'Model':
-            return 0
         
-        if attr == 'Manufacturer':
-            return 0
-        
-        if attr == 'StorageType':
-            return 0
-        
-        if attr == 'Format':
-            return 0
     
     def notCrossingThreshold(self, attr, v1, v2):
         #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
