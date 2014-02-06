@@ -1,0 +1,165 @@
+len(caseBase) =  210
+Target: Konica Minolta DiMAGE S414
+Configuration: 3.87MP,  4.0x Optical Zoom,  423.0gm,  16.0MB Storage
+Price: 259.0
+id =  147
+['Price']
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+prod 147's rank = 164
+First product selected: 59
+topK: [190, 76, 1, 174, 192]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'more', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'same', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
+Price : 0.1 Resolution : 0.1 OpticalZoom : 0.3 DigitalZoom : 0.2 Weight : 0.2 StorageIncluded : 0.1
+prod 147's rank = 41
+selection = 192 , Compatiblity = 0.555
+topK: [194, 191, 197, 193, 203]
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'less', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'less', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.062 Resolution : 0.031 OpticalZoom : 0.75 DigitalZoom : 0.062 Weight : 0.062 StorageIncluded : 0.031
+prod 147's rank = 36
+selection = 191 , Compatiblity = 0.888
+topK: [113, 198, 74, 159, 158]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
+Price : 0.048 Resolution : 0.024 OpticalZoom : 0.585 DigitalZoom : 0.048 Weight : 0.097 StorageIncluded : 0.195
+prod 147's rank = 30
+selection = 159 , Compatiblity = 0.888
+topK: [157, 162, 181, 75, 178]
+{'Weight': 'same', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.017 Resolution : 0.035 OpticalZoom : 0.849 DigitalZoom : 0.008 Weight : 0.053 StorageIncluded : 0.035
+prod 147's rank = 25
+selection = 162 , Compatiblity = 0.666
+topK: [115, 119, 184, 122, 120]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.002 Resolution : 0.039 OpticalZoom : 0.943 DigitalZoom : 0.002 Weight : 0.007 StorageIncluded : 0.004
+prod 147's rank = 16
+selection = 115 , Compatiblity = 0.666
+topK: [112, 132, 116, 126, 124]
+{'Weight': 'same', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.001 Resolution : 0.02 OpticalZoom : 0.961 DigitalZoom : 0.003 Weight : 0.011 StorageIncluded : 0.002
+prod 147's rank = 16
+selection = 112 , Compatiblity = 0.666
+topK: [114, 131, 129, 125, 117]
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.001 Resolution : 0.02 OpticalZoom : 0.961 DigitalZoom : 0.003 Weight : 0.011 StorageIncluded : 0.002
+prod 147's rank = 11
+selection = 114 , Compatiblity = 0.666
+topK: [118, 123, 130, 208, 73]
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
+Price : 0.003 Resolution : 0.037 OpticalZoom : 0.906 DigitalZoom : 0.028 Weight : 0.021 StorageIncluded : 0.002
+prod 147's rank = 7
+selection = 73 , Compatiblity = 0.666
+topK: [78, 79, 183, 172, 173]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.003 Resolution : 0.019 OpticalZoom : 0.949 DigitalZoom : 0.014 Weight : 0.011 StorageIncluded : 0.001
+prod 147's rank = 3
+selection = 172 , Compatiblity = 0.666
+topK: [177, 200, 145, 147, 121]
+Number of interaction cycles = 10
+len(caseBase) =  210
+Target: Konica Minolta DiMAGE S414
+Configuration: 3.87MP,  4.0x Optical Zoom,  423.0gm,  16.0MB Storage
+Price: 259.0
+id =  147
+['Price']
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+prod 147's rank = 164
+First product selected: 147
+Number of interaction cycles = 1
+len(caseBase) =  210
+Target: Konica Minolta DiMAGE S414
+Configuration: 3.87MP,  4.0x Optical Zoom,  423.0gm,  16.0MB Storage
+Price: 259.0
+id =  147
+['Price']
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+prod 147's rank = 164
+First product selected: 59
+topK: [190, 76, 1, 174, 192]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'more', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'same', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
+Price : 0.1 Resolution : 0.1 OpticalZoom : 0.3 DigitalZoom : 0.2 Weight : 0.2 StorageIncluded : 0.1
+prod 147's rank = 41
+selection = 192 , Compatiblity = 0.555
+topK: [194, 191, 197, 193, 203]
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'less', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'less', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.062 Resolution : 0.031 OpticalZoom : 0.75 DigitalZoom : 0.062 Weight : 0.062 StorageIncluded : 0.031
+prod 147's rank = 36
+selection = 191 , Compatiblity = 0.888
+topK: [113, 198, 74, 159, 158]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
+Price : 0.048 Resolution : 0.024 OpticalZoom : 0.585 DigitalZoom : 0.048 Weight : 0.097 StorageIncluded : 0.195
+prod 147's rank = 30
+selection = 159 , Compatiblity = 0.888
+topK: [157, 162, 181, 75, 178]
+{'Weight': 'same', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.017 Resolution : 0.035 OpticalZoom : 0.849 DigitalZoom : 0.008 Weight : 0.053 StorageIncluded : 0.035
+prod 147's rank = 25
+selection = 162 , Compatiblity = 0.666
+topK: [115, 119, 184, 122, 120]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.002 Resolution : 0.039 OpticalZoom : 0.943 DigitalZoom : 0.002 Weight : 0.007 StorageIncluded : 0.004
+prod 147's rank = 16
+selection = 115 , Compatiblity = 0.666
+topK: [112, 132, 116, 126, 124]
+{'Weight': 'same', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.001 Resolution : 0.02 OpticalZoom : 0.961 DigitalZoom : 0.003 Weight : 0.011 StorageIncluded : 0.002
+prod 147's rank = 16
+selection = 112 , Compatiblity = 0.666
+topK: [114, 131, 129, 125, 117]
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.001 Resolution : 0.02 OpticalZoom : 0.961 DigitalZoom : 0.003 Weight : 0.011 StorageIncluded : 0.002
+prod 147's rank = 11
+selection = 114 , Compatiblity = 0.666
+topK: [118, 123, 130, 208, 73]
+{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
+Price : 0.003 Resolution : 0.037 OpticalZoom : 0.906 DigitalZoom : 0.028 Weight : 0.021 StorageIncluded : 0.002
+prod 147's rank = 7
+selection = 73 , Compatiblity = 0.666
+topK: [78, 79, 183, 172, 173]
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'less', 'Manufacturer': 0}
+{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+Price : 0.003 Resolution : 0.019 OpticalZoom : 0.949 DigitalZoom : 0.014 Weight : 0.011 StorageIncluded : 0.001
+prod 147's rank = 3
+selection = 172 , Compatiblity = 0.666
+topK: [177, 200, 145, 147, 121]
+Number of interaction cycles = 10
+len(caseBase) =  210
+Target: Konica Minolta DiMAGE S414
+Configuration: 3.87MP,  4.0x Optical Zoom,  423.0gm,  16.0MB Storage
+Price: 259.0
+id =  147
+['Price']
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+prod 147's rank = 164
+First product selected: 147
+Number of interaction cycles = 1
+len(caseBase) =  210
+Target: Konica Minolta DiMAGE S414
+Configuration: 3.87MP,  4.0x Optical Zoom,  423.0gm,  16.0MB Storage
+Price: 259.0
+id =  147
+['Price']
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+prod 147's rank = 164
+First product selected: 147
+Number of interaction cycles = 1
+Average number of interaction cycles =  0.0219047619048
+Final average using the previous 10 averages = 4.6
+Average without ones: 10.0
+ID, NumDominators, IterationCycles
+147 , 0 , 4.6

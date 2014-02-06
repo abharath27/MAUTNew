@@ -2,7 +2,11 @@ import ssh, ping, threading, os
 
 def func(handler, count):
     print 'Command:' + "python eval" + str(count) +".py config" + str(count) + " >" + str(count) + ".txt"
-    handler.exec_command("cd MAUTNew/src;python eval" + str(count) +".py config" + str(count) + " >" + str(count) + ".txt")
+    stdin, stdout, stderr = handler.exec_command("cd MAUTNew/src;python eval" + str(count) +".py config" + str(count) + " >" + str(count) + ".txt")
+    if stderr.read() != '':
+        print 'stderr from', count, ':', stderr.read()
+    #print 'exit status:', handler.recv_exit_status()
+    print 'Process', count, 'terminated?'
 
 uname='abharath'
 passwd='password27'
@@ -12,6 +16,7 @@ endHost='170'
 upList=[]
 downList=[]
 sshHandlers = []
+threads = []
 count = 1
 flag = 0
 
@@ -30,6 +35,7 @@ if len(upList) < 9:
     exit()
 for host1 in upList:
     sshConnect = ssh.connect(host1,uname,passwd)
+    #sshConnect = sshConnect.get_transport()
     if sshConnect =='':
         print 'skipping', host1
     else:
@@ -41,7 +47,9 @@ for host1 in upList:
 for handler in sshHandlers:
     #Modification to be done: Run all the commands in parallel
     thread = threading.Thread(target = func, args = (handler,count))
+    threads.append(thread)
     thread.start()
     print 'Command executed, count = ', count
     count += 1
-input()
+
+[t.join() for t in threads]

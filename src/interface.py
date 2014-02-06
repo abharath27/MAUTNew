@@ -9,6 +9,7 @@ class App:
         self.recommender = Recommender()
         self.recommender.selectiveWtUpdateEnabled = False
         self.recommender.diversityEnabled = False
+        self.recommender.target = 147
         self.createUnitCritiqueFrame()
         self.createTargetComparisonBox()
         
@@ -18,7 +19,8 @@ class App:
         self.targetComparisonBox.grid(row = 0, column = 1)
         
     def updateTargetComparisonBox(self):
-        target = self.recommender.caseBase[158]
+        '''IMP:The target number here will effect the utilities list box also (wrt overlap degrees)'''
+        target = self.recommender.caseBase[self.recommender.target]
         reference = self.recommender.caseBase[self.recommender.currentReference]
         tempStr = self.recommender.critiqueStr(target, reference)
         self.targetComparisonBox.delete(1.0, END)
@@ -62,7 +64,7 @@ class App:
             if self.textBoxList[i].get() != '':
                 preference[attr] = float(self.textBoxList[i].get())
             i += 1
-        self.recommender.selectFirstProduct(preference, 116) #pass second argument if you want a particular product to become the reference    
+        self.recommender.selectFirstProduct(preference, 59) #pass second argument if you want a particular product to become the reference    
         currentProd = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()
@@ -76,6 +78,7 @@ class App:
         self.updateCompoundCritiqueBoxes()
         self.updateWeightBox()
         self.updateTargetComparisonBox()
+        self.updateUtilitiesFrame()
         
     def createWeightBox(self):
         self.weightBox = Text(self.master, font= 'Helvetica', wrap = WORD, width = 25, height = 7,\
@@ -85,7 +88,7 @@ class App:
     def updateWeightBox(self):
         self.weightBox.delete(1.0, END)
         tempStr = 'Weights:\n'
-        for attr in self.recommender.numericAttrNames + self.recommender.nonNumericAttrNames:
+        for attr in self.recommender.numericAttrNames:
             tempStr += attr + ' : ' + str(int(1000*self.recommender.weights[attr])/1000.0) + '\n'
         self.weightBox.insert(END, tempStr)
     
@@ -139,9 +142,15 @@ class App:
         refUtil = self.recommender.utility(self.recommender.caseBase[currentRef], weights)
         tempStr = 'Ref Product ID:' + str(currentRef) + ' Utility:' + str(int(refUtil*1000)/1000.0) 
         self.utilitiesListBox.insert(END, tempStr)
-        for util in self.recommender.utilities:
-            tempStr = 'ID:' + str(util[0].id) + ' Utility:' + str(int(util[1]*1000)/1000.0)
+        i = 0; index = 0
+        for util in self.recommender.stuffForUtilitiesFrame():
+            tempStr = 'ID:' + util[0] + ' Util:' + util[1] + 'Overlap:' + util[2]
             self.utilitiesListBox.insert(END, tempStr)
+            if int(util[0]) == self.recommender.target:
+                index = i
+            i+=1
+        print 'index =', index
+        self.utilitiesListBox.selection_set(first = index+1)
         
         
     def createCompoundCritiqueFrame(self):
