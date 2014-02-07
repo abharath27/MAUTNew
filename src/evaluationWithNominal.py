@@ -43,7 +43,7 @@ class Evaluator:
                 numberOfAttributesInQuery = numAttributes
                 initialPrefAttributes = random.choice(list(itertools.combinations\
                                        (self.recommender.attrNames, numberOfAttributesInQuery)))
-                #initialPrefAttributes = ['Price']
+                #initialPrefAttributes = ['StorageIncluded']
                 print initialPrefAttributes
                 #returns ('Price', 'Resolution) in case number of attr = 2
                 initialPreferences = {}

@@ -1,0 +1,143 @@
+len(caseBase) =  210
+id =  199
+['StorageIncluded']
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+target Product 199 's rank = 191
+First product selected: 169
+topK: [14, 15, 16, 17, 20]
+Price : 0.066 Resolution : 0.266 OpticalZoom : 0.266 DigitalZoom : 0.266 Weight : 0.066 StorageIncluded : 0.066
+target Product 199 's rank = 198
+selection = 17 , Compatiblity = 0.555
+topK: [190, 0, 9, 8, 7]
+Price : 0.022 Resolution : 0.355 OpticalZoom : 0.088 DigitalZoom : 0.355 Weight : 0.088 StorageIncluded : 0.088
+target Product 199 's rank = 193
+selection = 9 , Compatiblity = 0.222
+topK: [3, 12, 11, 19, 5]
+Price : 0.022 Resolution : 0.355 OpticalZoom : 0.088 DigitalZoom : 0.355 Weight : 0.088 StorageIncluded : 0.088
+target Product 199 's rank = 188
+selection = 19 , Compatiblity = 0.555
+topK: [18, 21, 186, 82, 188]
+Price : 0.083 Resolution : 0.333 OpticalZoom : 0.083 DigitalZoom : 0.333 Weight : 0.083 StorageIncluded : 0.083
+target Product 199 's rank = 183
+selection = 21 , Compatiblity = 0.666
+topK: [86, 84, 139, 165, 171]
+Price : 0.023 Resolution : 0.38 OpticalZoom : 0.023 DigitalZoom : 0.38 Weight : 0.095 StorageIncluded : 0.095
+target Product 199 's rank = 178
+selection = 171 , Compatiblity = 0.333
+topK: [170, 85, 154, 168, 209]
+Price : 0.07 Resolution : 0.28 OpticalZoom : 0.017 DigitalZoom : 0.28 Weight : 0.28 StorageIncluded : 0.07
+target Product 199 's rank = 173
+selection = 85 , Compatiblity = 0.555
+topK: [196, 169, 76, 192, 74]
+Price : 0.055 Resolution : 0.222 OpticalZoom : 0.055 DigitalZoom : 0.222 Weight : 0.222 StorageIncluded : 0.222
+target Product 199 's rank = 167
+selection = 196 , Compatiblity = 0.444
+topK: [194, 1, 175, 45, 191]
+Price : 0.015 Resolution : 0.242 OpticalZoom : 0.015 DigitalZoom : 0.242 Weight : 0.242 StorageIncluded : 0.242
+target Product 199 's rank = 163
+selection = 175 , Compatiblity = 0.333
+topK: [176, 83, 87, 4, 88]
+Price : 0.024 Resolution : 0.096 OpticalZoom : 0.006 DigitalZoom : 0.387 Weight : 0.387 StorageIncluded : 0.096
+target Product 199 's rank = 155
+selection = 83 , Compatiblity = 0.444
+topK: [136, 6, 22, 135, 140]
+Price : 0.024 Resolution : 0.096 OpticalZoom : 0.006 DigitalZoom : 0.387 Weight : 0.387 StorageIncluded : 0.096
+target Product 199 's rank = 153
+selection = 22 , Compatiblity = 0.444
+topK: [13, 187, 189, 137, 134]
+Price : 0.015 Resolution : 0.242 OpticalZoom : 0.015 DigitalZoom : 0.242 Weight : 0.242 StorageIncluded : 0.242
+target Product 199 's rank = 72
+selection = 134 , Compatiblity = 0.555
+topK: [138, 127, 128, 195, 2]
+Price : 0.034 Resolution : 0.136 OpticalZoom : 0.008 DigitalZoom : 0.136 Weight : 0.547 StorageIncluded : 0.136
+target Product 199 's rank = 140
+selection = 195 , Compatiblity = 0.555
+topK: [185, 77, 54, 89, 81]
+Price : 0.023 Resolution : 0.38 OpticalZoom : 0.023 DigitalZoom : 0.095 Weight : 0.38 StorageIncluded : 0.095
+target Product 199 's rank = 143
+selection = 185 , Compatiblity = 0.111
+topK: [10, 94, 184, 182, 180]
+Price : 0.034 Resolution : 0.136 OpticalZoom : 0.008 DigitalZoom : 0.136 Weight : 0.547 StorageIncluded : 0.136
+target Product 199 's rank = 133
+selection = 184 , Compatiblity = 0.666
+topK: [181, 178, 183, 113, 159]
+Price : 0.049 Resolution : 0.049 OpticalZoom : 0.003 DigitalZoom : 0.049 Weight : 0.797 StorageIncluded : 0.049
+target Product 199 's rank = 126
+selection = 181 , Compatiblity = 0.222
+topK: [75, 117, 78, 79, 158]
+Price : 0.049 Resolution : 0.049 OpticalZoom : 0.003 DigitalZoom : 0.049 Weight : 0.797 StorageIncluded : 0.049
+target Product 199 's rank = 121
+selection = 78 , Compatiblity = 0.444
+topK: [73, 116, 162, 123, 118]
+Price : 0.043 Resolution : 0.173 OpticalZoom : 0.002 DigitalZoom : 0.043 Weight : 0.693 StorageIncluded : 0.043
+target Product 199 's rank = 118
+selection = 116 , Compatiblity = 0.444
+topK: [119, 115, 120, 122, 124]
+Price : 0.028 Resolution : 0.456 OpticalZoom : 0.001 DigitalZoom : 0.028 Weight : 0.456 StorageIncluded : 0.028
+target Product 199 's rank = 118
+selection = 115 , Compatiblity = 0.333
+topK: [126, 112, 132, 114, 129]
+Price : 0.046 Resolution : 0.185 OpticalZoom : 0.0 DigitalZoom : 0.011 Weight : 0.743 StorageIncluded : 0.011
+target Product 199 's rank = 107
+selection = 126 , Compatiblity = 0.222
+topK: [125, 131, 130, 208, 157]
+Price : 0.163 Resolution : 0.163 OpticalZoom : 0.0 DigitalZoom : 0.01 Weight : 0.652 StorageIncluded : 0.01
+target Product 199 's rank = 103
+selection = 130 , Compatiblity = 0.444
+topK: [197, 193, 172, 173, 200]
+Price : 0.107 Resolution : 0.429 OpticalZoom : 0.0 DigitalZoom : 0.026 Weight : 0.429 StorageIncluded : 0.006
+target Product 199 's rank = 102
+selection = 200 , Compatiblity = 0.333
+topK: [198, 203, 147, 145, 177]
+Price : 0.046 Resolution : 0.75 OpticalZoom : 0.0 DigitalZoom : 0.011 Weight : 0.187 StorageIncluded : 0.002
+target Product 199 's rank = 99
+selection = 147 , Compatiblity = 0.444
+topK: [133, 98, 149, 143, 148]
+Price : 0.012 Resolution : 0.779 OpticalZoom : 0.0 DigitalZoom : 0.012 Weight : 0.194 StorageIncluded : 0.0
+target Product 199 's rank = 92
+selection = 133 , Compatiblity = 0.333
+topK: [141, 144, 207, 205, 146]
+Price : 0.012 Resolution : 0.779 OpticalZoom : 0.0 DigitalZoom : 0.012 Weight : 0.194 StorageIncluded : 0.0
+target Product 199 's rank = 87
+selection = 141 , Compatiblity = 0.333
+topK: [150, 142, 153, 155, 161]
+Price : 0.03 Resolution : 0.48 OpticalZoom : 0.0 DigitalZoom : 0.007 Weight : 0.48 StorageIncluded : 0.0
+target Product 199 's rank = 83
+selection = 153 , Compatiblity = 0.444
+topK: [179, 163, 206, 166, 156]
+Price : 0.012 Resolution : 0.779 OpticalZoom : 0.0 DigitalZoom : 0.012 Weight : 0.194 StorageIncluded : 0.0
+target Product 199 's rank = 77
+selection = 179 , Compatiblity = 0.333
+topK: [80, 164, 204, 201, 167]
+Price : 0.047 Resolution : 0.752 OpticalZoom : 0.0 DigitalZoom : 0.011 Weight : 0.188 StorageIncluded : 0.0
+target Product 199 's rank = 69
+selection = 201 , Compatiblity = 0.666
+topK: [202, 160, 151, 152, 91]
+Price : 0.014 Resolution : 0.923 OpticalZoom : 0.0 DigitalZoom : 0.003 Weight : 0.057 StorageIncluded : 0.0
+target Product 199 's rank = 52
+selection = 151 , Compatiblity = 0.444
+topK: [121, 50, 33, 101, 38]
+Price : 0.003 Resolution : 0.934 OpticalZoom : 0.0 DigitalZoom : 0.003 Weight : 0.058 StorageIncluded : 0.0
+target Product 199 's rank = 35
+selection = 38 , Compatiblity = 0.555
+topK: [57, 24, 30, 36, 23]
+Price : 0.012 Resolution : 0.787 OpticalZoom : 0.0 DigitalZoom : 0.003 Weight : 0.196 StorageIncluded : 0.0
+target Product 199 's rank = 23
+selection = 57 , Compatiblity = 0.444
+topK: [56, 110, 100, 106, 97]
+Price : 0.012 Resolution : 0.787 OpticalZoom : 0.0 DigitalZoom : 0.003 Weight : 0.196 StorageIncluded : 0.0
+target Product 199 's rank = 14
+selection = 97 , Compatiblity = 0.666
+topK: [61, 53, 65, 95, 62]
+Price : 0.03 Resolution : 0.483 OpticalZoom : 0.0 DigitalZoom : 0.001 Weight : 0.483 StorageIncluded : 0.0
+target Product 199 's rank = 0
+selection = 65 , Compatiblity = 0.444
+topK: [199, 27, 28, 29, 43]
+Number of interaction cycles = 33
+Iterations List: [33]
+Average iteration for iteration number 0 = 33.0
+Average number of interaction cycles =  0.157142857143
+Final average using the previous 10 averages = 33.0
+Average without ones: 33.0
+ID, NumDominators, IterationCycles
+199 , 113 , 33.0

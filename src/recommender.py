@@ -2,6 +2,8 @@ import first, copy, util, inspect, random
 
 
 class Recommender:
+    '''Every class inheriting Recommender should initialize the following variables'''
+    '''1. self.initialPreferences; 2. self.target'''
     def __init__(self):
         self.attrNames = ['Manufacturer', 'Price', 'Format', \
                           'Resolution', 'OpticalZoom', 'DigitalZoom',\
@@ -22,7 +24,7 @@ class Recommender:
         self.currentReference = -1
         self.topK = [None]*self.K
         self.alpha = 0.5
-        self.target = -1
+        self.target = -1                        #set by Evaluator() instance
         self.initialPreferences = {}            #initial preferences of the user. set by Evaluator() instance
         
         #book-keeping attributes
@@ -38,9 +40,10 @@ class Recommender:
         self.diversityEnabled = False                       #Diversity should be enabled true
         self.selectiveWtUpdateEnabled = False               #Enable selective weight updation....
         self.neutralDirectionEnabled = True
+        self.similarProdInFirstCycleEnabled = True
         
         #weight update strategies. Max one of them should be turned on at any moment.
-        self.updateWeightsInTargetsDirection = True         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
+        self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
         self.updateWeightsWrtInitPreferences = False        #This technique successfully works
         self.updateWeightsInLineWithTarget = False           #only weights of attributes that are in-line with target are updated
         
@@ -94,12 +97,10 @@ class Recommender:
         if specialArg != None:          #'specialArg'th product is the current reference
             self.currentReference = specialArg
         
-        #NOT REMOVING THE FIRST PRODUCT, SINCE IT IS THE TARGET TO BE REACHED
-        #ACCORDING TO THE NEW SCHEME...
-#        for i in range(len(self.prodList)):
-#            if self.prodList[i].id == self.currentReference:
-#                #self.prodList.remove(self.prodList[i])
-#                break
+        for i in range(len(self.prodList)):
+            if self.prodList[i].id == self.currentReference:
+                self.prodList.remove(self.prodList[i])
+                break
     
     def preComputeAttributeSigns(self):
         reference = self.caseBase[self.currentReference]
@@ -126,7 +127,7 @@ class Recommender:
         retVal += (1-alpha) * diversity
         return retVal 
         
-    def selectTopK(self, unitCritiqueArg = None):
+    def selectTopK(self, unitCritiqueArg = None, firstTime = False):
         #THIS FUNCTION SETS THE VARIABLE SELF.TOPK
         newList = copy.copy(self.prodList)
         if unitCritiqueArg != None: newList = unitCritiqueArg
@@ -135,14 +136,18 @@ class Recommender:
         self.utilities = sorted(self.utilities, key = lambda x: -x[1])    
         print "target Product", self.target, "'s rank =", [x[0].id for x in self.utilities].index(self.target)
         
-        if self.diversityEnabled == False:
+        if firstTime == True:
+            similarities = [(prod, self.sim(prod, self.initialPreferences)) for prod in self.prodList]
+            similarities = sorted(similarities, key = lambda x: -x[1])
+            self.topK = [x[0] for x in similarities[:self.K]]
+            
+        if self.diversityEnabled == False and firstTime == False:
             self.topK = [x[0] for x in self.utilities[:self.K]]              #Getting only the products and ignoring utilities
         if self.diversityEnabled == True:
             #IMPLEMENT THE Smyth and McClave(2001) Algorithm
             #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
             tempList = []   #This will hold the topK products found so far
-            #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
-            self.preComputeAttributeSigns()
+            self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
             while len(tempList) < self.K:
                 qualities = [(c, self.quality(c, tempList)) for c in newList]
                 top = sorted(qualities, key = lambda x: -x[1])[0][0]
@@ -192,7 +197,7 @@ class Recommender:
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
-        self.selectTopK()
+        self.selectTopK(firstTime = (selection == 'firstTime')*self.similarProdInFirstCycleEnabled)     #algorithm for selecting the topK is different in the first iteration
         #TODO: Reject all products that are being fully dominated by the current product
         critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
         return critiqueStringList

@@ -10,6 +10,7 @@ class App:
         self.recommender.selectiveWtUpdateEnabled = False
         self.recommender.diversityEnabled = False
         self.recommender.target = 147
+        self.recommender.initialPreferences = {'Price':self.recommender.caseBase[147].attr['Price']}
         self.createUnitCritiqueFrame()
         self.createTargetComparisonBox()
         
