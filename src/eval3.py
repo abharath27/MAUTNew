@@ -15,52 +15,36 @@ class Evaluator:
         self.recommender.neutralDirectionEnabled = False
         self.targets = None
         self.startAll(config[2])
-        
+    
     def startAll(self, numAttributes):
-        #TODO: Introduce preferences on non-numeric attributes later...
         #Make each product as the target 10 times...
-        #numExperiments = len(self.recommender.caseBase)
         numExperiments = 5
-        numGlobalIterations = 0; numIterationsList = [];averages = []; averageWithoutOnes = [];
+        numGlobalIterations = 0; numIterationsList = [];
+        averages = []; averageWithoutOnes = [];
         iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
+        queries = iter([x[:-1].split() for x in open('queries.txt').readlines()])
+        
         for tempVar in range(numExperiments):
             numIterationsList = []
             print 'len(caseBase) = ', len(self.recommender.caseBase)
             #singleId = 147
             #print 'Target:', self.recommender.caseBase[singleId]
             for prod in self.recommender.caseBase:
-                #print '-------------------------------------------\nIteration No. ', prod.id, ':\n\n'
                 print 'id = ', prod.id
                 self.recommender.resetWeights()
-                #print '==================='
-                #print 'Weights:'
-                for attr in self.recommender.weights:
-                    #print attr,':', (int(self.recommender.weights[attr]*100)/100.0),
-                    pass
-                #print '==================='
-                
                 self.recommender.prodList = [copy.copy(x) for x in self.recommender.caseBase]
-                numberOfAttributesInQuery = numAttributes
-                initialPrefAttributes = random.choice(list(itertools.combinations\
-                                       (self.recommender.attrNames, numberOfAttributesInQuery)))
-                #initialPrefAttributes = ['Price']
-                print initialPrefAttributes
-                #returns ('Price', 'Resolution) in case number of attr = 2
+                queryAttributes = queries.next()
                 initialPreferences = {}
-                for attr in initialPrefAttributes:
-                    #'''Main Part: Formulating the query'''
+                for attr in queryAttributes:
                     initialPreferences[attr] = prod.attr[attr]
-            
-                #self.target = self.recommender.mostSimilar(prod)
                 #self.targets = [prod] + self.dominatingProducts(prod)
                 self.targets = [prod]
+                self.recommender.initialPreferences = initialPreferences
                 self.recommender.target = self.targets[0].id 
                 self.recommender.selectFirstProduct(initialPreferences)
                 self.recommender.critiqueStrings('firstTime')
                 numLocalIterations = 1
                 targets = [x.id for x in self.targets]
-                #print 'Source ID:', prod.id
-                #print 'Targets:', targets
                 print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
@@ -69,7 +53,6 @@ class Evaluator:
                     if len(set(targets).intersection(set(topKIds))) != 0:
                         break
                     
-                    #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
                     #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
                     selection, compatibility = self.recommender.maxCompatible(self.recommender.topK)
                     self.recommender.critiqueStrings(selection)

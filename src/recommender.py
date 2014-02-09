@@ -5,8 +5,7 @@ class Recommender:
     '''Every class inheriting Recommender should initialize the following variables'''
     '''1. self.initialPreferences; 2. self.target'''
     def __init__(self):
-        self.attrNames = ['Manufacturer', 'Price', 'Format', \
-                          'Resolution', 'OpticalZoom', 'DigitalZoom',\
+        self.attrNames = ['Manufacturer', 'Price', 'Format', 'Resolution', 'OpticalZoom', 'DigitalZoom',\
                            'Weight', 'StorageType', 'StorageIncluded']
         self.numericAttrNames = ['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
         self.nonNumericAttrNames = ['Manufacturer', 'Format', 'StorageType']
@@ -34,13 +33,14 @@ class Recommender:
         self.utilities = None
         self.weightIncOrDec = dict([(attr, None) for attr in self.numericAttrNames + self.nonNumericAttrNames])   #To let the interface know
         self.preComputedAttrSigns = {}
+        self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
+        self.neutralDirectionEnabled = True                 #It's set to false during evaluation, neutral direction helps for the proper display of critique strings
         
         #modifications turn on/off
-        self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
         self.diversityEnabled = False                       #Diversity should be enabled true
         self.selectiveWtUpdateEnabled = False               #Enable selective weight updation....
-        self.neutralDirectionEnabled = True
-        self.similarProdInFirstCycleEnabled = True
+        self.similarProdInFirstCycleEnabled = False
+        self.targetProductDoesntAppearInFirstCycle = True
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -84,9 +84,12 @@ class Recommender:
                     dist += 1
         return 1/(1+dist)
     
+    
     def selectFirstProduct(self, preferences, specialArg = None):
         #Return the most similar product...
         #print 'Preferences = ', preferences
+        if self.targetProductDoesntAppearInFirstCycle == True:
+            self.prodList = [x for x in self.prodList if x.id != self.target]
         newBase = [copy.copy(x) for x in self.prodList]; random.shuffle(newBase)
         similarities = [(prod, self.sim(prod, preferences)) for prod in newBase]
         similarities = sorted(similarities, key = lambda x: -x[1])
@@ -97,11 +100,11 @@ class Recommender:
         if specialArg != None:          #'specialArg'th product is the current reference
             self.currentReference = specialArg
         
-        for i in range(len(self.prodList)):
-            if self.prodList[i].id == self.currentReference:
-                self.prodList.remove(self.prodList[i])
-                break
-    
+        if self.targetProductDoesntAppearInFirstCycle == True:
+            self.prodList.append(self.caseBase[self.target])
+        self.prodList = [x for x in self.prodList if x.id != self.currentReference]     #remove currentReference from prodlist
+        
+        
     def preComputeAttributeSigns(self):
         reference = self.caseBase[self.currentReference]
         for prod in self.caseBase:
@@ -128,7 +131,9 @@ class Recommender:
         return retVal 
         
     def selectTopK(self, unitCritiqueArg = None, firstTime = False):
-        #THIS FUNCTION SETS THE VARIABLE SELF.TOPK
+        ''''THIS FUNCTION SETS THE VARIABLE SELF.TOPK'''
+        '''Argument firstTime is True only when we want similar products as the topK in first interaction cycle'''
+        '''Argument unitCritiqueArg is not None when the caller is unitCritiqueSelectedStrings()'''
         newList = copy.copy(self.prodList)
         if unitCritiqueArg != None: newList = unitCritiqueArg
         #when unitCritique is selected, you need to some filtering; hence the list is changed
@@ -136,14 +141,27 @@ class Recommender:
         self.utilities = sorted(self.utilities, key = lambda x: -x[1])    
         print "target Product", self.target, "'s rank =", [x[0].id for x in self.utilities].index(self.target)
         
-        if firstTime == True:
-            similarities = [(prod, self.sim(prod, self.initialPreferences)) for prod in self.prodList]
+        #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
+        #both the if statements are executed.
+        if firstTime == True and self.targetProductDoesntAppearInFirstCycle == True:
+            newList = [x for x in self.prodList if x.id != self.target]
+            utilities = [(product, self.utility(product, self.weights)) for product in newList]
+            self.topK = [x[0] for x in sorted(utilities, key = lambda x: -x[1])[:self.K]]
+        
+        if firstTime == True and self.similarProdInFirstCycleEnabled == True:
+            similarities = [(prod, self.sim(prod, self.initialPreferences)) for prod in newList]
             similarities = sorted(similarities, key = lambda x: -x[1])
             self.topK = [x[0] for x in similarities[:self.K]]
-            
-        if self.diversityEnabled == False and firstTime == False:
+            return
+        
+        firstCycleModifications = self.targetProductDoesntAppearInFirstCycle or self.similarProdInFirstCycleEnabled
+        dontGoBelow = firstCycleModifications and firstTime
+        #you don't go below only when mod - true, and firstTime - true
+        #Go further below and do the below stuff only when firstCycle modifications are false
+        if dontGoBelow == False and self.diversityEnabled == False:                                  #This is the case with standard MAUT
             self.topK = [x[0] for x in self.utilities[:self.K]]              #Getting only the products and ignoring utilities
-        if self.diversityEnabled == True:
+            
+        if dontGoBelow == False and self.diversityEnabled == True:
             #IMPLEMENT THE Smyth and McClave(2001) Algorithm
             #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
             tempList = []   #This will hold the topK products found so far
@@ -197,7 +215,7 @@ class Recommender:
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
-        self.selectTopK(firstTime = (selection == 'firstTime')*self.similarProdInFirstCycleEnabled)     #algorithm for selecting the topK is different in the first iteration
+        self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
         #TODO: Reject all products that are being fully dominated by the current product
         critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
         return critiqueStringList

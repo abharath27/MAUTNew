@@ -1,13 +1,13 @@
 class Camera:
     def __init__(self, id, line):
         self.id = id
-        self.attrNames = ['Manufacturer', 'Model', 'Price', 'Format', \
+        self.attrNames = ['Manufacturer', 'Price', 'Format', \
                           'Resolution', 'OpticalZoom', 'DigitalZoom',\
                            'Weight', 'StorageType', 'StorageIncluded']
         self.attr = {}  #Contains attribute values
         for x,y in zip(line, self.attrNames):
             self.attr[y] = x 
-    def __str__(self):
+    def str2(self):
         string = self.attr['Manufacturer'] + ' '
         string = string + self.attr['Model'] + '\n'
         string = string + 'Configuration: ' + str(self.attr['Resolution']) + 'MP,  ' \
@@ -31,3 +31,5 @@ def readList():
         #print line
         selfList.append(Camera(id, line))
     return selfList
+
+#print readList()[0].attr
