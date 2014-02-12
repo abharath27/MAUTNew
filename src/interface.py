@@ -173,7 +173,7 @@ class App:
     def displayProduct(self, product):
         t = Text(self.master, font= 'Helvetica', wrap = WORD, width = 60, borderwidth = 4, relief = GROOVE)
         string = product.attr['Manufacturer'] + ' '
-        string = string + product.attr['Model'] + '\n'
+        #string = string + product.attr['Model'] + '\n'
         string = string + 'Configuration: ' + str(product.attr['Resolution']) + 'MP,  ' \
            + str(product.attr['OpticalZoom']) + 'x Optical Zoom,  ' + str(product.attr['Weight']) + 'gm,  ' \
             + str(product.attr['StorageIncluded']) + 'MB Storage\n'

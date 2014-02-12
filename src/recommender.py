@@ -30,25 +30,33 @@ class Recommender:
         self.attrDirection = {}
         self.unitAttrPreferences = {}
         self.critiqueStringDirections = {}
-        self.utilities = None
+        tempUtilities = None
         self.weightIncOrDec = dict([(attr, None) for attr in self.numericAttrNames + self.nonNumericAttrNames])   #To let the interface know
         self.preComputedAttrSigns = {}
         self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
         self.neutralDirectionEnabled = True                 #It's set to false during evaluation, neutral direction helps for the proper display of critique strings
         
-        #modifications turn on/off
+        #modifications turn on/off. By default they are turned off. Inheriting class should turn them on.
         self.diversityEnabled = False                       #Diversity should be enabled true
         self.selectiveWtUpdateEnabled = False               #Enable selective weight updation....
         self.similarProdInFirstCycleEnabled = False
-        self.targetProductDoesntAppearInFirstCycle = True
+        self.targetProductDoesntAppearInFirstCycle = False
+        self.highestOverlappingProductsInTopK = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
-        self.updateWeightsWrtInitPreferences = False        #This technique successfully works
         self.updateWeightsInLineWithTarget = False           #only weights of attributes that are in-line with target are updated
+        #above two are hypothetical and won't be used in real experiments.
+        self.updateWeightsWrtInitPreferences = False        #This technique successfully works
         
+        #sanity check
+        numEnabled = self.updateWeightsInLineWithTarget + self.updateWeightsInTargetsDirection + self.updateWeightsWrtInitPreferences
+        if numEnabled > 1: print 'More than one weight update technique enabled; exiting;'; exit()
+        util.printNotes(self)
+        print 'hello world'
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
+        
         
     def resetWeights(self):
         realAttributes = self.numericAttrNames
@@ -131,16 +139,19 @@ class Recommender:
         return retVal 
         
     def selectTopK(self, unitCritiqueArg = None, firstTime = False):
-        ''''THIS FUNCTION SETS THE VARIABLE SELF.TOPK'''
+        ''''THIS FUNCTION'S ONLY TASK IS TO SET THE VARIABLE SELF.TOPK'''
         '''Argument firstTime is True only when we want similar products as the topK in first interaction cycle'''
         '''Argument unitCritiqueArg is not None when the caller is unitCritiqueSelectedStrings()'''
         newList = copy.copy(self.prodList)
         if unitCritiqueArg != None: newList = unitCritiqueArg
         #when unitCritique is selected, you need to some filtering; hence the list is changed
-        self.utilities = [(product, self.utility(product, self.weights)) for product in newList]
-        self.utilities = sorted(self.utilities, key = lambda x: -x[1])    
-        print "target Product", self.target, "'s rank =", [x[0].id for x in self.utilities].index(self.target)
-        
+        tempUtilities = [(product, self.utility(product, self.weights)) for product in newList]
+        tempUtilities = sorted(tempUtilities, key = lambda x: -x[1])
+        #print [x .id for x in self.prodList]    
+        try:
+            print "target Product", self.target, "'s rank =", [x[0].id for x in tempUtilities].index(self.target)
+        except:
+            print "target Product", self.target, "'s rank =", 0     #This means that the product was the reference product in first iteration
         #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
         #both the if statements are executed.
         if firstTime == True and self.targetProductDoesntAppearInFirstCycle == True:
@@ -158,17 +169,40 @@ class Recommender:
         dontGoBelow = firstCycleModifications and firstTime
         #you don't go below only when mod - true, and firstTime - true
         #Go further below and do the below stuff only when firstCycle modifications are false
+        if self.highestOverlappingProductsInTopK == True: dontGoBelow = False
+        
         if dontGoBelow == False and self.diversityEnabled == False:                                  #This is the case with standard MAUT
-            self.topK = [x[0] for x in self.utilities[:self.K]]              #Getting only the products and ignoring utilities
-            
+            self.topK = [x[0] for x in tempUtilities[:self.K]]              #Getting only the products and ignoring utilities
+            utilities = [(product, self.utility(product, self.weights)) for product in self.prodList]
+            sortedProducts = [x[0] for x in sorted(utilities, key = lambda x: -x[1])]
+            sortedProducts = [x for x in sortedProducts if x.id != self.target]
+            if self.highestOverlappingProductsInTopK == True:
+                #self.target, self.currentReference
+                referenceProd = self.caseBase[self.currentReference]
+                targetProd = self.caseBase[self.target]
+                tempList = []
+                for prod in sortedProducts:
+                    attrDirections = self.direction(prod, referenceProd, targetProd)
+                    targetAttrDirections = self.direction(targetProd, referenceProd, targetProd)
+                    overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
+                    tempList.append((prod, overlapDegree))
+                tempList = sorted(tempList, key = lambda x: -x[1])
+                self.topK = [x[0] for x in tempList[:self.K]] 
+                
         if dontGoBelow == False and self.diversityEnabled == True:
             #IMPLEMENT THE Smyth and McClave(2001) Algorithm
             #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
             tempList = []   #This will hold the topK products found so far
             self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
-            while len(tempList) < self.K:
+            while len(tempList) < self.K and len(newList) > 0:
                 qualities = [(c, self.quality(c, tempList)) for c in newList]
-                top = sorted(qualities, key = lambda x: -x[1])[0][0]
+                try:
+                    top = sorted(qualities, key = lambda x: -x[1])[0][0]
+                except:
+                    print 'len(prodlist) =', len(self.prodList)
+                    print 'len(newList) =', len(newList)
+                    print 'len(qualities) =', len(qualities)
+                    exit()
                 tempList.append(top)
                 newList = [p for p in newList if p.id != top.id]    #Removing the 'top' product from newList
             
@@ -196,8 +230,8 @@ class Recommender:
                 dir1 = self.direction(selectedProduct, reference, target)
                 dir2 = self.direction(target, reference, target)
                 selectiveAttributes = self.overlappingAttributes(dir1, dir2)
-                print 'dir1:', dir1;
-                print 'dir2:', dir2; print 'selectiveAttributes:', selectiveAttributes
+                #print 'dir1:', dir1;
+                #print 'dir2:', dir2; print 'selectiveAttributes:', selectiveAttributes
                 specialProduct = copy.copy(self.topK[selection])
                 specialProduct.attr = {}
                 for attr in selectiveAttributes:
@@ -210,8 +244,8 @@ class Recommender:
         #print 'Product List Size = ', len(self.prodList)
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []
-            print attr,':', (int(self.weights[attr]*1000)/1000.0),
-        print
+            #print attr,':', (int(self.weights[attr]*1000)/1000.0),
+        #print
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
@@ -508,6 +542,7 @@ class Recommender:
     
     def stuffForUtilitiesFrame(self):
         '''Return ID, utility and overlap, all as strings; limit the floating point numbers to only 3 decimal places'''
+        #TODO: This wont be correct if critique diversity is enabled.... 
         utilities = [(product, self.utility(product, self.weights)) for product in self.prodList]
         utilities = sorted(utilities, key = lambda x: -x[1])
         newList = [x[0] for x in utilities]
@@ -523,9 +558,10 @@ class Recommender:
             targetAttrDirections = self.direction(targetProd, referenceProd, targetProd)
             overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
             overlapDegList.append(overlapDegree)
+        
         for i in range(len(utilities)):
             utilities[i] = [str(utilities[i][0].id), str(int(1000*utilities[i][1])/1000.0), str(int(100*overlapDegList[i])/100.0)]
-        
+        utilities = sorted(utilities, key = lambda x: -float(x[2]))
         return utilities
                 
     def direction(self, prod, reference, target):

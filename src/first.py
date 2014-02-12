@@ -7,9 +7,8 @@ class Camera:
         self.attr = {}  #Contains attribute values
         for x,y in zip(line, self.attrNames):
             self.attr[y] = x 
-    def str2(self):
+    def __str__(self):
         string = self.attr['Manufacturer'] + ' '
-        string = string + self.attr['Model'] + '\n'
         string = string + 'Configuration: ' + str(self.attr['Resolution']) + 'MP,  ' \
            + str(self.attr['OpticalZoom']) + 'x Optical Zoom,  ' + str(self.attr['Weight']) + 'gm,  ' \
             + str(self.attr['StorageIncluded']) + 'MB Storage\n'

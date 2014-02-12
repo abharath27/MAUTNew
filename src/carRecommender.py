@@ -3,10 +3,10 @@ import carRead
 
 class CarRecommender(Recommender):
     def __init__(self):
-        self.attrNames = ['Manufacturer', 'Model', 'Body',\
-                           'Price', 'Miles', 'Power', 'Speed', 'CCM', 'Zip']
+        self.attrNames = ['Manufacturer', 'Body','Price', 'Miles', \
+                          'Power', 'Speed', 'CCM', 'Zip']
         self.numericAttrNames = ['Price','Miles', 'Power', 'Speed', 'CCM', 'Zip']
-        self.nonNumericAttrNames = ['Manufacturer', 'Model', 'Body']
+        self.nonNumericAttrNames = ['Manufacturer', 'Body']
         self.libAttributes = ['Price']
         self.mibAttributes = ['Miles', 'Power', 'Speed', 'CCM', 'Zip']      #Clarify whether 'Zip' is LIB or MIB 
         self.prodList = carRead.readList()

@@ -23,7 +23,7 @@ def getUpdateFactor(directions, selection, Mib):
     diff = directions.count('Positive') - directions.count('Negative')
     if Mib == True:
         index = 1 if directions[selection] == 'Positive' else 0
-    if Mib == False:
+    if Mib == True:
         index = 0 if directions[selection] == 'Positive' else 1
     
     if diff == 3:
@@ -36,3 +36,24 @@ def getUpdateFactor(directions, selection, Mib):
         temp = (1.0/8, 2)*Mib + (8,1.0/2)*(1-Mib)
     
     return temp[index]
+
+def printNotes(recommender):
+    if recommender.diversityEnabled == True:                       #Diversity should be enabled true
+        print 'Diversity Enabled'
+    if recommender.selectiveWtUpdateEnabled == True:               #Enable selective weight updation....
+        print 'Selective Weight update enabled'
+    if recommender.similarProdInFirstCycleEnabled == True:
+        print 'Similar Products In First cycle Enabled'
+    if recommender.targetProductDoesntAppearInFirstCycle == True:
+        print 'Target Product Does not Appear in first cycle'
+    if recommender.highestOverlappingProductsInTopK == True:
+        print 'Highest Overlapping Products in topK in each cycle'
+    
+    if recommender.updateWeightsInTargetsDirection == True:         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
+        print 'Weights are always updated in target direction'
+    if recommender.updateWeightsInLineWithTarget == True:           #only weights of attributes that are in-line with target are updated
+        print 'Only weights of attributes that are in-line with the target are improved'
+    #above two are hypothetical and won't be used in real experiments.
+    if recommender.updateWeightsWrtInitPreferences == True:
+        print 'Weights are updated wrt init preferences'
+        

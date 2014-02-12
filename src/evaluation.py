@@ -1,107 +1,154 @@
 from recommender import *
-import random, itertools
-class Evaluator:
-    def __init__(self):
-        self.recommender = Recommender()
-        self.target = None
-        self.threshold = 0.6            #Min fraction of attributes whose values need to be compatible
-                                        #with the target product. 4 out of 6 attributes must overlap here
-        self.startAll()
-        
-    def startAll(self):
-        #TODO: Introduce preferences on non-numeric attributes later...
-        #Make each product as the target 10 times...
-        #numExperiments = len(self.recommender.caseBase)
-        numExperiments = 3
-        numGlobalIterations = 0; numIterationsList = []
-        
-        for prod in self.recommender.caseBase[numExperiments-1:numExperiments]:
-            print 'next Iteration!!'
-            self.recommender.prodList = copy.copy(self.recommender.caseBase)
-            numberOfAttributesInQuery = 3                                   #TODO: Consider non-numeric attributes also..
-            initialPrefAttributes = random.choice(list(itertools.combinations\
-                                   (self.recommender.numericAttrNames, numberOfAttributesInQuery)))  
-            #returns ('Price', 'Resolution) in case number of attr = 2
-            initialPreferences = {}
-            for attr in initialPrefAttributes:
-                '''Main Part: Formulating the query'''
-                #values = [prod2.attr[attr] for prod2 in self.recommender.prodList]
-                #initialPreferences[attr] = random.choice(values)
-                initialPreferences[attr] = prod.attr[attr]
-            
-            self.target = self.recommender.mostSimilar(prod) 
-            self.recommender.selectFirstProduct(initialPreferences)
-            self.recommender.critiqueStrings('firstTime')
-            flag = 1
-            numLocalIterations = 0
-            print 'source ID =', prod.id
-            print 'target ID =', self.target.id
-            while 1:
-                for product in self.recommender.topK:
-                    if self.target.id == product.id:
-                        print 'PRESENT!!'
-                        print 'product.id = ', product.id
-                        print 'topK ids = ', [x.id for x in self.recommender.topK]    
-                        flag = 0
-                if flag == 0:
-                    break
-                #Two ways to stop the iteration. a. Product is the currentRef b. Product is in compCrit list
-                #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
-                selection = self.maxCompatible(self.recommender.topK)
-                print 'topK product IDs = ', [x.id for x in self.recommender.topK]
-                self.recommender.critiqueStrings(selection)
-                numLocalIterations += 1
-            numIterationsList.append(numLocalIterations)
-            numGlobalIterations += numLocalIterations
-            
-            
-        print 'Average number of interaction cycles = ', float(numGlobalIterations)/numExperiments
-        print 'Iterations List:', sorted(numIterationsList)
-        
-        
-    def maxCompatible(self, products):
-        #Return the indices of those products whose critique strings are compatible with target
-        #Keep a threshold of atleast 4 out of 6 attributes should be compatible..
-        ret = []; l = [];
-        for i, prod in enumerate(products):
-            reference = [temp for temp in self.recommender.caseBase if temp.id == self.recommender.currentReference][0]
-            attrDirections = self.direction(prod, reference)
-            targetAttrDirections = self.direction(prod, self.target)
-            
-            #print 'Compound critique product ID = ', prod.id
-            #print 'attrDirections:', attrDirections
-            #print 'targetAttrDirections: ', targetAttrDirections
-            l.append((i, self.overlappingDegree(attrDirections, targetAttrDirections)))
-        
-        l2 = [(products[i].id, int(j*100)/100.0) for i, j in l]
-        print l2
-        l = sorted(l, key = lambda x: -x[1])
-        l2 = [(products[i].id, int(j*100)/100.0) for i, j in l]
-        print l2
-        print 'maxCompatible Product ID =', l2[0][0]
-        return l[0][0]
-    
-    def direction(self, prod, reference):
-        #Returns the dicitionary {'Price': 'less', 'Resolution': 'more'} indicating directions
-        d = {}
-        for attr in self.recommender.numericAttrNames:
-            d[attr] = 'less' if prod.attr[attr] < reference.attr[attr] else 'more'
-        return d
-    
-    def overlappingDegree(self, direction1, direction2):
-        '''direction1 and direction2 are two dictionaries..'''
-        '''Returns true if the number of 'less' and 'more' values of attributes are sufficiently overlapping'''
-        total = len(direction1)
-        overlapping = 0
-        for attr in direction1:
-            if direction1[attr] == direction2[attr]:
-                overlapping += 1
-        #print 'Overlap Ratio:', float(overlapping)/total
-        return float(overlapping)/total
-     
-eval = Evaluator()
-#IS THE MODEL WORKING ACcording to what is expected
-#Factors that evaluation is depending how
+from PCRecommender import *
+from carRecommender import *
+import random, itertools, util, sys, os
 
-#resolution over zoom pair-wise tradeoffs
-#value-fn
+class Evaluator:
+    def __init__(self, config, domain = "Camera"):
+        self.recommender = Recommender()
+        if domain == 'PC':
+            self.recommender = PCRecommender()
+        if domain == 'Cars':
+            self.recommender = CarRecommender() 
+        self.recommender.selectiveWtUpdateEnabled = config[0]
+        self.recommender.diversityEnabled = config[1]
+        self.recommender.neutralDirectionEnabled = False
+        #If both params below are false, this becomes the standard MAUT evaluation.
+        self.recommender.targetProductDoesntAppearInFirstCycle = False
+        self.recommender.similarProdInFirstCycleEnabled = True
+        self.recommender.diversityEnabled = False
+        self.recommender.updateWeightsWrtInitPreferences = True
+        self.targets = None
+        self.startAll(config[2])
+    
+    def startAll(self, numAttributes):
+        #Make each product as the target 10 times...
+        numExperiments = 5
+        numGlobalIterations = 0; numIterationsList = []; totalCompatibility = 0;
+        averages = []; averageWithoutOnes = [];
+        iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
+        queries = iter([x[:-1].split() for x in open('queries.txt').readlines()])
+        
+        for tempVar in range(numExperiments):
+            numIterationsList = []
+            print 'len(caseBase) = ', len(self.recommender.caseBase)
+            #singleId = 147
+            #print 'Target:', self.recommender.caseBase[singleId]
+            for prod in self.recommender.caseBase:
+                print 'id = ', prod.id
+                self.recommender.resetWeights()
+                self.recommender.prodList = [copy.copy(x) for x in self.recommender.caseBase]
+                queryAttributes = queries.next()
+                initialPreferences = {}
+                for attr in queryAttributes:
+                    initialPreferences[attr] = prod.attr[attr]
+                #self.targets = [prod] + self.dominatingProducts(prod)
+                self.targets = [prod]
+                self.recommender.initialPreferences = initialPreferences
+                self.recommender.target = self.targets[0].id 
+                self.recommender.selectFirstProduct(initialPreferences)
+                self.recommender.critiqueStrings('firstTime')
+                numLocalIterations = 1
+                targets = [x.id for x in self.targets]
+                print 'First product selected:', self.recommender.currentReference
+                while 1 and self.recommender.currentReference not in targets:
+                    #When cthe target is selected as the first product (justification of above condition)
+                    topKIds = [x.id for x in self.recommender.topK]
+                    print 'topK:', topKIds
+                    if len(set(targets).intersection(set(topKIds))) != 0:
+                        break
+                    
+                    #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
+                    selection, compatibility = self.recommender.maxCompatible(self.recommender.topK)
+                    totalCompatibility += compatibility
+                    self.recommender.critiqueStrings(selection)
+                    print "selection =", topKIds[selection], ", Compatiblity =", int(compatibility*1000)/1000.0
+                    numLocalIterations += 1
+                    
+                print 'Number of interaction cycles =', numLocalIterations
+                iterationsPerProduct[prod.id].append(numLocalIterations)
+                numIterationsList.append(numLocalIterations)
+            numGlobalIterations += sum(numIterationsList)
+            #print 'Iterations List(Unsorted):', numIterationsList
+            print 'Iterations List:', sorted(numIterationsList)
+            print 'Average iteration for iteration number', tempVar, '=', sum(numIterationsList)/float(len(numIterationsList))
+            averages.append(sum(numIterationsList)/float(len(numIterationsList)))
+            newL = [x for x in numIterationsList if x != 1]
+            if len(newL) != 0:
+                averageWithoutOnes.append(sum(newL)/float(len(newL)))
+                
+                
+        print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
+        print 'Final average using the previous 10 averages =', sum(averages)/len(averages)
+        print 'Average without ones:', sum(averageWithoutOnes)/len(averageWithoutOnes)
+        print 'Average compatiblity = ', totalCompatibility/(numGlobalIterations)
+        
+        #self.printStatistics(iterationsPerProduct)
+        
+    
+    def dominatingProducts(self, p):
+        dominators = []
+        for prod in self.recommender.caseBase:
+            if prod.id == p.id: continue
+            flag = 0
+            for attr in self.recommender.libAttributes:
+                if prod.attr[attr] > p.attr[attr]:
+                    flag = 1
+            for attr in self.recommender.mibAttributes:
+                if prod.attr[attr] < p.attr[attr]:
+                    flag = 1
+            if flag == 0:
+                dominators.append(prod)
+        return dominators
+    
+    def printStatistics(self, iterationsPerProduct):
+        numDominators = []; avgCycles = []                      #d denotes numDominators, i denotes iterationCycles
+        print 'ID, NumDominators, IterationCycles'
+        for prod in self.recommender.caseBase:
+            l = copy.copy(iterationsPerProduct[prod.id])
+            if len(l) == 0: continue
+            averageIterations = sum(l)/float(len(l))
+            numDominators.append(len(self.dominatingProducts(prod))); avgCycles.append(averageIterations)
+            print prod.id, ',', len(self.dominatingProducts(prod)), ',', averageIterations
+             
+        #print util.correlationCoefficient(numDominators, avgCycles)
+     
+
+if len(sys.argv) != 2:
+    print 'Usage: python eval.py configx'
+    exit()
+t = [x[:-1] for x in open(sys.argv[1]).readlines()]
+args = [t[0] == 'True', t[1] == 'True', int(t[2])]
+eval = Evaluator(config = args)
+
+'''Code with statistics about dominating products. works perfectly fine'''
+#Statistics:
+#1. Number of products that have at least one dominator (report the percentage)
+#2. Average number of dominators per product
+#3. Product with highest number of dominators; and the number of dominators it has.
+#4. Product which is dominating the highest number of products
+#        numProductsWithDominators = 0
+#        totalNumberOfDominators = 0
+#        maxDominators = -1; maxDominatorsProduct = None
+#        dominating = dict([(x.id, 0) for x in self.recommender.caseBase])
+#        
+#        for prod in self.recommender.caseBase:
+#            dominators = [x.id for x in self.dominatingProducts(prod)]
+#            if len(dominators) > 0:
+#                numProductsWithDominators += 1              #Objective-1
+#                totalNumberOfDominators += len(dominators)  #Objective-2
+#                if len(dominators) > maxDominators:         #Objective-3
+#                    maxDominators = len(dominators)
+#                    maxDominatorsProduct = prod.id
+#                for temp in dominators:                     #Objective-4
+#                    dominating[temp] += 1
+#        
+#        tempVar = sorted([(x, dominating[x]) for x in dominating], key = lambda t: -t[1])[0]
+#        print 'Number of products with atleast one dominator = ', numProductsWithDominators
+#        print 'Average number of dominators per product =', totalNumberOfDominators/float(numProductsWithDominators)
+#        print 'Product with highest number of dominators:', maxDominatorsProduct
+#        print 'Number of dominators it has:', maxDominators
+#        print 'Product that dominates the highest number of products:', tempVar[0]
+#        print 'Number of products it dominates:', tempVar[1]
+#        
+#        print 'Average Number of targets per product =', totalNumberOfDominators/float(len(self.recommender.caseBase))

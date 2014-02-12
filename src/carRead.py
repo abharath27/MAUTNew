@@ -1,11 +1,12 @@
 class Car:
     def __init__(self, id, line):
         self.id = id
-        self.attrNames = ['Manufacturer', 'Model', 'Body',\
-                           'Price', 'Miles', 'Power', 'Speed', 'CCM', 'Zip']
+        self.attrNames = ['Manufacturer', 'Body','Price', 'Miles',\
+                            'Power', 'Speed', 'CCM', 'Zip']
         self.attr = {}  #Contains attribute values
         for x,y in zip(line, self.attrNames):
-            self.attr[y] = x 
+            self.attr[y] = x
+             
     def __str__(self):
         string = self.attr['Manufacturer'] + self.attr['Model'] + '\n'
         string += 'Body:' + self.attr['Body']
@@ -31,4 +32,4 @@ def readList():
         productList.append(Car(id, line))
     return productList
 
-#readList()
+#print readList()[0].attr
