@@ -15,7 +15,7 @@ class Evaluator:
         self.recommender.neutralDirectionEnabled = False
         #If both params below are false, this becomes the standard MAUT evaluation.
         self.recommender.targetProductDoesntAppearInFirstCycle = False
-        self.recommender.similarProdInFirstCycleEnabled = True
+        self.recommender.similarProdInFirstCycleEnabled = False
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = True
         self.targets = None

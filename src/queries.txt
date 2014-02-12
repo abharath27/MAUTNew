@@ -2,6 +2,7 @@ Price
 DigitalZoom
 Resolution
 Weight
+StorageIncluded
 Weight
 Resolution
 DigitalZoom
@@ -9,7 +10,6 @@ StorageType
 OpticalZoom
 Weight
 Weight
-StorageIncluded
 Manufacturer
 Price
 Weight

@@ -1,55 +1,201 @@
+hello world
+hello world
+hello world
 len(caseBase) =  210
-Target: Konica Minolta DiMAGE S414
-Configuration: 3.87MP,  4.0x Optical Zoom,  423.0gm,  16.0MB Storage
-Price: 259.0
 id =  147
-['Price']
 Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+target Product 147 's rank = 146
+hello world23432
 First product selected: 59
-topK: [190, 76, 1, 174, 192]
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'more', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'more', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'same', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
-Price : 0.055 Resolution : 0.222 OpticalZoom : 0.222 DigitalZoom : 0.222 Weight : 0.055 StorageIncluded : 0.222
-selection = 192 , Compatiblity = 0.555
-topK: [194, 191, 198, 203, 113]
-{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'less', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
-{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'less', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
-Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
-selection = 191 , Compatiblity = 0.888
-topK: [197, 193, 74, 157, 159]
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
-Price : 0.083 Resolution : 0.333 OpticalZoom : 0.333 DigitalZoom : 0.083 Weight : 0.083 StorageIncluded : 0.083
-selection = 157 , Compatiblity = 0.888
-topK: [158, 162, 115, 184, 119]
-{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
-Price : 0.222 Resolution : 0.222 OpticalZoom : 0.222 DigitalZoom : 0.055 Weight : 0.222 StorageIncluded : 0.055
-selection = 162 , Compatiblity = 0.666
-topK: [122, 75, 178, 181, 120]
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'more', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
+topK: [76, 1, 192, 194, 203]
+Price : 0.066 Resolution : 0.266 OpticalZoom : 0.266 DigitalZoom : 0.266 Weight : 0.066 StorageIncluded : 0.066
+target Product 147 's rank = 34
+hello world23432
+selection = 203 , Compatiblity = 0.666
+topK: [184, 157, 113, 190, 198]
 Price : 0.121 Resolution : 0.484 OpticalZoom : 0.121 DigitalZoom : 0.121 Weight : 0.121 StorageIncluded : 0.03
+target Product 147 's rank = 26
+hello world23432
+selection = 113 , Compatiblity = 0.666
+topK: [115, 119, 122, 112, 132]
+Price : 0.088 Resolution : 0.355 OpticalZoom : 0.355 DigitalZoom : 0.088 Weight : 0.088 StorageIncluded : 0.022
+target Product 147 's rank = 14
+hello world23432
+selection = 112 , Compatiblity = 0.777
+topK: [116, 120, 126, 124, 114]
+Price : 0.231 Resolution : 0.231 OpticalZoom : 0.231 DigitalZoom : 0.057 Weight : 0.231 StorageIncluded : 0.014
+target Product 147 's rank = 19
+hello world23432
+selection = 124 , Compatiblity = 0.666
+topK: [131, 125, 129, 130, 118]
+Price : 0.136 Resolution : 0.547 OpticalZoom : 0.136 DigitalZoom : 0.034 Weight : 0.136 StorageIncluded : 0.008
+target Product 147 's rank = 10
+hello world23432
+selection = 129 , Compatiblity = 0.777
+topK: [117, 123, 74, 159, 158]
+Price : 0.038 Resolution : 0.613 OpticalZoom : 0.153 DigitalZoom : 0.038 Weight : 0.153 StorageIncluded : 0.002
+target Product 147 's rank = 6
+hello world23432
+selection = 74 , Compatiblity = 0.666
+topK: [75, 73, 78, 162, 208]
+Price : 0.137 Resolution : 0.55 OpticalZoom : 0.137 DigitalZoom : 0.034 Weight : 0.137 StorageIncluded : 0.002
+target Product 147 's rank = 2
+hello world23432
+selection = 73 , Compatiblity = 0.777
+topK: [79, 178, 147, 200, 181]
+Number of interaction cycles = 8
+Iterations List: [8]
+Average iteration for iteration number 0 = 8.0
+len(caseBase) =  210
+id =  147
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+target Product 147 's rank = 147
+hello world23432
+First product selected: 20
+topK: [76, 1, 192, 194, 203]
+Price : 0.19 Resolution : 0.19 OpticalZoom : 0.19 DigitalZoom : 0.19 Weight : 0.047 StorageIncluded : 0.19
+target Product 147 's rank = 33
+hello world23432
+selection = 194 , Compatiblity = 0.777
+topK: [190, 198, 184, 157, 113]
+Price : 0.333 Resolution : 0.333 OpticalZoom : 0.083 DigitalZoom : 0.083 Weight : 0.083 StorageIncluded : 0.083
+target Product 147 's rank = 28
+hello world23432
+selection = 113 , Compatiblity = 0.777
+topK: [115, 122, 119, 112, 132]
+Price : 0.266 Resolution : 0.266 OpticalZoom : 0.266 DigitalZoom : 0.066 Weight : 0.066 StorageIncluded : 0.066
+target Product 147 's rank = 15
+hello world23432
+selection = 112 , Compatiblity = 0.777
+topK: [116, 126, 120, 124, 114]
+Price : 0.533 Resolution : 0.133 OpticalZoom : 0.133 DigitalZoom : 0.033 Weight : 0.133 StorageIncluded : 0.033
+target Product 147 's rank = 22
+hello world23432
+selection = 124 , Compatiblity = 0.666
+topK: [131, 125, 130, 129, 118]
+Price : 0.38 Resolution : 0.38 OpticalZoom : 0.095 DigitalZoom : 0.023 Weight : 0.095 StorageIncluded : 0.023
+target Product 147 's rank = 10
+hello world23432
+selection = 129 , Compatiblity = 0.777
+topK: [117, 123, 159, 74, 158]
+Price : 0.136 Resolution : 0.547 OpticalZoom : 0.136 DigitalZoom : 0.034 Weight : 0.136 StorageIncluded : 0.008
+target Product 147 's rank = 5
+hello world23432
+selection = 159 , Compatiblity = 0.666
+topK: [162, 75, 178, 73, 208]
+Price : 0.387 Resolution : 0.387 OpticalZoom : 0.096 DigitalZoom : 0.024 Weight : 0.096 StorageIncluded : 0.006
+target Product 147 's rank = 0
+hello world23432
+selection = 162 , Compatiblity = 0.666
+topK: [147, 200, 181, 78, 183]
+Number of interaction cycles = 8
+Iterations List: [8]
+Average iteration for iteration number 1 = 8.0
+len(caseBase) =  210
+id =  147
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+target Product 147 's rank = 146
+hello world23432
+First product selected: 87
+topK: [76, 1, 192, 194, 203]
+Price : 0.19 Resolution : 0.19 OpticalZoom : 0.19 DigitalZoom : 0.19 Weight : 0.047 StorageIncluded : 0.19
+target Product 147 's rank = 33
+hello world23432
+selection = 194 , Compatiblity = 0.444
+topK: [190, 198, 184, 157, 113]
+Price : 0.333 Resolution : 0.333 OpticalZoom : 0.083 DigitalZoom : 0.083 Weight : 0.083 StorageIncluded : 0.083
+target Product 147 's rank = 28
+hello world23432
+selection = 113 , Compatiblity = 0.777
+topK: [115, 122, 119, 112, 132]
+Price : 0.266 Resolution : 0.266 OpticalZoom : 0.266 DigitalZoom : 0.066 Weight : 0.066 StorageIncluded : 0.066
+target Product 147 's rank = 15
+hello world23432
+selection = 112 , Compatiblity = 0.777
+topK: [116, 126, 120, 124, 114]
+Price : 0.533 Resolution : 0.133 OpticalZoom : 0.133 DigitalZoom : 0.033 Weight : 0.133 StorageIncluded : 0.033
+target Product 147 's rank = 22
+hello world23432
+selection = 124 , Compatiblity = 0.666
+topK: [131, 125, 130, 129, 118]
+Price : 0.38 Resolution : 0.38 OpticalZoom : 0.095 DigitalZoom : 0.023 Weight : 0.095 StorageIncluded : 0.023
+target Product 147 's rank = 10
+hello world23432
+selection = 129 , Compatiblity = 0.777
+topK: [117, 123, 159, 74, 158]
+Price : 0.136 Resolution : 0.547 OpticalZoom : 0.136 DigitalZoom : 0.034 Weight : 0.136 StorageIncluded : 0.008
+target Product 147 's rank = 5
+hello world23432
+selection = 159 , Compatiblity = 0.666
+topK: [162, 75, 178, 73, 208]
+Price : 0.387 Resolution : 0.387 OpticalZoom : 0.096 DigitalZoom : 0.024 Weight : 0.096 StorageIncluded : 0.006
+target Product 147 's rank = 0
+hello world23432
+selection = 162 , Compatiblity = 0.666
+topK: [147, 200, 181, 78, 183]
+Number of interaction cycles = 8
+Iterations List: [8]
+Average iteration for iteration number 2 = 8.0
+len(caseBase) =  210
+id =  147
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+target Product 147 's rank = target Product 147 's rank = 0
+hello world23432
+First product selected: 147
+Number of interaction cycles = 1
+Iterations List: [1]
+Average iteration for iteration number 3 = 1.0
+len(caseBase) =  210
+id =  147
+Price : 0.166 Resolution : 0.166 OpticalZoom : 0.166 DigitalZoom : 0.166 Weight : 0.166 StorageIncluded : 0.166
+target Product 147 's rank = 146
+hello world23432
+First product selected: 162
+topK: [76, 1, 192, 194, 203]
+Price : 0.066 Resolution : 0.066 OpticalZoom : 0.266 DigitalZoom : 0.266 Weight : 0.066 StorageIncluded : 0.266
+target Product 147 's rank = 36
+hello world23432
+selection = 194 , Compatiblity = 0.666
+topK: [190, 198, 184, 193, 113]
+Price : 0.19 Resolution : 0.047 OpticalZoom : 0.19 DigitalZoom : 0.19 Weight : 0.19 StorageIncluded : 0.19
+target Product 147 's rank = 29
+hello world23432
+selection = 193 , Compatiblity = 0.888
+topK: [191, 197, 157, 112, 132]
+Price : 0.111 Resolution : 0.111 OpticalZoom : 0.444 DigitalZoom : 0.111 Weight : 0.111 StorageIncluded : 0.111
+target Product 147 's rank = 15
+hello world23432
+selection = 132 , Compatiblity = 0.888
+topK: [115, 122, 119, 116, 120]
+Price : 0.222 Resolution : 0.222 OpticalZoom : 0.222 DigitalZoom : 0.055 Weight : 0.222 StorageIncluded : 0.055
+target Product 147 's rank = 21
+hello world23432
 selection = 122 , Compatiblity = 0.555
-topK: [112, 132, 116, 126, 124]
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'less', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
-Price : 0.07 Resolution : 0.28 OpticalZoom : 0.28 DigitalZoom : 0.28 Weight : 0.07 StorageIncluded : 0.017
-selection = 112 , Compatiblity = 0.666
-topK: [114, 131, 125, 129, 208]
-{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'less', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 1}
-Price : 0.197 Resolution : 0.197 OpticalZoom : 0.197 DigitalZoom : 0.197 Weight : 0.197 StorageIncluded : 0.012
-selection = 114 , Compatiblity = 0.666
-topK: [123, 118, 130, 117, 78]
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'less', 'OpticalZoom': 'same', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'less', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'less', 'Resolution': 'more', 'Manufacturer': 1}
-Price : 0.496 Resolution : 0.124 OpticalZoom : 0.124 DigitalZoom : 0.124 Weight : 0.124 StorageIncluded : 0.007
-selection = 130 , Compatiblity = 0.555
-topK: [183, 79, 73, 173, 172]
-{'Weight': 'less', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'more', 'Resolution': 'more', 'Manufacturer': 0}
-{'Weight': 'more', 'Format': 1, 'StorageIncluded': 'same', 'Price': 'more', 'OpticalZoom': 'more', 'StorageType': 1, 'DigitalZoom': 'same', 'Resolution': 'more', 'Manufacturer': 1}
-Price : 0.199 Resolution : 0.199 OpticalZoom : 0.199 DigitalZoom : 0.199 Weight : 0.199 StorageIncluded : 0.003
-selection = 172 , Compatiblity = 0.666
-topK: [145, 200, 147, 177, 121]
-Number of interaction cycles = 10
+topK: [126, 124, 114, 131, 125]
+Price : 0.533 Resolution : 0.133 OpticalZoom : 0.133 DigitalZoom : 0.033 Weight : 0.133 StorageIncluded : 0.033
+target Product 147 's rank = 18
+hello world23432
+selection = 126 , Compatiblity = 0.666
+topK: [130, 129, 118, 117, 123]
+Price : 0.82 Resolution : 0.051 OpticalZoom : 0.051 DigitalZoom : 0.012 Weight : 0.051 StorageIncluded : 0.012
+target Product 147 's rank = 8
+hello world23432
+selection = 130 , Compatiblity = 0.666
+topK: [181, 79, 78, 158, 159]
+Price : 0.609 Resolution : 0.152 OpticalZoom : 0.038 DigitalZoom : 0.038 Weight : 0.152 StorageIncluded : 0.009
+target Product 147 's rank = 9
+hello world23432
+selection = 181 , Compatiblity = 0.555
+topK: [178, 183, 74, 73, 208]
+Price : 0.418 Resolution : 0.418 OpticalZoom : 0.026 DigitalZoom : 0.026 Weight : 0.104 StorageIncluded : 0.006
+target Product 147 's rank = 2
+hello world23432
+selection = 73 , Compatiblity = 0.777
+topK: [75, 200, 147, 172, 173]
+Number of interaction cycles = 9
+Iterations List: [9]
+Average iteration for iteration number 4 = 9.0
+Average number of interaction cycles =  0.032380952381
+Final average using the previous 10 averages = 6.8
+Average without ones: 8.25
+Average compatiblity =  0.604575163399

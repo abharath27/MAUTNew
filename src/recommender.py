@@ -17,7 +17,9 @@ class Recommender:
         self.initializeOtherVars()
         
     def initializeOtherVars(self):
+        '''This function is common for recommenders of all other domains like PC, cars etc'''
         self.resetWeights()
+        self.preComputeMaxMinAttrValues()
         self.preferredValues = dict([(attr, None) for attr in self.attrNames])  #Variable 'attrNames' is used only with preferredValues variable
         self.K = 5                                      
         self.currentReference = -1
@@ -57,20 +59,24 @@ class Recommender:
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
         
-        
     def resetWeights(self):
+        '''resets weights and value functions of numeric, nominal attributes'''
         realAttributes = self.numericAttrNames
         self.weights = dict([(attr, 1.0/(len(realAttributes))) for attr in self.numericAttrNames])
         self.nonNumericValueDict = {}
         for attr in self.nonNumericAttrNames:
             distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
             self.nonNumericValueDict[attr] = dict([(val, 1.0/len(distinctVals)) for val in distinctVals])
-        #self.weights['Price'] = 10
-        #self.weights['Resolution'] = 5
-        #self.weights['Weight'] = 5
+    
+    def preComputeMaxMinAttrValues(self):
+        '''precomputes max and min values of numeric attributes into the dictionary self.maxV and self.minV'''
+        self.maxV = {}; self.minV = {}
+        for attr in self.numericAttrNames:        
+            priceList = [prod.attr[attr] for prod in self.caseBase]
+            self.maxV[attr], self.minV[attr] = max(priceList), min(priceList)
             
-    #MODIFY THE UTILITY AND THE VALUE FUNCTION FOR THE NOMINAL ATTRIBUTES.....
     def utility(self, product, weights):
+        '''Input: product and a dict of weights. Output: Utility of the product wrt that weight model'''
         retVal = 0
         for attr in self.numericAttrNames:
             retVal += self.weights[attr] * self.value(attr, product.attr[attr])
@@ -79,6 +85,7 @@ class Recommender:
         return retVal
     
     def sim(self, product, preferences):
+        '''Input: dictionary of preferences and product. Output: similarity between the product and preferences'''
         dist = 0
         for attr in preferences:
             if attr in self.numericAttrNames:
@@ -94,8 +101,7 @@ class Recommender:
     
     
     def selectFirstProduct(self, preferences, specialArg = None):
-        #Return the most similar product...
-        #print 'Preferences = ', preferences
+        '''Removes the first product from self.prodList and sets the variable self.currentReference'''
         if self.targetProductDoesntAppearInFirstCycle == True:
             self.prodList = [x for x in self.prodList if x.id != self.target]
         newBase = [copy.copy(x) for x in self.prodList]; random.shuffle(newBase)
@@ -114,6 +120,7 @@ class Recommender:
         
         
     def preComputeAttributeSigns(self):
+        '''Fills in the dictionary preComputedAttributeSigns'''
         reference = self.caseBase[self.currentReference]
         for prod in self.caseBase:
             self.preComputedAttrSigns[prod.id] = self.attributeSignsUtil(prod, reference)
@@ -171,6 +178,7 @@ class Recommender:
         #Go further below and do the below stuff only when firstCycle modifications are false
         if self.highestOverlappingProductsInTopK == True: dontGoBelow = False
         
+        print 'hello world23432'
         if dontGoBelow == False and self.diversityEnabled == False:                                  #This is the case with standard MAUT
             self.topK = [x[0] for x in tempUtilities[:self.K]]              #Getting only the products and ignoring utilities
             utilities = [(product, self.utility(product, self.weights)) for product in self.prodList]
@@ -244,8 +252,8 @@ class Recommender:
         #print 'Product List Size = ', len(self.prodList)
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []
-            #print attr,':', (int(self.weights[attr]*1000)/1000.0),
-        #print
+            print attr,':', (int(self.weights[attr]*1000)/1000.0),
+        print
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
@@ -367,47 +375,40 @@ class Recommender:
         #TODO: Modify these value functions later and check performance
         #value functions for non-numeric attributes are there in the dictionary self.nonNumericValueDict 
         if attr == 'Price':
-            priceList = [prod.attr['Price'] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(maxV - value)/(maxV - minV)
         
         if attr == 'Resolution':
-            priceList = [prod.attr['Resolution'] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(value - minV)/(maxV - minV)
         
         if attr == 'OpticalZoom':
-            priceList = [prod.attr['Price'] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(value - minV)/(maxV - minV)
         
         if attr == 'DigitalZoom':
-            priceList = [prod.attr['DigitalZoom'] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(value - minV)/(maxV - minV)
         
         if attr == 'Weight':
-            priceList = [prod.attr['Weight'] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(maxV - value)/(maxV - minV)
         
         if attr == 'StorageIncluded':
-            priceList = [prod.attr['StorageIncluded'] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(value - minV)/(maxV - minV)
-        
         
     
     def notCrossingThreshold(self, attr, v1, v2):
@@ -561,7 +562,7 @@ class Recommender:
         
         for i in range(len(utilities)):
             utilities[i] = [str(utilities[i][0].id), str(int(1000*utilities[i][1])/1000.0), str(int(100*overlapDegList[i])/100.0)]
-        utilities = sorted(utilities, key = lambda x: -float(x[2]))
+        #utilities = sorted(utilities, key = lambda x: -float(x[2]))
         return utilities
                 
     def direction(self, prod, reference, target):
