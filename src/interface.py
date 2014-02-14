@@ -10,6 +10,7 @@ class App:
         self.recommender.selectiveWtUpdateEnabled = False
         self.recommender.diversityEnabled = False
         self.recommender.target = 147
+        self.recommender.similarProdInFirstCycleEnabled = False
         self.recommender.initialPreferences = {'Price':self.recommender.caseBase[147].attr['Price']}
         self.createUnitCritiqueFrame()
         self.createTargetComparisonBox()
@@ -70,7 +71,7 @@ class App:
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()
         
-        l = self.recommender.critiqueStrings(selection = 'firstTime')
+        l, rank = self.recommender.critiqueStrings(selection = 'firstTime')
         for i, k in enumerate(l):
             self.compoundCritiqueL[i].insert(END, k); i+= 1
         self.createUtilitiesFrame()
@@ -172,13 +173,8 @@ class App:
                 
     def displayProduct(self, product):
         t = Text(self.master, font= 'Helvetica', wrap = WORD, width = 60, borderwidth = 4, relief = GROOVE)
-        string = product.attr['Manufacturer'] + ' '
         #string = string + product.attr['Model'] + '\n'
-        string = string + 'Configuration: ' + str(product.attr['Resolution']) + 'MP,  ' \
-           + str(product.attr['OpticalZoom']) + 'x Optical Zoom,  ' + str(product.attr['Weight']) + 'gm,  ' \
-            + str(product.attr['StorageIncluded']) + 'MB Storage\n'
-        
-        string += 'Price: ' + str(product.attr['Price'])
+        string = 'Configuration: ' + str(product)
         string += '\nProduct ID: ' + str(product.id)
         t.insert(END, string)
         t.config(state = DISABLED, height = 10)
@@ -204,9 +200,9 @@ class App:
         
     def userSelect(self, selection):
         i = 0
-        for k in self.recommender.critiqueStrings(selection):
+        for str, rank in self.recommender.critiqueStrings(selection):
             self.compoundCritiqueL[i].delete(1.0, END)
-            self.compoundCritiqueL[i].insert(END, k); i+= 1
+            self.compoundCritiqueL[i].insert(END, str); i+= 1
             
         currentRefProduct = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentRefProduct)

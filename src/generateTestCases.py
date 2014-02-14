@@ -1,4 +1,5 @@
 import random, itertools
+domain = 'PC'
 domain = 'Camera'
 if domain == 'Camera':
     attrNames = ['Manufacturer', 'Price', 'Format', 'Resolution', 'OpticalZoom', 'DigitalZoom',\

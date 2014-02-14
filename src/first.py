@@ -8,7 +8,7 @@ class Camera:
         for x,y in zip(line, self.attrNames):
             self.attr[y] = x 
     def __str__(self):
-        string = self.attr['Manufacturer'] + ' '
+        string = '\n' + self.attr['Manufacturer'] + ' '
         string = string + 'Configuration: ' + str(self.attr['Resolution']) + 'MP,  ' \
            + str(self.attr['OpticalZoom']) + 'x Optical Zoom,  ' + str(self.attr['Weight']) + 'gm,  ' \
             + str(self.attr['StorageIncluded']) + 'MB Storage\n'

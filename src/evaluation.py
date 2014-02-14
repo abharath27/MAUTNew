@@ -1,7 +1,7 @@
 from recommender import *
 from PCRecommender import *
 from carRecommender import *
-import random, itertools, util, sys, os
+import random, itertools, util, sys, os, collections
 
 class Evaluator:
     def __init__(self, config, domain = "Camera"):
@@ -16,14 +16,16 @@ class Evaluator:
         #If both params below are false, this becomes the standard MAUT evaluation.
         self.recommender.targetProductDoesntAppearInFirstCycle = False
         self.recommender.similarProdInFirstCycleEnabled = False
+        self.recommender.averageProductEnabled = False 
         self.recommender.diversityEnabled = False
-        self.recommender.updateWeightsWrtInitPreferences = True
+        self.recommender.updateWeightsWrtInitPreferences = False
         self.targets = None
+        self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
     
     def startAll(self, numAttributes):
         #Make each product as the target 10 times...
-        numExperiments = 5
+        numExperiments = 10
         numGlobalIterations = 0; numIterationsList = []; totalCompatibility = 0;
         averages = []; averageWithoutOnes = [];
         iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
@@ -36,34 +38,38 @@ class Evaluator:
             #print 'Target:', self.recommender.caseBase[singleId]
             for prod in self.recommender.caseBase:
                 print 'id = ', prod.id
+                numLocalIterations = 1
                 self.recommender.resetWeights()
                 self.recommender.prodList = [copy.copy(x) for x in self.recommender.caseBase]
                 queryAttributes = queries.next()
                 initialPreferences = {}
                 for attr in queryAttributes:
                     initialPreferences[attr] = prod.attr[attr]
-                #self.targets = [prod] + self.dominatingProducts(prod)
-                self.targets = [prod]
+                
+                self.targets = [prod]           #self.targets = [prod] + self.dominatingProducts(prod)
                 self.recommender.initialPreferences = initialPreferences
                 self.recommender.target = self.targets[0].id 
                 self.recommender.selectFirstProduct(initialPreferences)
-                self.recommender.critiqueStrings('firstTime')
-                numLocalIterations = 1
+                
+                strings = self.recommender.critiqueStrings('firstTime')
+                #print 'append rank =', rank
+                #self.ranks[numLocalIterations].append(rank)                 #book keeping
+                
                 targets = [x.id for x in self.targets]
                 print 'First product selected:', self.recommender.currentReference
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
                     print 'topK:', topKIds
-                    if len(set(targets).intersection(set(topKIds))) != 0:
+                    if len(set(targets) & set(topKIds)) != 0:
                         break
-                    
-                    #self.topK i.e. top K products are set in the method self.reco.critiqueStrings
+                    numLocalIterations += 1
                     selection, compatibility = self.recommender.maxCompatible(self.recommender.topK)
                     totalCompatibility += compatibility
-                    self.recommender.critiqueStrings(selection)
+                    strings = self.recommender.critiqueStrings(selection)
+                    #self.ranks[numLocalIterations].append(rank)
                     print "selection =", topKIds[selection], ", Compatiblity =", int(compatibility*1000)/1000.0
-                    numLocalIterations += 1
+                    
                     
                 print 'Number of interaction cycles =', numLocalIterations
                 iterationsPerProduct[prod.id].append(numLocalIterations)
@@ -84,7 +90,7 @@ class Evaluator:
         print 'Average compatiblity = ', totalCompatibility/(numGlobalIterations)
         
         #self.printStatistics(iterationsPerProduct)
-        
+        #util.printRanks(self.ranks)
     
     def dominatingProducts(self, p):
         dominators = []

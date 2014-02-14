@@ -37,6 +37,20 @@ def getUpdateFactor(directions, selection, Mib):
     
     return temp[index]
 
+def printRanks(ranks):
+    #ranks is a dictionary. Key = iteration number, value = list of ranks of various products
+    a = open('ranksCamera.txt', 'w')
+    b = open('ranksPaddedWithZerosCamera.txt', 'w')
+    #print ranks
+    try:
+        for key in ranks:
+            temp1 = sum(ranks[key])/float(len(ranks[key]))
+            a.write(str(key) + ' '+ str(temp1) + '\n')
+            temp2 = sum(ranks[key])/float(len(ranks[1]))
+            b.write(str(key) + ' '+ str(temp2) + '\n')
+    except:
+        print 'key =', key, 'ranks[key] =', ranks[key]
+        
 def printNotes(recommender):
     if recommender.diversityEnabled == True:                       #Diversity should be enabled true
         print 'Diversity Enabled'

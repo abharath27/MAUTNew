@@ -17,15 +17,13 @@ class PCRecommender(Recommender):
         #['Price', 'Resolution', 'OpticalZoom', 'DigitalZoom', 'Weight', 'StorageIncluded']
         #TODO: Modify these value functions later and check performance 
         if attr in self.libAttributes:
-            priceList = [prod.attr[attr] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(maxV - value)/(maxV - minV)
         
         if attr in self.mibAttributes:
-            priceList = [prod.attr[attr] for prod in self.prodList]
-            maxV, minV = max(priceList), min(priceList)
+            maxV, minV = self.maxV[attr], self.minV[attr]
             if maxV-minV == 0:
                 return 0
             return float(value - minV)/(maxV - minV)
