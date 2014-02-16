@@ -1,4 +1,4 @@
-import first, copy, util, inspect, random
+import first, copy, util, inspect, random, collections
 
 
 class Recommender:
@@ -37,6 +37,8 @@ class Recommender:
         self.preComputedAttrSigns = {}
         self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
         self.neutralDirectionEnabled = True                 #It's set to false during evaluation, neutral direction helps for the proper display of critique strings
+        self.selectedProductsList = []
+        self.weightsList = collections.defaultdict(list)
         
         #modifications turn on/off. By default they are turned off. Inheriting class should turn them on.
         self.diversityEnabled = False                       #Diversity should be enabled true
@@ -44,6 +46,7 @@ class Recommender:
         self.similarProdInFirstCycleEnabled = False
         self.targetProductDoesntAppearInFirstCycle = False
         self.highestOverlappingProductsInTopK = False
+        self.averageProductEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -55,7 +58,6 @@ class Recommender:
         numEnabled = self.updateWeightsInLineWithTarget + self.updateWeightsInTargetsDirection + self.updateWeightsWrtInitPreferences
         if numEnabled > 1: print 'More than one weight update technique enabled; exiting;'; exit()
         util.printNotes(self)
-        print 'hello world'
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
         
@@ -67,6 +69,7 @@ class Recommender:
         for attr in self.nonNumericAttrNames:
             distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
             self.nonNumericValueDict[attr] = dict([(val, 1.0/len(distinctVals)) for val in distinctVals])
+        self.selectedProductsList = []
     
     def preComputeMaxMinAttrValues(self):
         '''precomputes max and min values of numeric attributes into the dictionary self.maxV and self.minV'''
@@ -178,7 +181,7 @@ class Recommender:
         #Go further below and do the below stuff only when firstCycle modifications are false
         if self.highestOverlappingProductsInTopK == True: dontGoBelow = False
         
-        print 'hello world23432'
+        
         if dontGoBelow == False and self.diversityEnabled == False:                                  #This is the case with standard MAUT
             self.topK = [x[0] for x in tempUtilities[:self.K]]              #Getting only the products and ignoring utilities
             utilities = [(product, self.utility(product, self.weights)) for product in self.prodList]
@@ -222,9 +225,11 @@ class Recommender:
         selectedProduct = None; specialProduct = None; selectiveAttributes = None;
         if selection == 'firstTime':
             selectedProduct = self.caseBase[self.currentReference]
+            self.weightsList[self.target].append(copy.copy(self.weights))
             
         if selection != 'firstTime':
             selectedProduct = copy.copy(self.topK[selection])
+            self.selectedProductsList.append(copy.copy(selectedProduct))
             if self.updateWeightsWrtInitPreferences == True:
                 specialProduct = copy.copy(self.topK[selection])
                 for attr in self.initialPreferences:
@@ -244,8 +249,22 @@ class Recommender:
                 specialProduct.attr = {}
                 for attr in selectiveAttributes:
                     specialProduct.attr[attr] = target.attr[attr]
+            
+            if self.averageProductEnabled == True:
+                specialProduct = copy.copy(self.caseBase[0])
+                for attr in self.numericAttrNames:
+                    specialProduct.attr[attr] = sum([x.attr[attr] for x in self.selectedProductsList])/len(self.selectedProductsList)
+                for attr in self.nonNumericAttrNames:
+                    valuesSeen = [x.attr[attr] for x in self.selectedProductsList]
+                    maxFrequent = sorted(valuesSeen, key = valuesSeen.count)[-1]
+                    specialProduct.attr[attr] = maxFrequent
+                attr = 'Price'
+                print "Target Product's Price:", self.caseBase[self.target].attr[attr] 
+                print 'Price List:', [x.attr[attr] for x in self.selectedProductsList]
             self.updateWeights(self.topK, selection, specialProduct, selectiveAttributes)
+            self.weightsList[self.target].append(copy.copy(self.weights))
             self.currentReference = selectedProduct.id  #Changing the reference product...                
+                
             
             for prod in self.topK:  #Removing previous topK items
                 self.prodList = [c for c in self.prodList if c.id != prod.id]

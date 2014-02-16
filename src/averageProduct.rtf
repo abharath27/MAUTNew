@@ -1,0 +1,15 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red128\green0\blue0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs26 \cf2 if\cf0  self.averageProductEnabled == \cf2 True\cf0 :\
+                \cf2 for\cf0  attr \cf2 in\cf0  self.numericAttrNames:\
+                    specialProduct.attr[attr] = sum([x.attr[attr] \cf2 for\cf0  x \cf2 in\cf0  self.selectedProductsList])/len(self.selectedProductsList)\
+                \cf2 for\cf0  attr \cf2 in\cf0  self.nonNumericAttrNames:\
+                    valuesSeen = [x.attr[attr] \cf2 for\cf0  x \cf2 in\cf0  self.selectedProductsList]\
+                    maxFrequent = sorted(valuesSeen, key = valuesSeen.count)[-\cf3 1\cf0 ]\
+                    specialProduct.attr[attr] = maxFrequent\
+}

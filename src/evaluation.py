@@ -19,6 +19,7 @@ class Evaluator:
         self.recommender.averageProductEnabled = False 
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = False
+        self.recommender.averageProductEnabled = False
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
@@ -60,7 +61,7 @@ class Evaluator:
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
-                    print 'topK:', topKIds
+                    #print 'topK:', topKIds
                     if len(set(targets) & set(topKIds)) != 0:
                         break
                     numLocalIterations += 1
@@ -68,7 +69,7 @@ class Evaluator:
                     totalCompatibility += compatibility
                     strings = self.recommender.critiqueStrings(selection)
                     #self.ranks[numLocalIterations].append(rank)
-                    print "selection =", topKIds[selection], ", Compatiblity =", int(compatibility*1000)/1000.0
+                    #print "selection =", topKIds[selection], ", Compatiblity =", int(compatibility*1000)/1000.0
                     
                     
                 print 'Number of interaction cycles =', numLocalIterations
@@ -91,6 +92,7 @@ class Evaluator:
         
         #self.printStatistics(iterationsPerProduct)
         #util.printRanks(self.ranks)
+        util.printWeights(self)
     
     def dominatingProducts(self, p):
         dominators = []

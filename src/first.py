@@ -16,9 +16,10 @@ class Camera:
         string += 'Price: ' + str(self.attr['Price'])
         return string
     
+    
 def readList():        
     selfList = []
-    lines = open('Camera2.csv').read().split('\r')[1:]
+    lines = open('CameraTrimmed.csv').read().split('\r')[1:]
     for id, line in enumerate(lines):
         line = line.split(',')[1:]
         for i in range(len(line)):

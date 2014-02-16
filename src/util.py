@@ -70,4 +70,15 @@ def printNotes(recommender):
     #above two are hypothetical and won't be used in real experiments.
     if recommender.updateWeightsWrtInitPreferences == True:
         print 'Weights are updated wrt init preferences'
+
+def printWeights(evaluatorInstance):
+    weightList = evaluatorInstance.recommender.weightsList
+    attrNames = evaluatorInstance.recommender.numericAttrNames
+    for id in weightList:
+        a = open('weights/' + str(id) + '.txt', 'w')
         
+        a.write(' '.join(attrNames) + '\n')
+        for dictionary in weightList[id]:
+            values = [str(dictionary[attr]) for attr in attrNames]
+            line = ' '.join(values) + '\n'
+            a.write(line)
