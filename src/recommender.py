@@ -32,7 +32,7 @@ class Recommender:
         self.attrDirection = {}
         self.unitAttrPreferences = {}
         self.critiqueStringDirections = {}
-        tempUtilities = None
+        utilitySortedProducts = None
         self.weightIncOrDec = dict([(attr, None) for attr in self.numericAttrNames + self.nonNumericAttrNames])   #To let the interface know
         self.preComputedAttrSigns = {}
         self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
@@ -49,6 +49,7 @@ class Recommender:
         self.averageProductEnabled = False
         self.historyEnabled = False
         self.additiveUpdatesEnabled = False
+        self.adaptiveSelectionEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -166,24 +167,37 @@ class Recommender:
         if len(P) != 0:
             diversity /= len(P)     #Normalizing it to one
         retVal += (1-alpha) * diversity
-        return retVal 
-        
-    def selectTopK(self, unitCritiqueArg = None, firstTime = False):
+        return retVal
+     
+    def boundedGreedy(self, productList):
+        #IMPLEMENT THE Smyth and McClave(2001) Algorithm
+        #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
+        tempList = []   #This will hold the topK products found so far
+        self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
+        while len(tempList) < self.K and len(productList) > 0:      #when len(newList) == 0, you shouldn't enter the loop body 
+            qualities = [(c, self.quality(c, tempList)) for c in productList]
+            top = sorted(qualities, key = lambda x: -x[1])[0][0]
+            tempList.append(top)
+            productList = [p for p in productList if p.id != top.id]    #Removing the 'top' product from newList
+        return tempList
+           
+    def selectTopK(self, unitCritiqueArg = None, firstTime = False, ):
         ''''THIS FUNCTION'S ONLY TASK IS TO SET THE VARIABLE SELF.TOPK'''
         '''Argument firstTime is True if selectTopK is being called for the first time'''
         '''Argument unitCritiqueArg is not None when the caller is unitCritiqueSelectedStrings()'''
-        newList = copy.copy(self.prodList)
+        newList = copy.copy(self.prodList); increaseCyclesByOne = 0     #increaseCyclesByOne is for adaptive selection when one cycle is wasted
         if unitCritiqueArg != None: newList = unitCritiqueArg
         #when unitCritique is selected, you need to some filtering; hence the list is changed
-        tempUtilities = [(product, self.utility(product, self.weights)) for product in newList]
-        tempUtilities = sorted(tempUtilities, key = lambda x: -x[1])
+        utilitySortedProducts = [(product, self.utility(product, self.weights)) for product in newList]
+        utilitySortedProducts = [x[0] for x in sorted(utilitySortedProducts, key = lambda x: -x[1])][:self.K]
         #print [x .id for x in self.prodList]
         rank = -1    
         try:
-            rank = [x[0].id for x in tempUtilities].index(self.target)
+            rank = [x[0].id for x in utilitySortedProducts].index(self.target)
         except:
             rank = 0            #This means that the product was the reference product in first iteration     
         print "target Product", self.target, "'s rank =", rank
+        print 'topK:', [x.id for x in utilitySortedProducts]
         #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
         #both the if statements are executed.
         if firstTime == True and self.targetProductDoesntAppearInFirstCycle == True:
@@ -191,52 +205,57 @@ class Recommender:
             utilities = [(product, self.utility(product, self.weights)) for product in newList]
             self.topK = [x[0] for x in sorted(utilities, key = lambda x: -x[1])[:self.K]]
             if self.similarProdInFirstCycleEnabled == False:
-                return rank
+                return rank, increaseCyclesByOne
         
         if firstTime == True and self.similarProdInFirstCycleEnabled == True:
             similarities = [(prod, self.sim(prod, self.initialPreferences)) for prod in newList]
             similarities = sorted(similarities, key = lambda x: -x[1])
             self.topK = [x[0] for x in similarities[:self.K]]
-            return rank
+            return rank, increaseCyclesByOne
         
         #If one of the firstcycle modifications were true, function would return there itself and wouldn't come down
         
-        if self.diversityEnabled == False:                                  #This is the case with standard MAUT
-            self.topK = [x[0] for x in tempUtilities[:self.K]]              #Getting only the products and ignoring utilities
-            if self.highestOverlappingProductsInTopK == True:
-                #self.target, self.currentReference
-                sortedProducts = [x[0] for x in tempUtilities]
-                sortedProducts = [x for x in sortedProducts if x.id != self.target]
-                referenceProd = self.caseBase[self.currentReference]
-                targetProd = self.caseBase[self.target]
-                tempList = []
-                for prod in sortedProducts:
-                    attrDirections = self.direction(prod, referenceProd, targetProd)
-                    targetAttrDirections = self.direction(targetProd, referenceProd, targetProd)
-                    overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
-                    tempList.append((prod, overlapDegree))
-                tempList = sorted(tempList, key = lambda x: -x[1])
-                self.topK = [x[0] for x in tempList[:self.K]] 
-            return rank
+        if self.diversityEnabled == True:   #IMPLEMENT THE Smyth and McClave(2001) Algorithm
+            self.topK = self.boundedGreedy(newList)
+            return rank, increaseCyclesByOne
         
-        if self.diversityEnabled == True:
-            #IMPLEMENT THE Smyth and McClave(2001) Algorithm
-            #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
-            tempList = []   #This will hold the topK products found so far
-            self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
-            while len(tempList) < self.K and len(newList) > 0:      #when len(newList) == 0, you shouldn't enter the loop body 
-                qualities = [(c, self.quality(c, tempList)) for c in newList]
-                top = sorted(qualities, key = lambda x: -x[1])[0][0]
-                tempList.append(top)
-                newList = [p for p in newList if p.id != top.id]    #Removing the 'top' product from newList
+        if self.adaptiveSelectionEnabled == True:
+            if firstTime == True:
+                self.topK = utilitySortedProducts
+            else:
+                #for further iterations, if user pushes the button "I DON'T LIKE ANY OF THESE COMPOUND CRITIQUES"
+                if self.maxCompatible(utilitySortedProducts)[1] < 0.4:         #whatever products we are going to propose in the next iteration will be rejected by user
+                    #TODO: increaseCyclesByOne can be 2, 3 and so on. Not just one...
+                    self.topK = self.boundedGreedy(newList)                 #diversity here...
+                    increaseCyclesByOne = 1
+                else:
+                    self.topK = utilitySortedProducts      #Normal recommendation.
+            return rank, increaseCyclesByOne 
+        
+        if self.highestOverlappingProductsInTopK == True:           #This is only for testing purposes where highest overlapping products come in the topK
+            #self.target, self.currentReference
+            sortedProducts = [x[0] for x in utilitySortedProducts]
+            sortedProducts = [x for x in sortedProducts if x.id != self.target]
+            referenceProd = self.caseBase[self.currentReference]
+            targetProd = self.caseBase[self.target]
+            tempList = []
+            for prod in sortedProducts:
+                attrDirections = self.direction(prod, referenceProd, targetProd)
+                targetAttrDirections = self.direction(targetProd, referenceProd, targetProd)
+                overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
+                tempList.append((prod, overlapDegree))
+            tempList = sorted(tempList, key = lambda x: -x[1])
+            self.topK = [x[0] for x in tempList[:self.K]] 
+            return rank, increaseCyclesByOne
             
-            self.topK = tempList
-            return rank
+        self.topK = utilitySortedProducts              #This is with standard MAUT
+        return rank, increaseCyclesByOne
+        
             
     def critiqueStrings(self, selection):
         '''This function updates weights, calls  selectTopK function'''
         '''sets the currentReference and returns critique strings corresponding to the topK products''' 
-        selectedProduct = None; specialProduct = None; selectiveAttributes = None;
+        selectedProduct = None; specialProduct = None; selectiveAttributes = None; previousIterMaxCompatibility = 0;#book keeping variable
         if selection == 'firstTime':
             selectedProduct = self.caseBase[self.currentReference]
             self.weightsList[self.target].append(copy.copy(self.weights))
@@ -280,7 +299,7 @@ class Recommender:
             self.weightsList[self.target].append(copy.copy(self.weights))
             self.currentReference = selectedProduct.id  #Changing the reference product...                
                 
-            
+            #previousIterMaxCompatibility = self.maxCompatible(self.topK)[1]
             for prod in self.topK:  #Removing previous topK items
                 self.prodList = [c for c in self.prodList if c.id != prod.id]
         #print 'Product List Size = ', len(self.prodList)
@@ -291,10 +310,11 @@ class Recommender:
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
-        rank = self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
+        rank, increaseByOne = self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
         #TODO: Reject all products that are being fully dominated by the current product
+        print 'topK =', [x.id for x in self.topK]
         critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
-        return critiqueStringList, rank
+        return critiqueStringList, rank, increaseByOne
     
     def updateWeights(self, topK, selection, specialProduct = None, selectiveAttributes = None):
         '''If specialArg is a number, that becomes the selected product; not topK[selection]'''
@@ -478,7 +498,6 @@ class Recommender:
         negativeAttributes = []
         neutralAttributes = []
         for attr in self.libAttributes:
-            #print 'current = ', current
             if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]) and self.neutralDirectionEnabled:
                 neutralAttributes.append(attr)
                 continue 

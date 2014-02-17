@@ -72,7 +72,7 @@ class App:
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()
         
-        l, rank = self.recommender.critiqueStrings(selection = 'firstTime')
+        l, rank, temp = self.recommender.critiqueStrings(selection = 'firstTime')
         for i, k in enumerate(l):
             self.compoundCritiqueL[i].insert(END, k); i+= 1
         self.createUtilitiesFrame()
