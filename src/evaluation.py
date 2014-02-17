@@ -21,6 +21,7 @@ class Evaluator:
         self.recommender.updateWeightsWrtInitPreferences = False
         self.recommender.averageProductEnabled = False
         self.recommender.historyEnabled = False
+        self.recommender.additiveUpdatesEnabled = True
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
@@ -53,12 +54,12 @@ class Evaluator:
                 self.recommender.target = self.targets[0].id 
                 self.recommender.selectFirstProduct(initialPreferences)
                 
-                strings = self.recommender.critiqueStrings('firstTime')
+                strings, rank = self.recommender.critiqueStrings('firstTime')
                 #print 'append rank =', rank
-                #self.ranks[numLocalIterations].append(rank)                 #book keeping
-                
+                self.ranks[numLocalIterations].append(rank)                 #book keeping
                 targets = [x.id for x in self.targets]
                 print 'First product selected:', self.recommender.currentReference
+                
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
@@ -69,10 +70,9 @@ class Evaluator:
                     numLocalIterations += 1
                     selection, comp, numericAttrComp = self.recommender.maxCompatible(self.recommender.topK)
                     totalCompatibility += numericAttrComp
-                    strings = self.recommender.critiqueStrings(selection)
-                    #self.ranks[numLocalIterations].append(rank)
+                    strings, rank = self.recommender.critiqueStrings(selection)
+                    self.ranks[numLocalIterations].append(rank)
                     print "selection =", topKIds[selection], ", Compatiblity =", int(numericAttrComp*1000)/1000.0
-                    
                     
                     
                 print 'Number of interaction cycles =', numLocalIterations
@@ -94,8 +94,8 @@ class Evaluator:
         print 'Average numeric attr compatiblity = ', totalCompatibility/(numGlobalIterations)
         
         #self.printStatistics(iterationsPerProduct)
-        #util.printRanks(self.ranks)
-        util.printWeights(self)
+        util.printRanks(self)
+        #util.printWeights(self)
     
     def dominatingProducts(self, p):
         dominators = []

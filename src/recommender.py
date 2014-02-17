@@ -48,6 +48,7 @@ class Recommender:
         self.highestOverlappingProductsInTopK = False
         self.averageProductEnabled = False
         self.historyEnabled = False
+        self.additiveUpdatesEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -176,38 +177,36 @@ class Recommender:
         #when unitCritique is selected, you need to some filtering; hence the list is changed
         tempUtilities = [(product, self.utility(product, self.weights)) for product in newList]
         tempUtilities = sorted(tempUtilities, key = lambda x: -x[1])
-        #print [x .id for x in self.prodList]    
-#        try:
-#            print "target Product", self.target, "'s rank =", [x[0].id for x in tempUtilities].index(self.target)
-#        except:
-#            print "target Product", self.target, "'s rank =", 0     #This means that the product was the reference product in first iteration
+        #print [x .id for x in self.prodList]
+        rank = -1    
+        try:
+            rank = [x[0].id for x in tempUtilities].index(self.target)
+        except:
+            rank = 0            #This means that the product was the reference product in first iteration     
+        print "target Product", self.target, "'s rank =", rank
         #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
         #both the if statements are executed.
         if firstTime == True and self.targetProductDoesntAppearInFirstCycle == True:
             newList = [x for x in self.prodList if x.id != self.target]
             utilities = [(product, self.utility(product, self.weights)) for product in newList]
             self.topK = [x[0] for x in sorted(utilities, key = lambda x: -x[1])[:self.K]]
+            if self.similarProdInFirstCycleEnabled == False:
+                return rank
         
         if firstTime == True and self.similarProdInFirstCycleEnabled == True:
             similarities = [(prod, self.sim(prod, self.initialPreferences)) for prod in newList]
             similarities = sorted(similarities, key = lambda x: -x[1])
             self.topK = [x[0] for x in similarities[:self.K]]
-            return
+            return rank
         
-        firstCycleModifications = self.targetProductDoesntAppearInFirstCycle or self.similarProdInFirstCycleEnabled
-        dontGoBelow = firstCycleModifications and firstTime
-        #you don't go below only when mod - true, and firstTime - true
-        #Go further below and do the below stuff only when firstCycle modifications are false
-        if self.highestOverlappingProductsInTopK == True: dontGoBelow = False
+        #If one of the firstcycle modifications were true, function would return there itself and wouldn't come down
         
-        
-        if dontGoBelow == False and self.diversityEnabled == False:                                  #This is the case with standard MAUT
+        if self.diversityEnabled == False:                                  #This is the case with standard MAUT
             self.topK = [x[0] for x in tempUtilities[:self.K]]              #Getting only the products and ignoring utilities
-            utilities = [(product, self.utility(product, self.weights)) for product in self.prodList]
-            sortedProducts = [x[0] for x in sorted(utilities, key = lambda x: -x[1])]
-            sortedProducts = [x for x in sortedProducts if x.id != self.target]
             if self.highestOverlappingProductsInTopK == True:
                 #self.target, self.currentReference
+                sortedProducts = [x[0] for x in tempUtilities]
+                sortedProducts = [x for x in sortedProducts if x.id != self.target]
                 referenceProd = self.caseBase[self.currentReference]
                 targetProd = self.caseBase[self.target]
                 tempList = []
@@ -218,25 +217,21 @@ class Recommender:
                     tempList.append((prod, overlapDegree))
                 tempList = sorted(tempList, key = lambda x: -x[1])
                 self.topK = [x[0] for x in tempList[:self.K]] 
-                
-        if dontGoBelow == False and self.diversityEnabled == True:
+            return rank
+        
+        if self.diversityEnabled == True:
             #IMPLEMENT THE Smyth and McClave(2001) Algorithm
             #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
             tempList = []   #This will hold the topK products found so far
             self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
-            while len(tempList) < self.K and len(newList) > 0:
+            while len(tempList) < self.K and len(newList) > 0:      #when len(newList) == 0, you shouldn't enter the loop body 
                 qualities = [(c, self.quality(c, tempList)) for c in newList]
-                try:
-                    top = sorted(qualities, key = lambda x: -x[1])[0][0]
-                except:
-                    print 'len(prodlist) =', len(self.prodList)
-                    print 'len(newList) =', len(newList)
-                    print 'len(qualities) =', len(qualities)
-                    exit()
+                top = sorted(qualities, key = lambda x: -x[1])[0][0]
                 tempList.append(top)
                 newList = [p for p in newList if p.id != top.id]    #Removing the 'top' product from newList
             
             self.topK = tempList
+            return rank
             
     def critiqueStrings(self, selection):
         '''This function updates weights, calls  selectTopK function'''
@@ -296,10 +291,10 @@ class Recommender:
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
-        self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
+        rank = self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
         #TODO: Reject all products that are being fully dominated by the current product
         critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
-        return critiqueStringList
+        return critiqueStringList, rank
     
     def updateWeights(self, topK, selection, specialProduct = None, selectiveAttributes = None):
         '''If specialArg is a number, that becomes the selected product; not topK[selection]'''
@@ -320,14 +315,21 @@ class Recommender:
                 
             if self.notCrossingThreshold(attr, referenceProd.attr[attr], selectedProduct.attr[attr]) and self.neutralDirectionEnabled:
                 self.weightIncOrDec[attr] = 0; continue;
-                                
+            
+            val = (selectedProduct.attr[attr] - referenceProd.attr[attr])/(self.maxV[attr] - self.minV[attr])
+            if attr in self.libAttributes:
+                val = -val
+            if self.additiveUpdatesEnabled == True:
+                self.weights[attr] += val; continue;
+                            
             if self.value(attr, referenceProd.attr[attr]) < self.value(attr, selectedProduct.attr[attr]):
-                self.weights[attr] *= weightUpdateFactors[attr]
                 self.weightIncOrDec[attr] = 1 if weightUpdateFactors[attr] > 1 else 0
+                self.weights[attr] *= weightUpdateFactors[attr]
                 
             else:
-                self.weights[attr] /= weightUpdateFactors[attr]
                 self.weightIncOrDec[attr] = -1 if weightUpdateFactors[attr] > 1 else 0
+                self.weights[attr] /= weightUpdateFactors[attr]
+                
 
         #Normalizing the weights
         weightSum = sum([self.weights[attr] for attr in self.numericAttrNames])
@@ -335,7 +337,6 @@ class Recommender:
             self.weights[attr] /= weightSum
                 
         for attr in self.nonNumericAttrNames:
-            '''THE WEIGHTS OF NOMINAL ATTR SET TO ZERO. NOT TO BE USED IN THE GUI..THIS IS ONLY FOR OFFLINE EVAL'''
             #selective weight update is not for nominal attributes. It's a little complicated to model this 
             #for nominal attributes          
             if attr not in selectiveAttributes: continue
@@ -354,7 +355,26 @@ class Recommender:
             for temp in self.nonNumericValueDict[attr]:
                 self.nonNumericValueDict[attr][temp] /= normalizingFactor
                 
-    
+    def updateWeightsUtil(self, topK, selection):
+        '''Determines which attribute weights should actually be updated and which should be not'''
+        '''Cases like: "Higher Price present in all critique strings"'''
+        '''and "Higher Resolution is chosen over lesser resolution(present in 4 critique strings) etc. are handled'''
+        
+        #The dictionary critiqueStringDirections must have been filled in the previous iteration itself.
+        weightUpdateFactors = {}
+        if self.selectiveWtUpdateEnabled == False:
+            for attr in self.numericAttrNames:
+                weightUpdateFactors[attr] = 2
+            return weightUpdateFactors
+        
+        #update factors are returned by util.getUpdateFactor()
+        for attr in self.numericAttrNames:
+            directions = self.critiqueStringDirections[attr]
+            weightUpdateFactors[attr] = util.getUpdateFactor(directions, selection, attr in self.mibAttributes)
+            #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
+            #print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
+            
+        return weightUpdateFactors
     
     def unitCritiqueSelectedStrings(self, selection, value, type):
         attr = self.numericAttrNames[selection]
@@ -387,26 +407,6 @@ class Recommender:
         #print 'Product selected with unit critiques ID = ', self.topK[0].id
         return [self.critiqueStr(prod1, topProduct) for prod1 in self.topK]
     
-    def updateWeightsUtil(self, topK, selection):
-        '''Determines which attribute weights should actually be updated and which should be not'''
-        '''Cases like: "Higher Price present in all critique strings"'''
-        '''and "Higher Resolution is chosen over lesser resolution(present in 4 critique strings) etc. are handled'''
-        
-        #The dictionary critiqueStringDirections must have been filled in the previous iteration itself.
-        weightUpdateFactors = {}
-        if self.selectiveWtUpdateEnabled == False:
-            for attr in self.numericAttrNames:
-                weightUpdateFactors[attr] = 2
-            return weightUpdateFactors
-        
-        #update factors are returned by util.getUpdateFactor()
-        for attr in self.numericAttrNames:
-            directions = self.critiqueStringDirections[attr]
-            weightUpdateFactors[attr] = util.getUpdateFactor(directions, selection, attr in self.mibAttributes)
-            #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
-            #print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
-            
-        return weightUpdateFactors
     
         
     def value(self, attr, value):

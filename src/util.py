@@ -37,10 +37,18 @@ def getUpdateFactor(directions, selection, Mib):
     
     return temp[index]
 
-def printRanks(ranks):
+def printRanks(evaluatorInstance):
+    ranks = evaluatorInstance.ranks
+    modString = ''
+    if evaluatorInstance.recommender.historyEnabled == True:
+        modString += 'History'
+    if evaluatorInstance.recommender.diversityEnabled == True:
+        modString += 'Diversity'
+    if evaluatorInstance.recommender.similarProdInFirstCycleEnabled == True:
+        modString += 'Similarity'
     #ranks is a dictionary. Key = iteration number, value = list of ranks of various products
-    a = open('ranksCamera.txt', 'w')
-    b = open('ranksPaddedWithZerosCamera.txt', 'w')
+    a = open('ranksCamera' + modString + '.txt', 'w')
+    b = open('ranksPaddedWithZerosCamera' + modString +'.txt', 'w')
     #print ranks
     try:
         for key in ranks:

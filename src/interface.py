@@ -11,6 +11,7 @@ class App:
         self.recommender.diversityEnabled = False
         self.recommender.target = 147
         self.recommender.similarProdInFirstCycleEnabled = False
+        self.recommender.additiveUpdatesEnabled = True
         self.recommender.initialPreferences = {'Price':self.recommender.caseBase[147].attr['Price']}
         self.createUnitCritiqueFrame()
         self.createTargetComparisonBox()
@@ -200,7 +201,9 @@ class App:
         
     def userSelect(self, selection):
         i = 0
-        for str, rank in self.recommender.critiqueStrings(selection):
+        t = self.recommender.critiqueStrings(selection)
+        print t[0]
+        for str in t[0]:
             self.compoundCritiqueL[i].delete(1.0, END)
             self.compoundCritiqueL[i].insert(END, str); i+= 1
             
