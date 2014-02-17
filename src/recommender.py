@@ -37,7 +37,7 @@ class Recommender:
         self.preComputedAttrSigns = {}
         self.nominalAttributesEnabled = True                #In the function 'selectFirstProduct()', self.nonNumericAttrNames = []
         self.neutralDirectionEnabled = True                 #It's set to false during evaluation, neutral direction helps for the proper display of critique strings
-        self.selectedProductsList = []
+        self.selectedProductsList = []                      #It is initialized with the first product selected and every product that is subsequently chosen by user is added.
         self.weightsList = collections.defaultdict(list)
         
         #modifications turn on/off. By default they are turned off. Inheriting class should turn them on.
@@ -47,6 +47,7 @@ class Recommender:
         self.targetProductDoesntAppearInFirstCycle = False
         self.highestOverlappingProductsInTopK = False
         self.averageProductEnabled = False
+        self.historyEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -80,7 +81,24 @@ class Recommender:
             
     def utility(self, product, weights):
         '''Input: product and a dict of weights. Output: Utility of the product wrt that weight model'''
-        retVal = 0
+        '''Probable for side-effects because it has many callers'''
+        '''To work correctly, function should be called just before the variable self.topK is set, and the user selected product has already been added to self.selectedProductsList'''
+        '''Caller will be either selectTopK(), unitCritiqueSelectedStrings(), stuffForUtilitesFrame()'''
+        retVal = 0; currentProd = product
+        if self.historyEnabled == True:
+            if len(self.selectedProductsList) > 1:      #If this length was equal to one, then we can't do anything with the history info
+                previousReference = self.selectedProductsList[-2]
+                previousUserSelectedProduct = self.selectedProductsList[-1]
+                targetProd = self.caseBase[self.target]     #dummy, won't be used anyways, since we are calculating only numeric attribute overlaps...
+                dir1 = self.direction(previousUserSelectedProduct, previousReference, targetProd)
+                dir2 = self.direction(currentProd, previousReference, targetProd)
+                overlappingNumericAttr = set(self.overlappingAttributes(dir1, dir2)) & set(self.numericAttrNames)
+                retVal += len(overlappingNumericAttr)/float(len(self.numericAttrNames))     #it looks like retVal is quite significant
+#                if product.id == self.target:
+#                    print 'previous user selected product:', previousUserSelectedProduct.id
+#                    print 'previous reference:', previousReference.id
+#                    print 'retVal =', retVal
+                
         for attr in self.numericAttrNames:
             retVal += self.weights[attr] * self.value(attr, product.attr[attr])
         for attr in self.nonNumericAttrNames:
@@ -129,6 +147,7 @@ class Recommender:
             self.preComputedAttrSigns[prod.id] = self.attributeSignsUtil(prod, reference)
     
     def critiqueSim(self, prod1, prod2):
+        '''Input: Two products prod1, prod2. Output: overlap between critique strings of prod1, prod2'''
         #self.precomputedAttrSigns is already set before calling this function
         p1, n1, ne1 = self.preComputedAttrSigns[prod1.id]
         p2, n2, ne2 = self.preComputedAttrSigns[prod2.id]
@@ -150,7 +169,7 @@ class Recommender:
         
     def selectTopK(self, unitCritiqueArg = None, firstTime = False):
         ''''THIS FUNCTION'S ONLY TASK IS TO SET THE VARIABLE SELF.TOPK'''
-        '''Argument firstTime is True only when we want similar products as the topK in first interaction cycle'''
+        '''Argument firstTime is True if selectTopK is being called for the first time'''
         '''Argument unitCritiqueArg is not None when the caller is unitCritiqueSelectedStrings()'''
         newList = copy.copy(self.prodList)
         if unitCritiqueArg != None: newList = unitCritiqueArg
@@ -158,10 +177,10 @@ class Recommender:
         tempUtilities = [(product, self.utility(product, self.weights)) for product in newList]
         tempUtilities = sorted(tempUtilities, key = lambda x: -x[1])
         #print [x .id for x in self.prodList]    
-        try:
-            print "target Product", self.target, "'s rank =", [x[0].id for x in tempUtilities].index(self.target)
-        except:
-            print "target Product", self.target, "'s rank =", 0     #This means that the product was the reference product in first iteration
+#        try:
+#            print "target Product", self.target, "'s rank =", [x[0].id for x in tempUtilities].index(self.target)
+#        except:
+#            print "target Product", self.target, "'s rank =", 0     #This means that the product was the reference product in first iteration
         #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
         #both the if statements are executed.
         if firstTime == True and self.targetProductDoesntAppearInFirstCycle == True:
@@ -226,6 +245,7 @@ class Recommender:
         if selection == 'firstTime':
             selectedProduct = self.caseBase[self.currentReference]
             self.weightsList[self.target].append(copy.copy(self.weights))
+            self.selectedProductsList.append(copy.copy(selectedProduct))
             
         if selection != 'firstTime':
             selectedProduct = copy.copy(self.topK[selection])
@@ -258,9 +278,9 @@ class Recommender:
                     valuesSeen = [x.attr[attr] for x in self.selectedProductsList]
                     maxFrequent = sorted(valuesSeen, key = valuesSeen.count)[-1]
                     specialProduct.attr[attr] = maxFrequent
-                attr = 'Price'
-                print "Target Product's Price:", self.caseBase[self.target].attr[attr] 
-                print 'Price List:', [x.attr[attr] for x in self.selectedProductsList]
+#                attr = 'Price'
+#                print "Target Product's Price:", self.caseBase[self.target].attr[attr] 
+#                print 'Price List:', [x.attr[attr] for x in self.selectedProductsList]
             self.updateWeights(self.topK, selection, specialProduct, selectiveAttributes)
             self.weightsList[self.target].append(copy.copy(self.weights))
             self.currentReference = selectedProduct.id  #Changing the reference product...                
@@ -271,8 +291,8 @@ class Recommender:
         #print 'Product List Size = ', len(self.prodList)
         for attr in self.numericAttrNames:
             self.critiqueStringDirections[attr] = []
-            print attr,':', (int(self.weights[attr]*1000)/1000.0),
-        print
+            #print attr,':', (int(self.weights[attr]*1000)/1000.0),
+        #print
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
@@ -611,19 +631,22 @@ class Recommender:
         return overlapping
 
 
-    def overlappingDegree(self, direction1, direction2):
+    def overlappingDegree(self, direction1, direction2, numericOnly = False):
         '''direction1 and direction2 are two dictionaries..'''
         '''Returns the extent of overlap'''
+        '''Returns overlap between numeric attributes if 'numericOnly' is true'''
         total = len(direction1)
-        overlapping = 0
+        overlapping1 = overlapping2 = 0;
         for attr in self.numericAttrNames:
             if direction1[attr] == direction2[attr]:
-                overlapping += 1
+                overlapping1 += 1
         for attr in self.nonNumericAttrNames:
             if direction1[attr] == direction2[attr]:
-                overlapping += 1
+                overlapping2 += 1
 #        #print 'Overlap Ratio:', float(overlapping)/total
-        return float(overlapping)/total
+        if numericOnly == True:
+            return float(overlapping1)/len(self.numericAttrNames)
+        return float(overlapping1 + overlapping2)/total
     
     def maxCompatible(self, products):
         #Return the indices of those products whose critique strings are compatible with target
@@ -636,18 +659,19 @@ class Recommender:
             for target in self.targets:    
                 attrDirections = self.direction(prod, reference, target)
                 targetAttrDirections = self.direction(target, reference, target)
-                overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
+                overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)
+                numericAttrOverlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections, numericOnly = True)
                 #print 'Compound critique product ID = ', prod.id
                 #print 'attrDirections:', attrDirections
                 #print 'targetAttrDirections: ', targetAttrDirections
                 if overlapDegree > maxDegree:
                     maxDegree = overlapDegree
-            l.append((i, maxDegree))
+            l.append((i, maxDegree, numericAttrOverlapDegree))
             
         l = sorted(l, key = lambda x: -x[1])
         #print self.direction(products[l[0][0]], reference, target)     #maxCompatible product's directions
         #print self.direction(target, reference, target)             #target product's directions
-        l2 = [(products[i].id, int(j*100)/100.0) for i, j in l]
+        l2 = [(products[i].id, int(j*100)/100.0) for i, j, k in l]
         #print l2
         #print 'maxCompatible Product ID =', l2[0][0]
         return l[0]

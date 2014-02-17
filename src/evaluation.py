@@ -20,13 +20,14 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = False
         self.recommender.averageProductEnabled = False
+        self.recommender.historyEnabled = False
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
     
     def startAll(self, numAttributes):
         #Make each product as the target 10 times...
-        numExperiments = 10
+        numExperiments = 5
         numGlobalIterations = 0; numIterationsList = []; totalCompatibility = 0;
         averages = []; averageWithoutOnes = [];
         iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
@@ -61,15 +62,17 @@ class Evaluator:
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
-                    #print 'topK:', topKIds
+                    print 'topK:', topKIds
+                    print 'selected product list:', [x.id for x in self.recommender.selectedProductsList]
                     if len(set(targets) & set(topKIds)) != 0:
                         break
                     numLocalIterations += 1
-                    selection, compatibility = self.recommender.maxCompatible(self.recommender.topK)
-                    totalCompatibility += compatibility
+                    selection, comp, numericAttrComp = self.recommender.maxCompatible(self.recommender.topK)
+                    totalCompatibility += numericAttrComp
                     strings = self.recommender.critiqueStrings(selection)
                     #self.ranks[numLocalIterations].append(rank)
-                    #print "selection =", topKIds[selection], ", Compatiblity =", int(compatibility*1000)/1000.0
+                    print "selection =", topKIds[selection], ", Compatiblity =", int(numericAttrComp*1000)/1000.0
+                    
                     
                     
                 print 'Number of interaction cycles =', numLocalIterations
@@ -88,7 +91,7 @@ class Evaluator:
         print 'Average number of interaction cycles = ', float(numGlobalIterations)/(numExperiments*len(self.recommender.caseBase))
         print 'Final average using the previous 10 averages =', sum(averages)/len(averages)
         print 'Average without ones:', sum(averageWithoutOnes)/len(averageWithoutOnes)
-        print 'Average compatiblity = ', totalCompatibility/(numGlobalIterations)
+        print 'Average numeric attr compatiblity = ', totalCompatibility/(numGlobalIterations)
         
         #self.printStatistics(iterationsPerProduct)
         #util.printRanks(self.ranks)
