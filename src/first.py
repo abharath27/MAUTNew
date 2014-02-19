@@ -32,4 +32,4 @@ def readList():
         selfList.append(Camera(id, line))
     return selfList
 
-#print readList()[0].attr
+print str(readList()[41])

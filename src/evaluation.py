@@ -5,6 +5,7 @@ import random, itertools, util, sys, os, collections
 
 class Evaluator:
     def __init__(self, config, domain = "Camera"):
+        self.domain = domain
         self.recommender = Recommender()
         if domain == 'PC':
             self.recommender = PCRecommender()
@@ -20,18 +21,18 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = False
         self.recommender.averageProductEnabled = False
-        self.recommender.historyEnabled = False
         self.recommender.additiveUpdatesEnabled = False
-        self.recommender.adaptiveSelectionEnabled = True
+        self.recommender.adaptiveSelectionEnabled = False
+        self.recommender.historyEnabled = True
+        self.recommender.deepHistoryEnabled = False
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
-        self.numWastedCycles = 0
         self.startAll(config[2])
     
     def startAll(self, numAttributes):
         #Make each product as the target 10 times...
         numExperiments = 5
-        numGlobalIterations = 0; numIterationsList = []; totalCompatibility = 0;
+        numGlobalIterations = 0; numIterationsList = []; totalCompatibility = 0; numWastedCycles = 0;
         averages = []; averageWithoutOnes = [];
         iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
         queries = iter([x[:-1].split() for x in open('queries.txt').readlines()])
@@ -51,6 +52,7 @@ class Evaluator:
                 for attr in queryAttributes:
                     initialPreferences[attr] = prod.attr[attr]
                 
+                print 'initialPreferences = ', initialPreferences
                 self.targets = [prod]           #self.targets = [prod] + self.dominatingProducts(prod)
                 self.recommender.initialPreferences = initialPreferences
                 self.recommender.target = self.targets[0].id 
@@ -70,7 +72,7 @@ class Evaluator:
                     if len(set(targets) & set(topKIds)) != 0:
                         break
                     numLocalIterations += (1+incByOne)
-                    self.numWastedCycles += incByOne
+                    numWastedCycles += incByOne
                     selection, comp, numericAttrComp = self.recommender.maxCompatible(self.recommender.topK)
                     totalCompatibility += numericAttrComp
                     strings, rank, incByOne = self.recommender.critiqueStrings(selection)
@@ -96,11 +98,12 @@ class Evaluator:
         print 'Final average using the previous averages =', sum(averages)/len(averages)
         print 'Average without ones:', sum(averageWithoutOnes)/len(averageWithoutOnes)
         print 'Average numeric attr compatiblity = ', totalCompatibility/(numGlobalIterations)
-        print 'Average without wasted cycles = ', (float(numGlobalIterations)-self.numWastedCycles)/(numExperiments*len(self.recommender.caseBase))
+        print 'Average without wasted cycles = ', (float(numGlobalIterations)-numWastedCycles)/(numExperiments*len(self.recommender.caseBase))
+        print 'Percentage times adaptive selection was called:', float(numWastedCycles)/numGlobalIterations
         
         #self.printStatistics(iterationsPerProduct)
         util.printRanks(self)
-        #util.printWeights(self)
+        util.printWeights(self)
     
     def dominatingProducts(self, p):
         dominators = []

@@ -39,7 +39,7 @@ def getUpdateFactor(directions, selection, Mib):
 
 def printRanks(evaluatorInstance):
     ranks = evaluatorInstance.ranks
-    modString = ''
+    modString = evaluatorInstance.domain
     if evaluatorInstance.recommender.historyEnabled == True:
         modString += 'History'
     if evaluatorInstance.recommender.diversityEnabled == True:
@@ -47,8 +47,8 @@ def printRanks(evaluatorInstance):
     if evaluatorInstance.recommender.similarProdInFirstCycleEnabled == True:
         modString += 'Similarity'
     #ranks is a dictionary. Key = iteration number, value = list of ranks of various products
-    a = open('ranksCamera' + modString + '.txt', 'w')
-    b = open('ranksPaddedWithZerosCamera' + modString +'.txt', 'w')
+    a = open('ranks' + modString + '.txt', 'w')                 #Domain and all modifications are added to the file name.
+    b = open('ranksPaddedWithZeros' + modString +'.txt', 'w')
     #print ranks
     try:
         for key in ranks:
@@ -58,6 +58,19 @@ def printRanks(evaluatorInstance):
             b.write(str(key) + ' '+ str(temp2) + '\n')
     except:
         print 'key =', key, 'ranks[key] =', ranks[key]
+
+def printWeights(evaluatorInstance):
+    weightList = evaluatorInstance.recommender.weightsList
+    attrNames = evaluatorInstance.recommender.numericAttrNames
+    for id in weightList:
+        a = open('weights/' + str(id) + '.txt', 'w')
+        
+        a.write(' '.join(attrNames) + '\n')
+        for dictionary in weightList[id]:
+            values = [str(dictionary[attr]) for attr in attrNames]
+            line = ' '.join(values) + '\n'
+            a.write(line)
+            
         
 def printNotes(recommender):
     if recommender.diversityEnabled == True:                       #Diversity should be enabled true
@@ -78,15 +91,3 @@ def printNotes(recommender):
     #above two are hypothetical and won't be used in real experiments.
     if recommender.updateWeightsWrtInitPreferences == True:
         print 'Weights are updated wrt init preferences'
-
-def printWeights(evaluatorInstance):
-    weightList = evaluatorInstance.recommender.weightsList
-    attrNames = evaluatorInstance.recommender.numericAttrNames
-    for id in weightList:
-        a = open('weights/' + str(id) + '.txt', 'w')
-        
-        a.write(' '.join(attrNames) + '\n')
-        for dictionary in weightList[id]:
-            values = [str(dictionary[attr]) for attr in attrNames]
-            line = ' '.join(values) + '\n'
-            a.write(line)

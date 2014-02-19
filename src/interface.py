@@ -8,13 +8,13 @@ class App:
         self.master = master
         self.recommender = Recommender()
         self.recommender.selectiveWtUpdateEnabled = False
-        self.recommender.diversityEnabled = False
-        self.recommender.target = 147
+        self.recommender.diversityEnabled = True
+        self.recommender.target = 42
         self.recommender.similarProdInFirstCycleEnabled = False
-        self.recommender.additiveUpdatesEnabled = True
+        self.recommender.additiveUpdatesEnabled = False
         self.recommender.initialPreferences = {'Price':self.recommender.caseBase[147].attr['Price']}
         self.createUnitCritiqueFrame()
-        self.createTargetComparisonBox()
+        #self.createTargetComparisonBox()
         
     def createTargetComparisonBox(self):
         self.targetComparisonBox = Text(self.unitCritiqueFrame, font= 'Helvetica', wrap = WORD, width = 40, height = 7,\
@@ -26,8 +26,8 @@ class App:
         target = self.recommender.caseBase[self.recommender.target]
         reference = self.recommender.caseBase[self.recommender.currentReference]
         tempStr = self.recommender.critiqueStr(target, reference)
-        self.targetComparisonBox.delete(1.0, END)
-        self.targetComparisonBox.insert(END, tempStr)
+        #self.targetComparisonBox.delete(1.0, END)
+        #self.targetComparisonBox.insert(END, tempStr)
         
     def createUnitCritiqueFrame(self):
         self.unitCritiqueL = []
@@ -62,12 +62,16 @@ class App:
         '''This function is invoked when the 'Start' button is clicked'''
         #destroy self.unitCritiqueButton as soon as you enter this method...
         #TODO: Remove the cursor from the text boxes as soon as the "start" button is clicked.
-        i = 0; preference = {}
+        i = 0; preferences = {}
         for attr in self.recommender.numericAttrNames:
             if self.textBoxList[i].get() != '':
-                preference[attr] = float(self.textBoxList[i].get())
+                preferences[attr] = float(self.textBoxList[i].get())
             i += 1
-        self.recommender.selectFirstProduct(preference, 59) #pass second argument if you want a particular product to become the reference    
+            
+        if self.recommender.initialPreferences == {}:
+            self.recommender.initialPreferences = preferences
+            
+        self.recommender.selectFirstProduct(preferences, 80) #pass second argument if you want a particular product to become the reference    
         currentProd = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()
@@ -77,7 +81,7 @@ class App:
             self.compoundCritiqueL[i].insert(END, k); i+= 1
         self.createUtilitiesFrame()
         self.createWeightBox()
-        self.createWeightStatusBox()
+        #self.createWeightStatusBox()
         self.updateCompoundCritiqueBoxes()
         self.updateWeightBox()
         self.updateTargetComparisonBox()
@@ -133,7 +137,7 @@ class App:
         scrollbar = Scrollbar(self.master)
         scrollbar. grid(row = 1, column = 3, sticky = "NWES")
 
-        self.utilitiesListBox = Listbox(self.master, yscrollcommand = scrollbar.set, height = 34, width = 40)
+        self.utilitiesListBox = Listbox(self.master, yscrollcommand = scrollbar.set, height = 20, width = 20)
         #KEEP RELIEF = "GROOVE"
         self.utilitiesListBox.grid(row = 1, column = 2, sticky = "N")
         scrollbar.config(command = self.utilitiesListBox.yview)
@@ -147,7 +151,8 @@ class App:
         self.utilitiesListBox.insert(END, tempStr)
         i = 0; index = 0
         for util in self.recommender.stuffForUtilitiesFrame():
-            tempStr = 'ID:' + util[0] + ' Util:' + util[1] + 'Overlap:' + util[2]
+            tempStr = 'ID:' + util[0] + ' Util:' + util[1] 
+            #tempStr += 'Overlap:' + util[2]
             self.utilitiesListBox.insert(END, tempStr)
             if int(util[0]) == self.recommender.target:
                 index = i
@@ -162,7 +167,7 @@ class App:
                                        relief = GROOVE) 
         self.compoundCritiqueFrame.grid(row = 1, column = 1)
         for i in range(5):
-            temp = Text(self.compoundCritiqueFrame, font= 'Helvetica', wrap = WORD, width = 40, height = 7,\
+            temp = Text(self.compoundCritiqueFrame, font= 'Helvetica', wrap = WORD, width = 40, height = 4,\
                          borderwidth = 4, relief = GROOVE)
             temp.grid(row = i, column = 0)
             self.compoundCritiqueL.append(temp)
@@ -173,7 +178,7 @@ class App:
             temp.grid(row = i, column = 1)
                 
     def displayProduct(self, product):
-        t = Text(self.master, font= 'Helvetica', wrap = WORD, width = 60, borderwidth = 4, relief = GROOVE)
+        t = Text(self.master, font= 'Helvetica', wrap = WORD, width = 40, borderwidth = 4, relief = GROOVE)
         #string = string + product.attr['Model'] + '\n'
         string = 'Configuration: ' + str(product)
         string += '\nProduct ID: ' + str(product.id)
@@ -195,7 +200,7 @@ class App:
         self.displayProduct(currentRefProduct)
         self.updateCompoundCritiqueBoxes()
         self.updateWeightBox()
-        self.updateWeightStatusBox()
+        #self.updateWeightStatusBox()
         self.updateUtilitiesFrame()
         self.updateTargetComparisonBox()
         
@@ -206,12 +211,13 @@ class App:
         for str in t[0]:
             self.compoundCritiqueL[i].delete(1.0, END)
             self.compoundCritiqueL[i].insert(END, str); i+= 1
+            print 'str =', str
             
         currentRefProduct = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentRefProduct)
         self.updateCompoundCritiqueBoxes()
         self.updateWeightBox()
-        self.updateWeightStatusBox()
+        #self.updateWeightStatusBox()
         self.updateUtilitiesFrame()
         self.updateTargetComparisonBox()
     
@@ -225,7 +231,7 @@ class App:
         
 root = Tk()
 app = App(root)
-root.wm_title("MAUT with Normalized Weights, Diverse Critiques, Selective Weight updation")
+root.wm_title("MAUT Recommender")
 RWidth=root.winfo_screenwidth()
 RHeight=root.winfo_screenheight()
 root.geometry(("%dx%d")%(RWidth,RHeight))

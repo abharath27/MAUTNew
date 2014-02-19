@@ -1,6 +1,5 @@
 import first, copy, util, inspect, random, collections
 
-
 class Recommender:
     '''Every class inheriting Recommender should initialize the following variables'''
     '''1. self.initialPreferences; 2. self.target'''
@@ -48,6 +47,7 @@ class Recommender:
         self.highestOverlappingProductsInTopK = False
         self.averageProductEnabled = False
         self.historyEnabled = False
+        self.deepHistoryEnabled = False
         self.additiveUpdatesEnabled = False
         self.adaptiveSelectionEnabled = False
         
@@ -60,6 +60,9 @@ class Recommender:
         #sanity check
         numEnabled = self.updateWeightsInLineWithTarget + self.updateWeightsInTargetsDirection + self.updateWeightsWrtInitPreferences
         if numEnabled > 1: print 'More than one weight update technique enabled; exiting;'; exit()
+        numEnabled = self.historyEnabled + self.deepHistoryEnabled
+        if numEnabled > 1: print 'More than one history techniques enabled; exiting;'; exit()
+        
         util.printNotes(self)
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
@@ -100,6 +103,16 @@ class Recommender:
 #                    print 'previous user selected product:', previousUserSelectedProduct.id
 #                    print 'previous reference:', previousReference.id
 #                    print 'retVal =', retVal
+        if self.deepHistoryEnabled == True:
+            historySize = len(self.selectedProductsList)
+            for i in range(1,historySize):
+                reference = self.selectedProductsList[i-1]
+                selectedProduct = self.selectedProductsList[i]
+                targetProd = self.caseBase[self.target]
+                dir1 = self.direction(selectedProduct, reference, targetProd)
+                dir2 = self.direction(currentProd, reference, targetProd)
+                overlappingNumericAttr = set(self.overlappingAttributes(dir1, dir2)) & set(self.numericAttrNames)
+                retVal = retVal +  (2**(i-historySize))* (len(overlappingNumericAttr)/float(len(self.numericAttrNames)))     #it looks like retVal is quite significant
                 
         for attr in self.numericAttrNames:
             retVal += self.weights[attr] * self.value(attr, product.attr[attr])
@@ -153,29 +166,47 @@ class Recommender:
         #self.precomputedAttrSigns is already set before calling this function
         p1, n1, ne1 = self.preComputedAttrSigns[prod1.id]
         p2, n2, ne2 = self.preComputedAttrSigns[prod2.id]
-        overlap = len(list(set(p1).intersection(set(p2))) + list(set(n1).intersection(set(n2))) + list(set(ne1).intersection(set(ne2))))
+        overlap = len(set(p1) & set(p2)) + len(set(n1) & set(n2)) + len(set(ne1) & set(ne2))
         overlap /= float(len(p1 + n1 + ne1))
         return overlap
     
     def quality(self, c, P):
         alpha = self.alpha
-        retVal = alpha*self.utility(c, self.weights)
+        retVal = alpha*self.utility(c, self.weights)        #TODO: utility score can actually be greater than 1. Best to normalize it if you want best results for alpha = 0.5
         #diversity(c, P) = \sum(1-sim(c, Ci))/n
-        diversity = 0
+        dissimilarity = 0
         for prod in P:
-            diversity += (1-self.critiqueSim(c, prod))
+            #diversity += (1-self.critiqueSim(c, prod))
+            dissimilarity += (1-self.sim(c, prod.attr))
         if len(P) != 0:
-            diversity /= len(P)     #Normalizing it to one
-        retVal += (1-alpha) * diversity
+            dissimilarity /= len(P)     #Normalizing it to one
+        retVal += (1-alpha) * dissimilarity
         return retVal
      
-    def boundedGreedy(self, productList):
+    def quality2(self, c, P, previousTopK):
+        alpha = self.alpha
+        retVal = alpha*self.utility(c, self.weights)
+        #diversity(c, P) = \sum(1-sim(c, Ci))/n
+        dissimilarity = 0
+        for prod in P:
+            #diversity += (1-self.critiqueSim(c, prod))
+            dissimilarity += (1-self.sim(c, prod.attr))
+        dissimilarity += sum([(1-self.sim(c, prod.attr)) for prod in previousTopK])
+        
+        dissimilarity /= (len(P) + len(previousTopK))     #Normalizing it to one
+        retVal += (1-alpha) * dissimilarity
+        return retVal
+     
+    def boundedGreedy(self, productList, adaptiveSelection = False, previousTopK = None):
         #IMPLEMENT THE Smyth and McClave(2001) Algorithm
         #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
         tempList = []   #This will hold the topK products found so far
         self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
-        while len(tempList) < self.K and len(productList) > 0:      #when len(newList) == 0, you shouldn't enter the loop body 
-            qualities = [(c, self.quality(c, tempList)) for c in productList]
+        while len(tempList) < self.K and len(productList) > 0:      #when len(newList) == 0, you shouldn't enter the loop body
+            if adaptiveSelection == True:
+                qualities = [(c, self.quality2(c, tempList, previousTopK)) for c in productList]
+            else:
+                qualities = [(c, self.quality(c, tempList)) for c in productList]
             top = sorted(qualities, key = lambda x: -x[1])[0][0]
             tempList.append(top)
             productList = [p for p in productList if p.id != top.id]    #Removing the 'top' product from newList
@@ -226,7 +257,7 @@ class Recommender:
                 #for further iterations, if user pushes the button "I DON'T LIKE ANY OF THESE COMPOUND CRITIQUES"
                 if self.maxCompatible(utilitySortedProducts)[1] < 0.4:         #whatever products we are going to propose in the next iteration will be rejected by user
                     #TODO: increaseCyclesByOne can be 2, 3 and so on. Not just one...
-                    self.topK = self.boundedGreedy(newList)                 #diversity here...
+                    self.topK = self.boundedGreedy(newList, adaptiveSelection = True, previousTopK = utilitySortedProducts)                 #diversity here...
                     increaseCyclesByOne = 1
                 else:
                     self.topK = utilitySortedProducts      #Normal recommendation.
@@ -490,6 +521,7 @@ class Recommender:
         return False 
                 
     def attributeSignsUtil(self, current, reference):
+        '''Deals only with numeric attributes'''
         #This function is called by two functions "CritiqueSim" and "CritiqueStr"....
         #For "CritiqueStr" function, we need to progressively store the attribute directions of all the topK critique strings
         #Classifies all the numeric attributes into positive, negative and neutral attributes
@@ -579,10 +611,11 @@ class Recommender:
             negativeString = negativeString[4:]     #Removing the 'but' part...
         str2 += '\n'
         if len(negativeAttributes) != 0:
-            str2 += negativeString
+            str2 += negativeString + '\n'
         
-        str2 = str2 + '\n Product ID:' + str(current.id)
-        str2 = str2 + '\n' + str(current)
+        #str2 = 'Higher Resolution, Lesser Price, Higher Digital Zoom\n But Lower Optical Zoom, Higher Zoom'
+        str2 = str2 + 'Product ID:' + str(current.id)
+        #str2 = str2 + '\n' + str(current)
         return str2
     
     def mostSimilar(self, baseProduct):
@@ -608,10 +641,7 @@ class Recommender:
         referenceProd = self.caseBase[self.currentReference]
         targetProd = self.caseBase[self.target]
         overlapDegList = []
-        t = self.maxCompatible(self.topK)
-        print 'topKIds =', [x.id for x in self.topK]
-        print 'MaxCompatible:', self.topK[t[0]].id, t[1]
-        print 'target =', self.target, 'reference =', self.currentReference
+        
         for prod in newList:
             attrDirections = self.direction(prod, referenceProd, targetProd)
             targetAttrDirections = self.direction(targetProd, referenceProd, targetProd)
@@ -694,5 +724,21 @@ class Recommender:
         #print l2
         #print 'maxCompatible Product ID =', l2[0][0]
         return l[0]
+    
+    def predictProducts(self):
+        #You shouldn't assume the user's strategy. You should only propose stuff based on what user has actually selected.
+        #So you can't narrow down the search space assuming the strategy of max critique overlap
+        referenceProd = self.caseBase[self.currentReference]
         
+        for targetProd in self.prodList:
+            #we can narrow down the search here..????
+            #we can narrow down to 20 products
+            
+            for prod in self.topK:
+                attrDirections = self.direction(prod, referenceProd, targetProd)
+                targetAttrDirections = self.direction(targetProd, referenceProd, targetProd)
+                overlapDegree = self.overlappingDegree(attrDirections, targetAttrDirections)    
+            
+    
+    
 Recommender()
