@@ -21,10 +21,11 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = False
         self.recommender.averageProductEnabled = False
-        self.recommender.additiveUpdatesEnabled = False
+        self.recommender.additiveUpdatesEnabled = True
         self.recommender.adaptiveSelectionEnabled = False
-        self.recommender.historyEnabled = True
+        self.recommender.historyEnabled = False
         self.recommender.deepHistoryEnabled = False
+        self.recommender.weightedMLT = False
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
@@ -67,8 +68,8 @@ class Evaluator:
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
                     topKIds = [x.id for x in self.recommender.topK]
-                    print 'topK:', topKIds
-                    print 'selected product list:', [x.id for x in self.recommender.selectedProductsList]
+                    #print 'topK:', topKIds
+                    #print 'selected product list:', [x.id for x in self.recommender.selectedProductsList]
                     if len(set(targets) & set(topKIds)) != 0:
                         break
                     numLocalIterations += (1+incByOne)
@@ -77,7 +78,7 @@ class Evaluator:
                     totalCompatibility += numericAttrComp
                     strings, rank, incByOne = self.recommender.critiqueStrings(selection)
                     self.ranks[numLocalIterations].append(rank)
-                    print "selection =", topKIds[selection], ", Compatiblity =", int(numericAttrComp*1000)/1000.0
+                    #print "selection =", topKIds[selection], ", Compatiblity =", int(numericAttrComp*1000)/1000.0
                     
                     
                 print 'Number of interaction cycles =', numLocalIterations

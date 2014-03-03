@@ -8,11 +8,12 @@ class App:
         self.master = master
         self.recommender = Recommender()
         self.recommender.selectiveWtUpdateEnabled = False
-        self.recommender.diversityEnabled = True
-        self.recommender.target = 42
+        self.recommender.diversityEnabled = False
+        self.recommender.target = 0
         self.recommender.similarProdInFirstCycleEnabled = False
         self.recommender.additiveUpdatesEnabled = False
-        self.recommender.initialPreferences = {'Price':self.recommender.caseBase[147].attr['Price']}
+        self.recommender.weightedMLT = True
+        self.recommender.initialPreferences = {'Price':self.recommender.caseBase[1].attr['StorageType']}
         self.createUnitCritiqueFrame()
         #self.createTargetComparisonBox()
         
@@ -71,7 +72,7 @@ class App:
         if self.recommender.initialPreferences == {}:
             self.recommender.initialPreferences = preferences
             
-        self.recommender.selectFirstProduct(preferences, 80) #pass second argument if you want a particular product to become the reference    
+        self.recommender.selectFirstProduct(preferences, 159) #pass second argument if you want a particular product to become the reference    
         currentProd = [prod for prod in self.recommender.caseBase if prod.id == self.recommender.currentReference][0]
         self.displayProduct(currentProd)
         self.createCompoundCritiqueFrame()

@@ -50,6 +50,7 @@ class Recommender:
         self.deepHistoryEnabled = False
         self.additiveUpdatesEnabled = False
         self.adaptiveSelectionEnabled = False
+        self.weightedMLT = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -227,8 +228,8 @@ class Recommender:
             rank = [x[0].id for x in utilitySortedProducts].index(self.target)
         except:
             rank = 0            #This means that the product was the reference product in first iteration     
-        print "target Product", self.target, "'s rank =", rank
-        print 'topK:', [x.id for x in utilitySortedProducts]
+        #print "target Product", self.target, "'s rank =", rank
+        #print 'topK:', [x.id for x in utilitySortedProducts]
         #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
         #both the if statements are executed.
         if firstTime == True and self.targetProductDoesntAppearInFirstCycle == True:
@@ -342,8 +343,9 @@ class Recommender:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
         rank, increaseByOne = self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
+        
         #TODO: Reject all products that are being fully dominated by the current product
-        print 'topK =', [x.id for x in self.topK]
+        #print 'topK =', [x.id for x in self.topK]
         critiqueStringList = [self.critiqueStr(prod1, selectedProduct) for prod1 in self.topK]
         return critiqueStringList, rank, increaseByOne
     
@@ -351,14 +353,13 @@ class Recommender:
         '''If specialArg is a number, that becomes the selected product; not topK[selection]'''
         '''specialProduct is a modified form of topK[selection], selected by user'''
         '''selectiveAttributes is a list of attributes weights of only which have to be updated'''
-        #TODO:updateWeightsUtil() function should be changed for selective weight updationn with target directions
         selectedProduct = copy.copy(self.topK[selection])
         if specialProduct != None:
             selectedProduct = copy.copy(specialProduct)
         if selectiveAttributes == None:
             selectiveAttributes = self.numericAttrNames + self.nonNumericAttrNames
         
-        weightUpdateFactors = self.updateWeightsUtil(topK, selection)
+        weightUpdateFactors, numericUpdateFactors = self.updateWeightsUtil(topK, selection)
         referenceProd = self.caseBase[self.currentReference]
         for attr in self.numericAttrNames:
             if attr not in selectiveAttributes: #do not update the weight of attribute if it's not there in selective attributes
@@ -367,11 +368,13 @@ class Recommender:
             if self.notCrossingThreshold(attr, referenceProd.attr[attr], selectedProduct.attr[attr]) and self.neutralDirectionEnabled:
                 self.weightIncOrDec[attr] = 0; continue;
             
-            val = (selectedProduct.attr[attr] - referenceProd.attr[attr])/(self.maxV[attr] - self.minV[attr])
-            if attr in self.libAttributes:
-                val = -val
             if self.additiveUpdatesEnabled == True:
-                self.weights[attr] += val; continue;
+                x = selectedProduct.attr[attr] - referenceProd.attr[attr]
+                val = 1*(x > 0) + (-1)*(x < 0)
+                val = -val if attr in self.libAttributes else val
+                if val > 0:
+                    self.weights[attr] += val;      #do not add the weights if you want to decrease weights. They will be automatically decreased while normalization. 
+                continue;
                             
             if self.value(attr, referenceProd.attr[attr]) < self.value(attr, selectedProduct.attr[attr]):
                 self.weightIncOrDec[attr] = 1 if weightUpdateFactors[attr] > 1 else 0
@@ -379,7 +382,8 @@ class Recommender:
                 
             else:
                 self.weightIncOrDec[attr] = -1 if weightUpdateFactors[attr] > 1 else 0
-                self.weights[attr] /= weightUpdateFactors[attr]
+                if weightUpdateFactors[attr] > 0:
+                    self.weights[attr] /= weightUpdateFactors[attr] 
                 
 
         #Normalizing the weights
@@ -401,7 +405,13 @@ class Recommender:
                 for val in self.nonNumericValueDict[attr]:
                     self.nonNumericValueDict[attr][val] = meanValue
             
-            self.nonNumericValueDict[attr][attrValue] *= 2
+            if self.weightedMLT == True:
+                multiplyingFactor = 4*numericUpdateFactors[attr]
+                #print 'multiplyingFactor =', multiplyingFactor
+            else:
+                multiplyingFactor = 2
+            
+            self.nonNumericValueDict[attr][attrValue] *= multiplyingFactor
             normalizingFactor = sum(self.nonNumericValueDict[attr].values())
             for temp in self.nonNumericValueDict[attr]:
                 self.nonNumericValueDict[attr][temp] /= normalizingFactor
@@ -412,20 +422,39 @@ class Recommender:
         '''and "Higher Resolution is chosen over lesser resolution(present in 4 critique strings) etc. are handled'''
         
         #The dictionary critiqueStringDirections must have been filled in the previous iteration itself.
-        weightUpdateFactors = {}
+        weightUpdateFactors = {}; numericUpdateFactors = {}
+        if self.weightedMLT == True:
+            for attr in self.nonNumericAttrNames:
+                #You can do something here also, where weights of nominal attributes are updated properly
+                #Actually, only weights of nominal attributes can be update properly using weightedMLT.
+                #We can actually process topK here and selection is already available...
+                selectedProd = topK[selection]
+                otherAttrVals = [x.attr[attr] for x in topK if x.attr[attr] != selectedProd.attr[attr]]
+                updateFactor = len(set(otherAttrVals))/float(self.K-1)
+                numericUpdateFactors[attr] = updateFactor
+            
+            for attr in self.numericAttrNames:
+                selectedProd = topK[selection]
+                otherAttrVals = [x.attr[attr] for x in topK if x.attr[attr] != selectedProd.attr[attr]]
+                updateFactor = len(set(otherAttrVals))/float(self.K-1)
+                weightUpdateFactors[attr] = 3*updateFactor
+                print 'numeric attr wt update =', weightUpdateFactors[attr]
+            return weightUpdateFactors, numericUpdateFactors 
+            
         if self.selectiveWtUpdateEnabled == False:
             for attr in self.numericAttrNames:
                 weightUpdateFactors[attr] = 2
-            return weightUpdateFactors
+            return weightUpdateFactors, {}
         
         #update factors are returned by util.getUpdateFactor()
-        for attr in self.numericAttrNames:
-            directions = self.critiqueStringDirections[attr]
-            weightUpdateFactors[attr] = util.getUpdateFactor(directions, selection, attr in self.mibAttributes)
-            #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
-            #print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
-            
-        return weightUpdateFactors
+        if self.selectiveWtUpdateEnabled == True:
+            for attr in self.numericAttrNames:
+                directions = self.critiqueStringDirections[attr]
+                weightUpdateFactors[attr] = util.getUpdateFactor(directions, selection, attr in self.mibAttributes)
+                #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
+                #print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
+                 
+            return weightUpdateFactors, {}
     
     def unitCritiqueSelectedStrings(self, selection, value, type):
         attr = self.numericAttrNames[selection]

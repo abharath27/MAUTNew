@@ -35,8 +35,9 @@ def getUpdateFactor(directions, selection, Mib):
     if diff == -3:
         temp = (1.0/8, 2)*Mib + (8,1.0/2)*(1-Mib)
     
-    return temp[index]
-
+    return temp[index] 
+    
+    
 def printRanks(evaluatorInstance):
     ranks = evaluatorInstance.ranks
     modString = evaluatorInstance.domain
