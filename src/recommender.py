@@ -19,7 +19,6 @@ class Recommender:
         '''This function is common for recommenders of all other domains like PC, cars etc'''
         self.resetWeights()
         self.preComputeMaxMinAttrValues()
-        self.preferredValues = dict([(attr, None) for attr in self.attrNames])  #Variable 'attrNames' is used only with preferredValues variable
         self.K = 5                                      
         self.currentReference = -1
         self.topK = [None]*self.K
@@ -38,6 +37,8 @@ class Recommender:
         self.neutralDirectionEnabled = True                 #It's set to false during evaluation, neutral direction helps for the proper display of critique strings
         self.selectedProductsList = []                      #It is initialized with the first product selected and every product that is subsequently chosen by user is added.
         self.weightsList = collections.defaultdict(list)
+        self.globalSum = 0                                  #globalSum and globalCount are gen book keeping attributes
+        self.globalCount = 0                                #They will be used to monitor the average compatibility, average rank and stuff like that
         
         #modifications turn on/off. By default they are turned off. Inheriting class should turn them on.
         self.diversityEnabled = False                       #Diversity should be enabled true
@@ -51,6 +52,7 @@ class Recommender:
         self.additiveUpdatesEnabled = False
         self.adaptiveSelectionEnabled = False
         self.weightedMLT = False
+        self.additiveNominalUpdateEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -70,12 +72,13 @@ class Recommender:
         
     def resetWeights(self):
         '''resets weights and value functions of numeric, nominal attributes'''
-        realAttributes = self.numericAttrNames
-        self.weights = dict([(attr, 1.0/(len(realAttributes))) for attr in self.numericAttrNames])
+        self.weights = dict([(attr, 1.0/(len(self.numericAttrNames))) for attr in self.numericAttrNames])
         self.nonNumericValueDict = {}
+        self.nonNumericAttrDenominator = {}                 #Non-numeric attribute weights are updated as 1/15,2/16, 3/17 and so on..., this dictionary maintains the current denominator
         for attr in self.nonNumericAttrNames:
             distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
             self.nonNumericValueDict[attr] = dict([(val, 1.0/len(distinctVals)) for val in distinctVals])
+            self.nonNumericAttrDenominator[attr] = len(distinctVals)
         self.selectedProductsList = []
     
     def preComputeMaxMinAttrValues(self):
@@ -139,6 +142,8 @@ class Recommender:
     
     def selectFirstProduct(self, preferences, specialArg = None):
         '''Removes the first product from self.prodList and sets the variable self.currentReference'''
+        if self.nominalAttributesEnabled == False:
+            self.nonNumericAttrNames = []
         if self.targetProductDoesntAppearInFirstCycle == True:
             self.prodList = [x for x in self.prodList if x.id != self.target]
         newBase = [copy.copy(x) for x in self.prodList]; random.shuffle(newBase)
@@ -375,7 +380,8 @@ class Recommender:
                 if val > 0:
                     self.weights[attr] += val;      #do not add the weights if you want to decrease weights. They will be automatically decreased while normalization. 
                 continue;
-                            
+            
+            #Normal case, where multiplicative updates are performed.                
             if self.value(attr, referenceProd.attr[attr]) < self.value(attr, selectedProduct.attr[attr]):
                 self.weightIncOrDec[attr] = 1 if weightUpdateFactors[attr] > 1 else 0
                 self.weights[attr] *= weightUpdateFactors[attr]
@@ -389,18 +395,34 @@ class Recommender:
         #Normalizing the weights
         weightSum = sum([self.weights[attr] for attr in self.numericAttrNames])
         for attr in self.numericAttrNames:
-            self.weights[attr] /= weightSum
-                
+            #self.weights[attr] /= weightSum
+            pass
+        
         for attr in self.nonNumericAttrNames:
-            #selective weight update is not for nominal attributes. It's a little complicated to model this 
-            #for nominal attributes          
             if attr not in selectiveAttributes: continue
             attrValue = selectedProduct.attr[attr]
-            distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
-            meanValue = 1.0/len(distinctVals)
+            if self.additiveNominalUpdateEnabled == True:           #Sir's proposed mechanism for updating weights
+                addFactor = 1
+                for val in self.nonNumericValueDict[attr]:
+                    self.nonNumericValueDict[attr][val] *= self.nonNumericAttrDenominator[attr]
+                if self.weightedMLT == True:
+                    addFactor = 2*numericUpdateFactors[attr]                #addFactor can be 0,0.5,1,1.5,2
+                    self.globalSum += addFactor
+                    self.globalCount+= 1
+                    print 'addFactor =', addFactor
+                    print 'self.globalSum =', self.globalSum
+                    print 'self.globalCount =', self.globalCount
+                self.nonNumericAttrDenominator[attr] += addFactor           #Increasing denominator by 1
+                self.nonNumericValueDict[attr][attrValue] += addFactor      #Increasing the selected product's value by 1.
+                for val in self.nonNumericValueDict[attr]:                  #Normalizing the weights back again...
+                    self.nonNumericValueDict[attr][val] /= self.nonNumericAttrDenominator[attr]
             
-            #Resetting all other non-numeric attribute values to the mean value, in case the preference 
-            #has been changed.
+                continue
+            
+            distinctVals = list(set([prod.attr[attr] for prod in self.caseBase])); meanValue = 1.0/len(distinctVals)
+            
+            #MY OWN MECHANISM FOR UPDATING NON-NUMERIC ATTRIBUTE VALUE FUNCTIONS. THIS MECHANISM IS THE DEFAULT CURRRENTLY.
+            #Resetting all other non-numeric attribute values to the mean value, in case the preference has been changed
             if self.nonNumericValueDict[attr][attrValue] < meanValue:
                 for val in self.nonNumericValueDict[attr]:
                     self.nonNumericValueDict[attr][val] = meanValue
@@ -434,11 +456,12 @@ class Recommender:
                 numericUpdateFactors[attr] = updateFactor
             
             for attr in self.numericAttrNames:
-                selectedProd = topK[selection]
-                otherAttrVals = [x.attr[attr] for x in topK if x.attr[attr] != selectedProd.attr[attr]]
-                updateFactor = len(set(otherAttrVals))/float(self.K-1)
-                weightUpdateFactors[attr] = 3*updateFactor
-                print 'numeric attr wt update =', weightUpdateFactors[attr]
+#                selectedProd = topK[selection]
+#                otherAttrVals = [x.attr[attr] for x in topK if x.attr[attr] != selectedProd.attr[attr]]
+#                updateFactor = len(set(otherAttrVals))/float(self.K-1)
+#                weightUpdateFactors[attr] = 3*updateFactor
+                weightUpdateFactors[attr] = 2
+                #print 'numeric attr wt update =', weightUpdateFactors[attr]
             return weightUpdateFactors, numericUpdateFactors 
             
         if self.selectiveWtUpdateEnabled == False:

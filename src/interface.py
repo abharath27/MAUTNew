@@ -12,7 +12,8 @@ class App:
         self.recommender.target = 0
         self.recommender.similarProdInFirstCycleEnabled = False
         self.recommender.additiveUpdatesEnabled = False
-        self.recommender.weightedMLT = True
+        self.recommender.weightedMLT = False
+        self.recommender.nominalAttributesEnabled = False
         self.recommender.initialPreferences = {'Price':self.recommender.caseBase[1].attr['StorageType']}
         self.createUnitCritiqueFrame()
         #self.createTargetComparisonBox()

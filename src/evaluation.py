@@ -21,11 +21,12 @@ class Evaluator:
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = False
         self.recommender.averageProductEnabled = False
-        self.recommender.additiveUpdatesEnabled = True
+        self.recommender.additiveUpdatesEnabled = False
         self.recommender.adaptiveSelectionEnabled = False
         self.recommender.historyEnabled = False
         self.recommender.deepHistoryEnabled = False
-        self.recommender.weightedMLT = False
+        self.recommender.weightedMLT = True
+        self.recommender.additiveNominalUpdateEnabled = True
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
@@ -101,7 +102,9 @@ class Evaluator:
         print 'Average numeric attr compatiblity = ', totalCompatibility/(numGlobalIterations)
         print 'Average without wasted cycles = ', (float(numGlobalIterations)-numWastedCycles)/(numExperiments*len(self.recommender.caseBase))
         print 'Percentage times adaptive selection was called:', float(numWastedCycles)/numGlobalIterations
-        
+        print 'globalSum =', self.recommender.globalSum
+        print 'globalCount =', self.recommender.globalCount
+        print 'Average add Factor', float(self.recommender.globalSum)/self.recommender.globalCount
         #self.printStatistics(iterationsPerProduct)
         util.printRanks(self)
         util.printWeights(self)
