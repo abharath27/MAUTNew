@@ -13,31 +13,34 @@ class Evaluator:
             self.recommender = CarRecommender() 
         self.recommender.selectiveWtUpdateEnabled = config[0]
         self.recommender.diversityEnabled = config[1]
+        #If all params below are false, this becomes the standard MAUT evaluation as in the paper
+        #New baseline with the additiveUpdatesEnabled
+        self.recommender.additiveUpdatesEnabled = True
+        
         self.recommender.neutralDirectionEnabled = False
-        #If both params below are false, this becomes the standard MAUT evaluation.
         self.recommender.targetProductDoesntAppearInFirstCycle = False
         self.recommender.similarProdInFirstCycleEnabled = False
         self.recommender.averageProductEnabled = False 
         self.recommender.diversityEnabled = False
         self.recommender.updateWeightsWrtInitPreferences = False
         self.recommender.averageProductEnabled = False
-        self.recommender.additiveUpdatesEnabled = False
         self.recommender.adaptiveSelectionEnabled = False
         self.recommender.historyEnabled = False
         self.recommender.deepHistoryEnabled = False
-        self.recommender.weightedMLT = True
-        self.recommender.additiveNominalUpdateEnabled = True
+        self.recommender.weightedMLT = False
+        self.recommender.adaptiveSelectionWithNeutralAttributesEnabled = False
+        
         self.targets = None
         self.ranks = collections.defaultdict(list)   #key is the iteration number, list of ranks is the value
         self.startAll(config[2])
     
     def startAll(self, numAttributes):
         #Make each product as the target 10 times...
-        numExperiments = 5
+        numExperiments = 4
         numGlobalIterations = 0; numIterationsList = []; totalCompatibility = 0; numWastedCycles = 0;
         averages = []; averageWithoutOnes = [];
         iterationsPerProduct = dict((id, []) for id in range(len(self.recommender.caseBase)))
-        queries = iter([x[:-1].split() for x in open('queries.txt').readlines()])
+        queries = iter([x[:-1].split() for x in open('q1.txt').readlines()])
         
         for tempVar in range(numExperiments):
             numIterationsList = []
@@ -65,6 +68,7 @@ class Evaluator:
                 self.ranks[numLocalIterations].append(rank)                 #book keeping
                 targets = [x.id for x in self.targets]
                 print 'First product selected:', self.recommender.currentReference
+                print 'Target product price:', self.recommender.caseBase[targets[0]].attr['Price']
                 
                 while 1 and self.recommender.currentReference not in targets:
                     #When cthe target is selected as the first product (justification of above condition)
@@ -104,10 +108,11 @@ class Evaluator:
         print 'Percentage times adaptive selection was called:', float(numWastedCycles)/numGlobalIterations
         print 'globalSum =', self.recommender.globalSum
         print 'globalCount =', self.recommender.globalCount
-        print 'Average add Factor', float(self.recommender.globalSum)/self.recommender.globalCount
+        print 'Average times diversity was called =', (self.recommender.globalSum)/self.recommender.globalCount
+        #print 'Average add Factor', float(self.recommender.globalSum)/self.recommender.globalCount
         #self.printStatistics(iterationsPerProduct)
-        util.printRanks(self)
-        util.printWeights(self)
+        #util.printRanks(self)
+        #util.printWeights(self)
     
     def dominatingProducts(self, p):
         dominators = []

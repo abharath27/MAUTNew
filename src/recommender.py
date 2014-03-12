@@ -52,7 +52,7 @@ class Recommender:
         self.additiveUpdatesEnabled = False
         self.adaptiveSelectionEnabled = False
         self.weightedMLT = False
-        self.additiveNominalUpdateEnabled = False
+        self.adaptiveSelectionWithNeutralAttributesEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -60,13 +60,7 @@ class Recommender:
         #above two are hypothetical and won't be used in real experiments.
         self.updateWeightsWrtInitPreferences = False        #This technique successfully works
         
-        #sanity check
-        numEnabled = self.updateWeightsInLineWithTarget + self.updateWeightsInTargetsDirection + self.updateWeightsWrtInitPreferences
-        if numEnabled > 1: print 'More than one weight update technique enabled; exiting;'; exit()
-        numEnabled = self.historyEnabled + self.deepHistoryEnabled
-        if numEnabled > 1: print 'More than one history techniques enabled; exiting;'; exit()
         
-        util.printNotes(self)
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
         
@@ -75,6 +69,7 @@ class Recommender:
         self.weights = dict([(attr, 1.0/(len(self.numericAttrNames))) for attr in self.numericAttrNames])
         self.nonNumericValueDict = {}
         self.nonNumericAttrDenominator = {}                 #Non-numeric attribute weights are updated as 1/15,2/16, 3/17 and so on..., this dictionary maintains the current denominator
+        self.weightsList = collections.defaultdict(list)
         for attr in self.nonNumericAttrNames:
             distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
             self.nonNumericValueDict[attr] = dict([(val, 1.0/len(distinctVals)) for val in distinctVals])
@@ -87,6 +82,20 @@ class Recommender:
         for attr in self.numericAttrNames:        
             priceList = [prod.attr[attr] for prod in self.caseBase]
             self.maxV[attr], self.minV[attr] = max(priceList), min(priceList)
+            print 'range of attr', attr, ':', self.maxV[attr]-self.minV[attr]
+        
+    def sanityCheck(self):
+        #sanity check
+        numEnabled = self.updateWeightsInLineWithTarget + self.updateWeightsInTargetsDirection + self.updateWeightsWrtInitPreferences
+        if numEnabled > 1: print 'More than one weight update technique enabled; exiting;'; exit()
+        numEnabled = self.historyEnabled + self.deepHistoryEnabled
+        if numEnabled > 1: print 'More than one history techniques enabled; exiting;'; exit()
+        numEnabled = self.adaptiveSelectionEnabled + self.adaptiveSelectionWithNeutralAttributesEnabled
+        if numEnabled > 1: print 'More than one adaptive selections enabled; exiting;'; exit()
+        if self.neutralDirectionEnabled == False and self.adaptiveSelectionWithNeutralAttributesEnabled == True:
+            print 'Neutral direction not Enabled. But adaptive Selection with neutral attributes enabled, exiting'; exit()
+        
+        util.printNotes(self)
             
     def utility(self, product, weights):
         '''Input: product and a dict of weights. Output: Utility of the product wrt that weight model'''
@@ -142,6 +151,7 @@ class Recommender:
     
     def selectFirstProduct(self, preferences, specialArg = None):
         '''Removes the first product from self.prodList and sets the variable self.currentReference'''
+        self.sanityCheck()      #Do all kinds of checks if the system is proper to go ahead; before starting the recommendation process
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
         if self.targetProductDoesntAppearInFirstCycle == True:
@@ -218,22 +228,26 @@ class Recommender:
             productList = [p for p in productList if p.id != top.id]    #Removing the 'top' product from newList
         return tempList
            
-    def selectTopK(self, unitCritiqueArg = None, firstTime = False, ):
+    def selectTopK(self, unitCritiqueArg = None, firstTime = False, previousSelected = None):
         ''''THIS FUNCTION'S ONLY TASK IS TO SET THE VARIABLE SELF.TOPK'''
         '''Argument firstTime is True if selectTopK is being called for the first time'''
         '''Argument unitCritiqueArg is not None when the caller is unitCritiqueSelectedStrings()'''
+        '''previousTopK argument is set when adaptiveSelectionWithNeutralAttributes is called'''
+        
         newList = copy.copy(self.prodList); increaseCyclesByOne = 0     #increaseCyclesByOne is for adaptive selection when one cycle is wasted
         if unitCritiqueArg != None: newList = unitCritiqueArg
         #when unitCritique is selected, you need to some filtering; hence the list is changed
         utilitySortedProducts = [(product, self.utility(product, self.weights)) for product in newList]
-        utilitySortedProducts = [x[0] for x in sorted(utilitySortedProducts, key = lambda x: -x[1])][:self.K]
+        utilitySortedProducts = [x[0] for x in sorted(utilitySortedProducts, key = lambda x: -x[1])]
         #print [x .id for x in self.prodList]
         rank = -1    
         try:
-            rank = [x[0].id for x in utilitySortedProducts].index(self.target)
+            rank = [x.id for x in utilitySortedProducts].index(self.target)
         except:
             rank = 0            #This means that the product was the reference product in first iteration     
         #print "target Product", self.target, "'s rank =", rank
+        
+        utilitySortedProducts = utilitySortedProducts[:self.K]
         #print 'topK:', [x.id for x in utilitySortedProducts]
         #if both self.targetproductDoesntAppearInFirstCycle and self.similarProdINFirstCycle are set to true,
         #both the if statements are executed.
@@ -267,7 +281,27 @@ class Recommender:
                     increaseCyclesByOne = 1
                 else:
                     self.topK = utilitySortedProducts      #Normal recommendation.
-            return rank, increaseCyclesByOne 
+            return rank, increaseCyclesByOne
+        
+        if self.adaptiveSelectionWithNeutralAttributesEnabled == True:
+            if firstTime == True:
+                self.topK = utilitySortedProducts
+            else:
+                #get the directions
+                #if it is all neutral/5 neutral/4 neutral; then give top utiltiy products; else give diverse products
+                referenceProd = self.caseBase[self.currentReference]
+                self.globalCount += 1.0
+                p, n, neu = self.attributeSignsUtil(previousSelected, referenceProd)
+                print 'Neutral Attributes =', neu
+                if len(neu) >= 4:
+                    print 'coutn of neutral greater than 4'
+                    self.topK = utilitySortedProducts
+                else:
+                    print 'hello neighbor'
+                    self.globalSum += 1
+                    self.topK = self.boundedGreedy(newList)
+            return rank, increaseCyclesByOne
+        
         
         if self.highestOverlappingProductsInTopK == True:           #This is only for testing purposes where highest overlapping products come in the topK
             #self.target, self.currentReference
@@ -293,6 +327,7 @@ class Recommender:
         '''This function updates weights, calls  selectTopK function'''
         '''sets the currentReference and returns critique strings corresponding to the topK products''' 
         selectedProduct = None; specialProduct = None; selectiveAttributes = None; previousIterMaxCompatibility = 0;#book keeping variable
+        previousSelectedProduct = None
         if selection == 'firstTime':
             selectedProduct = self.caseBase[self.currentReference]
             self.weightsList[self.target].append(copy.copy(self.weights))
@@ -300,6 +335,7 @@ class Recommender:
             
         if selection != 'firstTime':
             selectedProduct = copy.copy(self.topK[selection])
+            previousSelectedProduct = copy.copy(self.topK[selection])
             self.selectedProductsList.append(copy.copy(selectedProduct))
             if self.updateWeightsWrtInitPreferences == True:
                 specialProduct = copy.copy(self.topK[selection])
@@ -334,7 +370,9 @@ class Recommender:
 #                print 'Price List:', [x.attr[attr] for x in self.selectedProductsList]
             self.updateWeights(self.topK, selection, specialProduct, selectiveAttributes)
             self.weightsList[self.target].append(copy.copy(self.weights))
-            self.currentReference = selectedProduct.id  #Changing the reference product...                
+            #if self.target == 3:
+                #print 'list:', self.weightsList[3]
+                            
                 
             #previousIterMaxCompatibility = self.maxCompatible(self.topK)[1]
             for prod in self.topK:  #Removing previous topK items
@@ -347,7 +385,8 @@ class Recommender:
 #        for attr in self.nonNumericAttrNames:
 #            print attr,':', self.nonNumericValueDict[attr]
 #        print
-        rank, increaseByOne = self.selectTopK(firstTime = (selection == 'firstTime'))     #algorithm for selecting the topK is different in the first iteration
+        rank, increaseByOne = self.selectTopK(firstTime = (selection == 'firstTime'), previousSelected = previousSelectedProduct)     #algorithm for selecting the topK is different in the first iteration
+        self.currentReference = selectedProduct.id                                      #Changing the reference product...
         
         #TODO: Reject all products that are being fully dominated by the current product
         #print 'topK =', [x.id for x in self.topK]
@@ -375,7 +414,8 @@ class Recommender:
             
             if self.additiveUpdatesEnabled == True:
                 x = selectedProduct.attr[attr] - referenceProd.attr[attr]
-                val = 1*(x > 0) + (-1)*(x < 0)
+                addFactor = 0.1
+                val = addFactor*(x > 0) + (-addFactor)*(x < 0)
                 val = -val if attr in self.libAttributes else val
                 if val > 0:
                     self.weights[attr] += val;      #do not add the weights if you want to decrease weights. They will be automatically decreased while normalization. 
@@ -400,43 +440,19 @@ class Recommender:
         
         for attr in self.nonNumericAttrNames:
             if attr not in selectiveAttributes: continue
-            attrValue = selectedProduct.attr[attr]
-            if self.additiveNominalUpdateEnabled == True:           #Sir's proposed mechanism for updating weights
-                addFactor = 1
-                for val in self.nonNumericValueDict[attr]:
-                    self.nonNumericValueDict[attr][val] *= self.nonNumericAttrDenominator[attr]
-                if self.weightedMLT == True:
-                    addFactor = 2*numericUpdateFactors[attr]                #addFactor can be 0,0.5,1,1.5,2
-                    self.globalSum += addFactor
-                    self.globalCount+= 1
-                    print 'addFactor =', addFactor
-                    print 'self.globalSum =', self.globalSum
-                    print 'self.globalCount =', self.globalCount
-                self.nonNumericAttrDenominator[attr] += addFactor           #Increasing denominator by 1
-                self.nonNumericValueDict[attr][attrValue] += addFactor      #Increasing the selected product's value by 1.
-                for val in self.nonNumericValueDict[attr]:                  #Normalizing the weights back again...
-                    self.nonNumericValueDict[attr][val] /= self.nonNumericAttrDenominator[attr]
-            
-                continue
-            
-            distinctVals = list(set([prod.attr[attr] for prod in self.caseBase])); meanValue = 1.0/len(distinctVals)
-            
-            #MY OWN MECHANISM FOR UPDATING NON-NUMERIC ATTRIBUTE VALUE FUNCTIONS. THIS MECHANISM IS THE DEFAULT CURRRENTLY.
-            #Resetting all other non-numeric attribute values to the mean value, in case the preference has been changed
-            if self.nonNumericValueDict[attr][attrValue] < meanValue:
-                for val in self.nonNumericValueDict[attr]:
-                    self.nonNumericValueDict[attr][val] = meanValue
-            
+            attrValue = selectedProduct.attr[attr]    
+            addFactor = 0.5                                     #This will be the default addFactor
+            for val in self.nonNumericValueDict[attr]:
+                self.nonNumericValueDict[attr][val] *= self.nonNumericAttrDenominator[attr]
             if self.weightedMLT == True:
-                multiplyingFactor = 4*numericUpdateFactors[attr]
-                #print 'multiplyingFactor =', multiplyingFactor
-            else:
-                multiplyingFactor = 2
+                addFactor = numericUpdateFactors[attr]                  #addFactor can be 0,0.5,1,1.5,2
+                #self.globalSum += addFactor                             #some book-keeping being done for statistics in evaluation.py
+                # self.globalCount+= 1
+            self.nonNumericAttrDenominator[attr] += addFactor           #Increasing denominator by 1
+            self.nonNumericValueDict[attr][attrValue] += addFactor      #Increasing the selected product's value by 1.
+            for val in self.nonNumericValueDict[attr]:                  #Normalizing the weights back again...
+                self.nonNumericValueDict[attr][val] /= self.nonNumericAttrDenominator[attr]
             
-            self.nonNumericValueDict[attr][attrValue] *= multiplyingFactor
-            normalizingFactor = sum(self.nonNumericValueDict[attr].values())
-            for temp in self.nonNumericValueDict[attr]:
-                self.nonNumericValueDict[attr][temp] /= normalizingFactor
                 
     def updateWeightsUtil(self, topK, selection):
         '''Determines which attribute weights should actually be updated and which should be not'''
@@ -444,6 +460,14 @@ class Recommender:
         '''and "Higher Resolution is chosen over lesser resolution(present in 4 critique strings) etc. are handled'''
         
         #The dictionary critiqueStringDirections must have been filled in the previous iteration itself.
+        
+        
+        for attr in self.numericAttrNames:
+            if attr == 'Price':
+                print 'Reference Product attr val:', self.caseBase[self.currentReference].attr[attr]
+                print 'topK prod attr vals:', [x.attr[attr] for x in topK]
+                print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
+        
         weightUpdateFactors = {}; numericUpdateFactors = {}
         if self.weightedMLT == True:
             for attr in self.nonNumericAttrNames:
@@ -474,7 +498,7 @@ class Recommender:
             for attr in self.numericAttrNames:
                 directions = self.critiqueStringDirections[attr]
                 weightUpdateFactors[attr] = util.getUpdateFactor(directions, selection, attr in self.mibAttributes)
-                #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
+                print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
                 #print 'WeightUpdate  Priority of', attr, ":", weightUpdateFactors[attr]
                  
             return weightUpdateFactors, {}
@@ -558,11 +582,11 @@ class Recommender:
         if v1 == v2:
             return True
         if attr == 'Price':
-            return abs(v1-v2) < 10
+            return abs(v1-v2) < 0.02*(self.maxV[attr]-self.minV[attr])
         if attr == 'Resolution':
-            return abs(v1-v2) < 0.2
+            return abs(v1-v2) < 0.04*(self.maxV[attr]-self.minV[attr])
         if attr == 'Weight':
-            return abs(v1-v2) < 10
+            return abs(v1-v2) < 0.02*(self.maxV[attr]-self.minV[attr])
         if attr == 'StorageIncluded':
             return abs(v1-v2) < 2
         #PC attributes can come here....
@@ -584,8 +608,7 @@ class Recommender:
         for attr in self.libAttributes:
             if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]) and self.neutralDirectionEnabled:
                 neutralAttributes.append(attr)
-                continue 
-            if current.attr[attr] < reference.attr[attr]:
+            elif current.attr[attr] < reference.attr[attr]:
                 positiveAttributes.append(attr)
             else:
                 negativeAttributes.append(attr)
@@ -593,8 +616,7 @@ class Recommender:
         for attr in self.mibAttributes:
             if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]) and self.neutralDirectionEnabled:
                 neutralAttributes.append(attr)
-                continue
-            if current.attr[attr] > reference.attr[attr]:
+            elif current.attr[attr] > reference.attr[attr]:
                 positiveAttributes.append(attr)
             else:
                 negativeAttributes.append(attr)

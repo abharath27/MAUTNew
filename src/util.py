@@ -47,6 +47,8 @@ def printRanks(evaluatorInstance):
         modString += 'Diversity'
     if evaluatorInstance.recommender.similarProdInFirstCycleEnabled == True:
         modString += 'Similarity'
+    if evaluatorInstance.recommender.weightedMLT == True:
+        modString += 'weightedMLT'
     #ranks is a dictionary. Key = iteration number, value = list of ranks of various products
     a = open('ranks' + modString + '.txt', 'w')                 #Domain and all modifications are added to the file name.
     b = open('ranksPaddedWithZeros' + modString +'.txt', 'w')
@@ -68,6 +70,9 @@ def printWeights(evaluatorInstance):
         
         a.write(' '.join(attrNames) + '\n')
         for dictionary in weightList[id]:
+            if len(dictionary) > 40:
+                print 'length of weight dictionary greater than 40; ERROR!!!'
+                exit()
             values = [str(dictionary[attr]) for attr in attrNames]
             line = ' '.join(values) + '\n'
             a.write(line)
