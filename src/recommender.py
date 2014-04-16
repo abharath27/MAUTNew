@@ -17,7 +17,6 @@ class Recommender:
         
     def initializeOtherVars(self):
         '''This function is common for recommenders of all other domains like PC, cars etc'''
-        self.resetWeights()
         self.preComputeMaxMinAttrValues()
         self.K = 5                                      
         self.currentReference = -1
@@ -49,10 +48,14 @@ class Recommender:
         self.averageProductEnabled = False
         self.historyEnabled = False
         self.deepHistoryEnabled = False
+        self.historyWithSimilarityEnabled = False           #retVal will be added with similarity instead of directional similarity.
         self.additiveUpdatesEnabled = False
         self.adaptiveSelectionEnabled = False
         self.weightedMLT = False
         self.adaptiveSelectionWithNeutralAttributesEnabled = False
+        self.fractionalDiversityEnabled = False
+        self.marketEquilibriumEnabled = False
+        self.attributeLevelDiversityEnabled = False
         
         #weight update strategies. Max one of them should be turned on at any moment.
         self.updateWeightsInTargetsDirection = False         #Weights are always updated in the direction of target. Enabled 'True' only for testing purposes
@@ -64,18 +67,28 @@ class Recommender:
         if self.nominalAttributesEnabled == False:
             self.nonNumericAttrNames = []
         
+        self.resetWeights()
+        
     def resetWeights(self):
         '''resets weights and value functions of numeric, nominal attributes'''
         self.weights = dict([(attr, 1.0/(len(self.numericAttrNames))) for attr in self.numericAttrNames])
         self.nonNumericValueDict = {}
         self.nonNumericAttrDenominator = {}                 #Non-numeric attribute weights are updated as 1/15,2/16, 3/17 and so on..., this dictionary maintains the current denominator
-        self.weightsList = collections.defaultdict(list)
         for attr in self.nonNumericAttrNames:
             distinctVals = list(set([prod.attr[attr] for prod in self.caseBase]))
             self.nonNumericValueDict[attr] = dict([(val, 1.0/len(distinctVals)) for val in distinctVals])
+            if self.marketEquilibriumEnabled == True:
+                if len(distinctVals) >= 10:
+                    print 'market equilibrium attr:', attr
+                    self.nonNumericValueDict[attr] = self.preComputeNominalAttrValues(attr)
+                    print self.nonNumericValueDict[attr]
+                    
             self.nonNumericAttrDenominator[attr] = len(distinctVals)
         self.selectedProductsList = []
     
+    def resetWeightList(self):
+        self.weightsList = collections.defaultdict(list)
+        
     def preComputeMaxMinAttrValues(self):
         '''precomputes max and min values of numeric attributes into the dictionary self.maxV and self.minV'''
         self.maxV = {}; self.minV = {}
@@ -83,12 +96,54 @@ class Recommender:
             priceList = [prod.attr[attr] for prod in self.caseBase]
             self.maxV[attr], self.minV[attr] = max(priceList), min(priceList)
             print 'range of attr', attr, ':', self.maxV[attr]-self.minV[attr]
+    
+    def preComputeNominalAttrValues(self, attr):
+        mainDict = {}; l = []; sum2 = 0
+        dict2 = {}
+        for prod in self.caseBase:
+            mainDict[prod.attr[attr]] = []
+            dict2[prod.attr[attr]] = 0
+            
+        for prod in self.caseBase:
+            mainDict[prod.attr[attr]].append(len(self.dominatingProducts(prod)))
+            dict2[prod.attr[attr]] += 1
         
+        #l1 = [('Fujitsu', 12.3), ('Apple', 12.4), ('HP', 4.6), ('Compaq', 7.6)]
+        #l2 = [('Gateway', 5.7), ('Dell', 4.7), ('Toshiba', 5.5), ('Sony', 7.5)]
+        #mainDict = dict(l1 + l2)
+        for entry in mainDict:
+            temp = float(sum(mainDict[entry]))/len(mainDict[entry])
+            #sum2 += mainDict[entry] 
+            sum2 += temp*dict2[entry]
+            mainDict[entry] = temp*dict2[entry]     #More the frequency, more is the mainDict value...
+        
+        
+        
+        for entry in mainDict:
+            mainDict[entry] /= sum2
+            
+        return mainDict
+    
+    def dominatingProducts(self, p):
+        dominators = []
+        for prod in self.caseBase:
+            if prod.id == p.id: continue
+            flag = 0
+            for attr in self.libAttributes:
+                if prod.attr[attr] > p.attr[attr]:
+                    flag = 1
+            for attr in self.mibAttributes:
+                if prod.attr[attr] < p.attr[attr]:
+                    flag = 1
+            if flag == 0:
+                dominators.append(prod)
+        return dominators
+    
     def sanityCheck(self):
         #sanity check
         numEnabled = self.updateWeightsInLineWithTarget + self.updateWeightsInTargetsDirection + self.updateWeightsWrtInitPreferences
         if numEnabled > 1: print 'More than one weight update technique enabled; exiting;'; exit()
-        numEnabled = self.historyEnabled + self.deepHistoryEnabled
+        numEnabled = self.historyEnabled + self.deepHistoryEnabled + self.historyWithSimilarityEnabled
         if numEnabled > 1: print 'More than one history techniques enabled; exiting;'; exit()
         numEnabled = self.adaptiveSelectionEnabled + self.adaptiveSelectionWithNeutralAttributesEnabled
         if numEnabled > 1: print 'More than one adaptive selections enabled; exiting;'; exit()
@@ -116,6 +171,15 @@ class Recommender:
 #                    print 'previous user selected product:', previousUserSelectedProduct.id
 #                    print 'previous reference:', previousReference.id
 #                    print 'retVal =', retVal
+
+        if self.historyWithSimilarityEnabled == True:
+            if len(self.selectedProductsList) > 1:      #If this length was equal to one, then we can't do anything with the history info
+                previousUserSelectedProduct = self.selectedProductsList[-1]
+                targetProd = self.caseBase[self.target]     #dummy, won't be used anyways, since we are calculating only numeric attribute overlaps...
+                similarity = self.sim(currentProd, previousUserSelectedProduct.attr)
+                retVal += 0.5*similarity
+            
+        
         if self.deepHistoryEnabled == True:
             historySize = len(self.selectedProductsList)
             for i in range(1,historySize):
@@ -135,18 +199,19 @@ class Recommender:
     
     def sim(self, product, preferences):
         '''Input: dictionary of preferences and product. Output: similarity between the product and preferences'''
-        dist = 0
+        retVal = 0
         for attr in preferences:
             if attr in self.numericAttrNames:
-                values = [prod.attr[attr] for prod in self.prodList]
-                minV, maxV = min(values), max(values)
-                dist += (abs((preferences[attr] - product.attr[attr])/(maxV - minV)))
+                maxV, minV = self.maxV[attr], self.minV[attr]
+                retVal += (1-abs((preferences[attr] - product.attr[attr])/(maxV - minV)))
                 
             else:   #NOMINAL ATTRIBUTES
                 #IDEALLY, there should be a similarity measure defined between different brands...
-                if preferences[attr] != product.attr[attr]:
-                    dist += 1
-        return 1/(1+dist)
+                if preferences[attr] == product.attr[attr]:
+                    retVal += 1
+        
+        similarity = float(retVal)/len(preferences)
+        return similarity
     
     
     def selectFirstProduct(self, preferences, specialArg = None):
@@ -180,10 +245,10 @@ class Recommender:
     def critiqueSim(self, prod1, prod2):
         '''Input: Two products prod1, prod2. Output: overlap between critique strings of prod1, prod2'''
         #self.precomputedAttrSigns is already set before calling this function
-        p1, n1, ne1 = self.preComputedAttrSigns[prod1.id]
-        p2, n2, ne2 = self.preComputedAttrSigns[prod2.id]
-        overlap = len(set(p1) & set(p2)) + len(set(n1) & set(n2)) + len(set(ne1) & set(ne2))
-        overlap /= float(len(p1 + n1 + ne1))
+        l1 = self.preComputedAttrSigns[prod1.id]
+        l2 = self.preComputedAttrSigns[prod2.id]
+        overlap = sum([l1[i] == l2[i] for i in range(len(l1))])
+        overlap /= float(len(l1))
         return overlap
     
     def quality(self, c, P):
@@ -192,8 +257,8 @@ class Recommender:
         #diversity(c, P) = \sum(1-sim(c, Ci))/n
         dissimilarity = 0
         for prod in P:
-            #diversity += (1-self.critiqueSim(c, prod))
-            dissimilarity += (1-self.sim(c, prod.attr))
+            dissimilarity += (1-self.critiqueSim(c, prod))
+            #dissimilarity += (1-self.sim(c, prod.attr))
         if len(P) != 0:
             dissimilarity /= len(P)     #Normalizing it to one
         retVal += (1-alpha) * dissimilarity
@@ -213,11 +278,21 @@ class Recommender:
         retVal += (1-alpha) * dissimilarity
         return retVal
      
-    def boundedGreedy(self, productList, adaptiveSelection = False, previousTopK = None):
-        #IMPLEMENT THE Smyth and McClave(2001) Algorithm
+    def boundedGreedy(self, productList, adaptiveSelection = False, previousTopK = None, alreadyExisting = []):
+        #Implementing the Barry Smyth and McClave(2001) Algorithm
         #Quality(c,P) = a*utility(c) + (1-a)*(diversity(c,P))
-        tempList = []   #This will hold the topK products found so far
+        #alreadyExisting is set by the fractional diversity enabled option. They are already existing in the list
+        
+        t = [(p, self.utility(p, self.weights)) for p in productList]
+        productList = [p[0] for p in sorted(t, key = lambda x:-x[1])][:40]
+        tempList = alreadyExisting   #This will hold the topK products found so far
+        print 'len(productList) = ', len(productList)
+        print 'len(alreadyExisting) =', len(alreadyExisting)
+        print 'already Existing = ', [x.id for x in alreadyExisting]
+        productList = [x for x in productList if x.id not in [r.id for r in alreadyExisting]]
+        print 'len(productList) = ', len(productList)
         self.preComputeAttributeSigns()     #Pre-computing self.attributeSignsUtil; because it's being called 210*5*5 times
+        
         while len(tempList) < self.K and len(productList) > 0:      #when len(newList) == 0, you shouldn't enter the loop body
             if adaptiveSelection == True:
                 qualities = [(c, self.quality2(c, tempList, previousTopK)) for c in productList]
@@ -264,10 +339,36 @@ class Recommender:
             self.topK = [x[0] for x in similarities[:self.K]]
             return rank, increaseCyclesByOne
         
+        
         #If one of the firstcycle modifications were true, function would return there itself and wouldn't come down
         
         if self.diversityEnabled == True:   #IMPLEMENT THE Smyth and McClave(2001) Algorithm
             self.topK = self.boundedGreedy(newList)
+            return rank, increaseCyclesByOne
+        
+        
+        if self.fractionalDiversityEnabled == True:
+            if firstTime == True:
+                self.topK = self.boundedGreedy(newList, alreadyExisting=[])
+                #print 'First Time == True'
+                self.numTopUtilityProds = 2
+                return rank, increaseCyclesByOne
+            else:
+                previousTopKIds = [x.id for x in self.topK]         #self.topK here refers to the topK prods in previous iteration
+                selectionIndex = previousTopKIds.index(previousSelected.id)
+                #print 'selection Index =', selectionIndex
+                if selectionIndex < self.numTopUtilityProds:
+                    #Top utility product selected
+                    if self.numTopUtilityProds < 4: self.numTopUtilityProds += 1
+                else:
+                    #Diverse product selected
+                    if self.numTopUtilityProds > 1: self.numTopUtilityProds -= 1
+                    
+                tempList = utilitySortedProducts[:self.numTopUtilityProds]
+                #print 'before calling the function: numTopUtilityProds = ', self.numTopUtilityProds
+                #print 'before calling the function: len(alreadyExisting) = ', len(self.topK)
+                self.topK = self.boundedGreedy(newList, alreadyExisting=tempList)
+                #print 'len(self.topK) =', len(self.topK)
             return rank, increaseCyclesByOne
         
         if self.adaptiveSelectionEnabled == True:
@@ -293,13 +394,16 @@ class Recommender:
                 self.globalCount += 1.0
                 p, n, neu = self.attributeSignsUtil(previousSelected, referenceProd)
                 print 'Neutral Attributes =', neu
-                if len(neu) >= 4:
-                    print 'coutn of neutral greater than 4'
-                    self.topK = utilitySortedProducts
-                else:
-                    print 'hello neighbor'
-                    self.globalSum += 1
-                    self.topK = self.boundedGreedy(newList)
+                total = float(len(self.numericAttrNames))
+                self.alpha = (total-len(neu))/total          #value of alpha is changed customly according to situation
+                self.topK = self.boundedGreedy(newList)
+#                if len(neu) >= 4:
+#                    print 'coutn of neutral greater than 4'
+#                    self.topK = utilitySortedProducts
+#                else:
+#                    print 'hello neighbor'
+#                    self.globalSum += 1
+#                    self.topK = self.boundedGreedy(newList)
             return rank, increaseCyclesByOne
         
         
@@ -360,7 +464,10 @@ class Recommender:
             if self.averageProductEnabled == True:
                 specialProduct = copy.copy(self.caseBase[0])
                 for attr in self.numericAttrNames:
-                    specialProduct.attr[attr] = sum([x.attr[attr] for x in self.selectedProductsList])/len(self.selectedProductsList)
+                    l = len(self.selectedProductsList)
+                    normalizingTerm = sum([2**(i-l) for i in range(l)])
+                    specialProduct.attr[attr] = sum([2**(i-l) * x.attr[attr] for i,x in enumerate(self.selectedProductsList)])/normalizingTerm
+                    #specialProduct.attr[attr] = sum([x.attr[attr] for x in self.selectedProductsList])/l
                 for attr in self.nonNumericAttrNames:
                     valuesSeen = [x.attr[attr] for x in self.selectedProductsList]
                     maxFrequent = sorted(valuesSeen, key = valuesSeen.count)[-1]
@@ -370,9 +477,7 @@ class Recommender:
 #                print 'Price List:', [x.attr[attr] for x in self.selectedProductsList]
             self.updateWeights(self.topK, selection, specialProduct, selectiveAttributes)
             self.weightsList[self.target].append(copy.copy(self.weights))
-            #if self.target == 3:
-                #print 'list:', self.weightsList[3]
-                            
+            #print 'appended:', self.weights                
                 
             #previousIterMaxCompatibility = self.maxCompatible(self.topK)[1]
             for prod in self.topK:  #Removing previous topK items
@@ -417,15 +522,19 @@ class Recommender:
                 addFactor = 0.1
                 val = addFactor*(x > 0) + (-addFactor)*(x < 0)
                 val = -val if attr in self.libAttributes else val
-                if val > 0:
-                    self.weights[attr] += val;      #do not add the weights if you want to decrease weights. They will be automatically decreased while normalization. 
+                if val >= 0:
+                    self.weights[attr] += addFactor;      #do not add the weights if you want to decrease weights. They will be automatically decreased while normalization. 
                 continue;
             
             #Normal case, where multiplicative updates are performed.                
             if self.value(attr, referenceProd.attr[attr]) < self.value(attr, selectedProduct.attr[attr]):
                 self.weightIncOrDec[attr] = 1 if weightUpdateFactors[attr] > 1 else 0
                 self.weights[attr] *= weightUpdateFactors[attr]
-                
+            
+#            elif self.value(attr, referenceProd.attr[attr]) == self.value(attr, selectedProduct.attr[attr]):
+#                self.weightIncOrDec[attr] = 0
+#                #DO NOT CHANGE THE WEIGHT OF THE ATTRIBUTE
+#                
             else:
                 self.weightIncOrDec[attr] = -1 if weightUpdateFactors[attr] > 1 else 0
                 if weightUpdateFactors[attr] > 0:
@@ -435,7 +544,7 @@ class Recommender:
         #Normalizing the weights
         weightSum = sum([self.weights[attr] for attr in self.numericAttrNames])
         for attr in self.numericAttrNames:
-            #self.weights[attr] /= weightSum
+            self.weights[attr] /= weightSum
             pass
         
         for attr in self.nonNumericAttrNames:
@@ -461,13 +570,13 @@ class Recommender:
         
         #The dictionary critiqueStringDirections must have been filled in the previous iteration itself.
         
-        
-        for attr in self.numericAttrNames:
-            if attr == 'Price':
-                print 'Reference Product attr val:', self.caseBase[self.currentReference].attr[attr]
-                print 'topK prod attr vals:', [x.attr[attr] for x in topK]
-                print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
-        
+#        for attr in self.numericAttrNames:
+#            if attr == 'StorageIncluded':
+#                print 'Reference Product:', self.caseBase[self.currentReference].attr[attr]
+#                print 'topK vals:', [x.attr[attr] for x in topK]
+#                print 'selected:', [x.attr[attr] for x in topK][selection]
+#                #print 'Attr:', attr, 'Direction:', self.critiqueStringDirections[attr]
+#        
         weightUpdateFactors = {}; numericUpdateFactors = {}
         if self.weightedMLT == True:
             for attr in self.nonNumericAttrNames:
@@ -642,7 +751,19 @@ class Recommender:
                     self.critiqueStringDirections[attr].append('Negative')
                 else:
                     self.critiqueStringDirections[attr].append('Neutral')
-            
+        
+        
+        if inspect.stack()[1][3] == 'preComputeAttributeSigns':
+            list = []
+            for attr in self.numericAttrNames:
+                if self.notCrossingThreshold(attr, current.attr[attr], reference.attr[attr]) and self.neutralDirectionEnabled:
+                    list.append('Neutral')
+                elif current.attr[attr] < reference.attr[attr]:
+                    list.append('Less')
+                else:
+                    list.append('Same')
+            return list
+        
         return positiveAttributes, negativeAttributes, neutralAttributes
     
     def critiqueStr(self, current, reference):
@@ -797,6 +918,9 @@ class Recommender:
         l2 = [(products[i].id, int(j*100)/100.0) for i, j, k in l]
         #print l2
         #print 'maxCompatible Product ID =', l2[0][0]
+        if l[0][0] > 4:
+            print 'WTF. Index is greater than 4. Exiting'
+            exit()
         return l[0]
     
     def predictProducts(self):
